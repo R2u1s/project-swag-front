@@ -1,0 +1,114 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+}
+.contacts{
+    display: flex;
+    margin-top: 50px;
+    gap: 20px;
+}
+.contacts__title{
+    font-weight: 600;
+    color: #1C163B;
+    font-size: 72px;
+    line-height: 86.4px;
+}
+.contacts__content{
+    display: flex;
+    flex-direction: column;
+    gap: 44px;
+    max-width: 499px;
+    width: 100%;
+    margin: 100px 250px 0 0;
+}
+.contacts__info{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.contacts__info_span{
+    display: flex;
+    justify-content: space-between;
+}
+.contacts__info_div{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.contacts__info_title{
+    font-weight: 400;
+    color: #8D8B9D;
+    font-size: 20px;
+    line-height: 25.36px;
+}
+.contacts__info_text{
+    font-weight: 400;
+    color: #1C163B;
+    font-size: 20px;
+    line-height: 25.36px;
+}
+.contacts__info_link{
+    font-weight: 400;
+    color: #F14C8B;
+    font-size: 20px;
+    line-height: 25.36px;
+    text-decoration-line: underline;
+}
+.contacts__hr{
+    width: 100%;
+    border: 1px solid #EFEFEB;
+}
+.contacts__text p{
+    font-weight: 600;
+    color: #1C163B;
+    font-size: 16px;
+    line-height: 22.4px;
+}
+.map{
+    width: 100%;
+    max-height: 480px !important;
+    height: 100%;
+}
+@media screen and (max-width: 1240px){
+    .contacts__content{
+        margin: 50px 100px 0 0;
+    }
+}
+@media screen and (max-width: 1024px){
+    .services{
+        display: none;
+    }
+    .contacts{
+        flex-direction: column;
+        margin-top: 0px;
+    }
+    .contacts__content{
+        margin: 0 auto;
+    }
+}
+@media screen and (max-width: 600px){
+    .contacts__title{
+        font-size: 32px;
+        line-height: 38.4px;
+    }
+    .contacts__content{
+        gap: 16px;
+    }
+    .contacts__info_title{
+        font-size: 12px;
+        line-height: 15.22px;
+    }
+    .contacts__info_text{
+        font-size: 12px;
+        line-height: 15.22px;
+    }
+    .contacts__info_link{
+        font-size: 12px;
+        line-height: 15.22px;
+    }
+    .contacts__text p{
+        font-size: 12px;
+        line-height: 16.8px;
+    }
+}

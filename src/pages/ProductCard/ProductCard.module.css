@@ -1,0 +1,551 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+}
+.catalog__breadcrumbs{
+    font-weight: 400;
+    color: #A5A5A5;
+    font-size: 12px;
+    line-height: 14.4px;
+}
+.card{
+    display: flex;
+    flex-direction: column;
+    gap: 100px;
+}
+.card__content{
+    display: flex;
+    gap: 30px;
+    width: 100%;
+    justify-content: space-between;
+}
+.card__btn_selected{
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    background-color: transparent;
+    padding: 5px;
+}
+.card__btn_selected svg path{
+    transition: .3s all;
+}
+.card__btn_selected svg path:hover{
+    stroke: #F14C8B;
+}
+.card__img_block{
+    display: flex;
+    align-items: center;
+}
+.card__img_block2{
+    display: none;
+}
+.card__img{
+    max-width: 580px;
+    width: 100%;
+    margin: auto;
+}
+.card__img_list{
+    list-style: none;
+    max-height: 626px;
+    overflow-y: scroll;
+}
+.card__img_list::-webkit-scrollbar{
+    display: none;
+}
+.card__image{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    height: max-content;
+}
+.card__info_top{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.card__info{
+    position: relative;
+    background-color: #EFEFEB;
+    padding: 28px 40px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 34px;
+    max-width: 630px;
+    width: 100%;
+}
+.card__info_number{
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20.29px;
+    color: #A5A5A5;
+}
+.card__info_title{
+    font-weight: 500;
+    font-size: 36px;
+    line-height: 43.2px;
+    color: #1C163B;
+}
+.card__info_fabric{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+#card__info_material{
+    width: 144px;
+}
+.card__info_material{
+    display: flex;
+    gap: 20px;
+    justify-content: start;
+}
+.card__info_material span{
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20.29px;
+    color: #858393;
+}
+.card__info_method span{
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20.29px;
+    color: #858393;
+}
+.card__info_btn{
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20.29px;
+    color: #F14C8B;
+    background-color: transparent;
+    margin-left: 154px;
+}
+.card__color{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.card__color_btns{
+    display: flex;
+    gap: 4px;
+}
+.card__color_btn{
+    width: 36px;
+    height: 60px;
+    background-color: #B02465;
+    border-radius: 42px;
+}
+.card__btns{
+    display: flex;
+    justify-content: space-between;
+}
+.card__btn_quantity{
+    background-color: #F8F8F8;
+    padding: 12px 8px;
+    display: flex;
+    gap: 12px;
+    border-radius: 10px;
+    align-items: center;
+    max-width: 150px;
+}
+.card__btn1_quantity, .card__btn2_quantity{
+    padding: 5px;
+    background-color: transparent;
+}
+.card__btn_quantity_input {
+    font-weight: 500;
+    color: #262626;
+    font-size: 20px;
+    line-height: 24px;
+    max-width: max-content;
+    width: 100%;
+    display: flex;
+    text-align: center;
+    background-color: transparent;
+  }
+.card__btn_design{
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 19.2px;
+    color: #fff;
+    background-color: #F14C8B;
+    padding: 14px 20px;
+    border-radius: 4px 60px 60px 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: max-content;
+    transition: .3s all;
+}
+.card__btn_design:hover{
+    padding-right: 40px;
+}
+.card__btn_order{
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20.29px;
+    color: #F14C8B;
+    background-color: transparent;
+    padding: 14px 0px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.card__parameters{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.card__price{
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 38.4px;
+    color: #1C163B;
+}
+.card__price span{
+    font-size: 15px;
+    line-height: 18px;
+}
+.card__notification{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.card__correction{
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 18.05px;
+    color: #0B0B0B;
+}
+.card__information{
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19.2px;
+    color: #A5A5A5;
+    display: flex;
+    gap: 12px;
+}
+.card__description{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+    width: 100%;
+}
+.card__description_nav{
+    display: flex;
+    justify-content: space-between;
+    gap: 72px;
+    overflow-x: auto;
+    max-width: 870px;
+    width: 100%;
+}
+.card__description_nav::-webkit-scrollbar{
+    display: none;
+}
+.card__description_btn{
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 28.8px;
+    color: #6B3EB2;
+    background-color: transparent;
+    transition: .3s ease-in-out;
+    white-space: nowrap;
+}
+.card__description_btn:hover{
+    color: #F14C8B;
+}
+.card__description_text{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 72px;
+    border-top: 1px solid #EFEFEB;
+    padding-top: 40px;
+}
+.card__description_text p{
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 32px;
+    color: #1C163B;
+    flex-wrap: wrap;
+}
+.similar{
+    display: flex;
+    flex-direction: column;
+    gap: 77px;
+}
+.similar__info{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.similar__title{
+    font-weight: 600;
+    color: #1C163B;
+    font-size: 72px;
+    line-height: 86.4px;
+}
+.similar__text{
+    font-weight: 400;
+    color: #1C163B;
+    font-size: 24px;
+    line-height: 28.8px;
+}
+.similar__content{
+    display: flex;
+    gap: 12.77px;
+    overflow-x: scroll;
+}
+.similar__content::-webkit-scrollbar{
+    display: none;
+}
+.card__img_list > li > img {
+  width: 107px;
+  cursor: pointer;
+}
+.card__img {
+  cursor: zoom-in;
+}
+.card__lightBox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: #00000050;
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+  z-index: 9;
+}
+.card__lightBox > img {
+  cursor: zoom-out;
+  height: 90%;
+}
+.minus__icon{
+    width: 24px;
+    height: 24px;
+    stroke: #6B3EB2;
+    transition: .3s all;
+}
+.minus__icon:hover{
+    stroke: #F14C8B;
+}
+.plus__icon{
+    width: 24px;
+    height: 24px;
+    stroke: #6B3EB2;
+    transition: .3s all;
+}
+.plus__icon:hover{
+    stroke: #F14C8B;
+}
+.star__icon{
+    width: 40px;
+    height: 40px;
+    fill: #fff;
+    transition: .3s all;
+}
+.star__icon:hover{
+    fill: #F14C8B;
+    stroke: #F14C8B;
+}
+.design__icon{
+    width: 24px;
+    height: 24px;
+    fill: #fff;
+}
+.order__icon{
+    width: 24px;
+    height: 24px;
+    fill: #F14C8B;
+}
+.arrowRight__icon{
+    width: 12px;
+    height: 12px;
+    stroke: #A5A5A5;
+    fill: transparent;
+}
+@media screen and ( max-width: 1240px ){
+    .card__content{
+        gap: 0;
+    }
+    .card__img_block{
+        flex-direction: column-reverse;
+        align-items: center;
+        gap: 30px;
+    }
+    .card__img_list{
+        display: flex;
+        gap: 10px;
+        max-width: 580px;
+        width: 100%;
+        overflow-x: auto;
+    }
+    .card__info_btn{
+        margin-left: -10px;
+    }
+}
+@media screen and ( max-width: 1140px ){
+    .catalog__breadcrumbs{
+        display: none;
+    }
+    .card__info{
+        margin: 0 auto;
+    }
+    .card__img_block{
+        display: none;
+    }
+    .card__img_block2{
+        display: flex;
+        flex-direction: column-reverse;
+        justify-content: center;
+        align-items: center;
+        gap: 30px;
+    }
+    .card__info_fabric{
+        align-items: start;
+    }
+    .card__description_nav{
+        display: flex;
+        justify-self: start;
+        align-items: start;
+        gap: 10px;
+        overflow-x: auto;
+    }
+}
+@media screen and ( max-width: 768px ){
+    .card{
+        gap: 60px;
+    }
+    .card__description_text{
+        grid-template-columns: repeat(1, 1fr);
+        gap: 14px;
+    }
+    .card__btns{
+        justify-content: start;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+}
+@media screen and ( max-width: 480px ){
+    .card{
+        gap: 24px;
+    }
+    .card__info{
+        padding: 12px;
+        gap: 30px;
+    }
+    .card__info_number{
+        font-size: 12px;
+        line-height: 15.22px;
+    }
+    .card__info_title{
+        font-size: 24px;
+        line-height: 28.8px;
+    }
+    #card__info_material{
+        width: auto;
+    }
+    #card__info_method{
+        width: auto;
+    }
+    .card__info_material{
+        display: flex;
+        gap: 5px;
+    }
+    .card__info_method{
+        display: flex;
+        gap: 5px;
+    }
+    .card__info_material span{
+        font-size: 12px;
+        line-height: 15.22px;
+    }
+    .card__info_method span{
+        font-size: 12px;
+        line-height: 15.22px;
+    }
+    .card__info_btn{
+        font-size: 12px;
+        line-height: 15.22px;
+        padding: 12px 8px;
+    }
+    .card__btn_quantity span{
+        font-size: 16px;
+        line-height: 19.2px;
+    }
+    .card__btn_design{
+        font-size: 12px;
+        line-height: 14.4px;
+        padding: 12px 8px;
+    }
+    .card__btn_design:hover{
+        padding-right: 16px;
+    }
+    .card__btn_order{
+        font-size: 12px;
+        line-height: 15.22px;
+        padding: 10px 0px;
+    }
+    .card__parameters{
+        gap: 8px;
+    }
+    .card__price{
+        font-size: 24px;
+        line-height: 28.8px;
+    }
+    .card__notification{
+        gap: 4px;
+    }
+    .card__correction{
+        font-size: 12px;
+        line-height: 13.54px;
+    }
+    .card__information{
+        font-size: 12px;
+        line-height: 14.4px;
+        flex-direction: column;
+        gap: 4px;
+    }
+    .card__description{
+        gap: 14px;
+    }
+    .card__description_nav{
+        gap: 12px;
+    }
+    .card__description_btn{
+        font-size: 12px;
+        line-height: 14.4px;
+    }
+    .card__description_text{
+        gap: 12px;
+        padding-top: 14px;
+    }
+    .card__description_text p{
+        font-size: 12px;
+        line-height: 19.2px;
+    }
+    .card__btn_selected svg{
+        width: 23px;
+        height: 23px;
+    }
+    .similar{
+        gap: 24px;
+    }
+    .similar__info{
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+    .similar__title{
+        font-size: 20px;
+        line-height: 24px;
+    }
+    .similar__text{
+        font-size: 12px;
+        line-height: 14.4px;
+    }
+}

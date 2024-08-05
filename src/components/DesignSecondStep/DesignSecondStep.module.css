@@ -1,0 +1,196 @@
+.container {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  top: 0;
+  right: 0;
+  left: 0;
+  overflow-y: auto;
+  z-index: 999;
+  max-width: 1440px;
+  padding: 0 24px;
+  margin: 0 auto;
+}
+.container::-webkit-scrollbar {
+  display: none;
+}
+.card {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: max-content;
+}
+.card__btn_close {
+  position: absolute;
+  top: 33px;
+  right: 36px;
+  cursor: pointer;
+  padding: 5px;
+  background-color: transparent;
+}
+.card__img {
+  max-width: 740px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.card__image {
+  max-width: 600px;
+  width: 100%;
+  margin: auto;
+}
+.card__image2 {
+  display: none;
+}
+.card__content {
+  display: flex;
+  flex-direction: column;
+  gap: 135px;
+  padding: 28px;
+  border-right: 2px solid #a5a5a5;
+}
+.card__info {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.card__title {
+  font-weight: 700;
+  line-height: 45.12px;
+  font-size: 40px;
+  color: #0b0b0b;
+}
+.card__text {
+  font-weight: 500;
+  line-height: 27.07px;
+  font-size: 24px;
+  color: #0b0b0b;
+}
+.card__btn {
+  background-color: #f14c8b;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 19.2px;
+  color: #fff;
+  border-radius: 4px 60px 60px 4px;
+  padding: 21px 28px;
+  width: max-content;
+  margin: 0 auto;
+  transition: 0.3s;
+}
+.card__btn:hover {
+  padding-right: 48px;
+}
+.card__colors {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.card__color {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.card__color_span {
+  max-width: 400px;
+  width: 100%;
+  border-radius: 12px;
+  height: 64px;
+  /* background-color: #75BB9E; */
+}
+.card__color_code {
+  font-weight: 500;
+  color: #1c163b;
+  font-size: 20px;
+  line-height: 24px;
+}
+.card__color_btn {
+  padding: 12px;
+  background-color: #f8f8f8;
+  border-radius: 10px;
+}
+.close__icon {
+  width: 24px;
+  height: 24px;
+  stroke: #0b0b0b;
+  transition: 0.3s all;
+}
+.close__icon:hover {
+  stroke: #f14c8b;
+}
+.delete__icon {
+  width: 24px;
+  height: 24px;
+  fill: #8e8e8e;
+}
+@media screen and (max-width: 1240px) {
+  .card__content {
+    gap: 80px;
+    border-right: none;
+  }
+  .card__info {
+    width: 95%;
+  }
+  .card__img {
+    display: none;
+  }
+  .card__image2 {
+    display: flex;
+    width: 100%;
+  }
+  .card__btn {
+    width: 100%;
+    justify-content: center;
+  }
+  .card__colors {
+    gap: 16px;
+  }
+  .card__info {
+    width: 95%;
+    gap: 16px;
+  }
+}
+@media screen and (max-width: 650px) {
+  .container {
+    padding: 0 8px;
+  }
+  .card__btn_close {
+    top: 25px;
+    right: 5px;
+    padding: 5px;
+  }
+  .card__info {
+    width: 85%;
+    gap: 8px;
+  }
+  .card__content {
+    gap: 40px;
+    padding: 28px 0;
+    border-right: none;
+  }
+  .card__title {
+    line-height: 22.56px;
+    font-size: 20px;
+  }
+  .card__text {
+    line-height: 13.54px;
+    font-size: 12px;
+  }
+  .card__btn {
+    font-size: 11px;
+    line-height: 13.2px;
+  }
+  .card__colors {
+    gap: 8px;
+  }
+  .card__color_code {
+    font-size: 12px;
+    line-height: 14.4px;
+  }
+  .card__color_span {
+    width: 65%;
+  }
+}

@@ -1,0 +1,47 @@
+@font-face {
+  font-family: 'MontserratAlternates';
+  src: url('./assets/MontserratAlternates-ExtraBold.ttf');
+  font-weight: 800;
+}
+@font-face {
+  font-family: 'MontserratAlternates';
+  src: url('./assets/MontserratAlternates-Bold.ttf');
+  font-weight: 700;
+}
+@font-face {
+  font-family: 'MontserratAlternates';
+  src: url('./assets/MontserratAlternates-SemiBold.ttf');
+  font-weight: 600;
+}
+@font-face {
+  font-family: 'MontserratAlternates';
+  src: url('./assets/MontserratAlternates-Medium.ttf');
+  font-weight: 500;
+}
+@font-face {
+  font-family: 'MontserratAlternates';
+  src: url('./assets/MontserratAlternates-Regular.ttf');
+  font-weight: 400;
+}
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+  border: none;
+  font-family: 'MontserratAlternates';
+}
+button{
+  cursor: pointer;
+}
+input:focus {
+  outline: none;
+}
+textarea:focus {
+  outline: none;
+}
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

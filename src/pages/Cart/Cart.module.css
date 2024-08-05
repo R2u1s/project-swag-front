@@ -1,0 +1,238 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+}
+.cart{
+    display: flex;
+    gap: 12px;
+    justify-content: space-between;
+}
+.cart__content{
+    display: flex;
+    flex-direction: column;
+    gap: 44px;
+    width: 100%;
+}
+.cart__cards{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+}
+.cart__btn{
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 500;
+    color: #1C1C1F;
+    background-color: #f3f3f3;
+    padding: 16px 24px;
+    border-radius: 8px;
+    max-width: max-content;
+    margin: 0 auto;
+}
+.cart__title{
+    font-size: 72px;
+    color: #1C163B;
+    font-weight: 600;
+    line-height: 86.4px;
+    display: flex;
+    gap: 12px;
+}
+.cart__title span{
+    font-size: 24px;
+    color: #94C0D4;
+    font-weight: 700;
+    line-height: 28.8px;
+    justify-content: start;
+}
+.cart__sidebar{
+    max-width: 371px;
+    background-color: #EFEFEB;
+    padding: 20px 28px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: max-content;
+}
+.cart__sidebar_title{
+    font-size: 28px;
+    color: #1C163B;
+    font-weight: 700;
+    line-height: 33.6px;
+}
+.cart__sidebar_info{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.cart__sidebar_product{
+    display: flex;
+    justify-content: space-between;
+}
+.cart__sidebar_product span{
+    font-size: 16px;
+    color: #1C163B;
+    font-weight: 400;
+    line-height: 20.29px;
+}
+.cart__sidebar_circulation{
+    display: flex;
+    justify-content: space-between;
+}
+.cart__sidebar_circulation span{
+    font-size: 16px;
+    color: #1C163B;
+    font-weight: 400;
+    line-height: 20.29px;
+}
+.cart__sidebar_warning{
+    font-size: 16px;
+    color: #0B0B0B;
+    font-weight: 400;
+    line-height: 18.05px;
+}
+.cart__sidebar_bottom{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.cart__sidebar_btn{
+    font-size: 16px;
+    color: #fff;
+    font-weight: 700;
+    line-height: 19.2px;
+    background-color: #F14C8B;
+    padding: 21px 28px;
+    border-radius: 4px 60px 60px 4px;
+    width: max-content;
+    transition: .3s all;
+    justify-content: center;
+}
+.cart__sidebar_btn:hover{
+    padding-right: 48px;
+}
+.cart__sidebar_notification{
+    font-size: 12px;
+    color: #858393;
+    font-weight: 400;
+    line-height: 15.22px;
+}
+.similar{
+    display: flex;
+    flex-direction: column;
+    gap: 77px;
+}
+.similar__info{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.similar__title{
+    font-weight: 600;
+    color: #1C163B;
+    font-size: 72px;
+    line-height: 86.4px;
+}
+.similar__content{
+    display: flex;
+    gap: 12.77px;
+    overflow-x: scroll;
+}
+.similar__content::-webkit-scrollbar{
+    display: none;
+}
+#cart__title2{
+    display: none;
+}
+#cart__sidebar_btn2{
+    display: none;
+}
+.cart__icon{
+    width: 24px;
+    height: 24px;
+    fill: #94C0D4;
+    transition: .3s all;
+}
+@media screen and ( max-width: 1024px ){
+    .banner{
+        display: none;
+    }
+    .similar{
+        display: none;
+    }
+    #cart__title1{
+        display: none;
+    }
+    #cart__title2{
+        display: flex;
+        margin-bottom: 30px;
+    }
+    .cart{
+        flex-direction: column-reverse;
+        gap: 10px;
+    }
+    .cart__sidebar{
+        max-width: 100%;
+    }
+}
+@media screen and ( max-width: 768px ){
+    .cart{
+        gap: 8px;
+    }
+    .cart__content{
+        gap: 8px;
+    }
+    .cart__cards{
+        gap: 8px;
+    }
+    #cart__sidebar_btn{
+        display: none;
+    }
+    #cart__sidebar_btn2{
+        display: flex;
+        width: 100% ;
+    }
+    .cart__btn{
+        font-size: 12px;
+    }
+    .cart__title{
+        font-size: 32px;
+        line-height: 38.4px;
+    }
+    .cart__title span{
+        font-size: 16px;
+        line-height: 19.2px;
+    }
+    .cart__sidebar{
+        padding: 16px;
+        gap: 8px;
+    }
+    .cart__sidebar_title{
+        font-size: 24px;
+        line-height: 28.8px;
+    }
+    .cart__sidebar_info{
+        gap: 4px;
+    }
+    .cart__sidebar_product span{
+        font-size: 12px;
+        line-height: 15.22px;
+    }
+    .cart__sidebar_circulation span{
+        font-size: 12px;
+        line-height: 15.22px;
+    }
+    .cart__sidebar_warning{
+        font-size: 12px;
+        line-height: 13.54px;
+    }
+    .cart__sidebar_bottom{
+        gap: 0;
+    }
+    .cart__sidebar_notification{
+        font-size: 12px;
+        line-height: 15.22px;
+    }
+}

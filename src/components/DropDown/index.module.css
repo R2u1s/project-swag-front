@@ -1,0 +1,45 @@
+.dropdown {
+  display: flex;
+  flex-direction: column;
+  max-width: 176px;
+  width: 100%;
+}
+
+button {
+  background: none;
+  color: #6b3eb2;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+  padding: 10px;
+}
+
+.dropdown__btn {
+  width: 100%;
+  max-width: 176px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dropdown__arrow {
+  transition: 0.3s all;
+  width: 25px;
+  stroke: #6b3eb2;
+  height: 25px;
+  fill: none;
+}
+
+.dropdown__list {
+  list-style: none;
+}
+.dropdown__list > li {
+  padding-left: 10px;
+}
+.active {
+  transform: rotate(180deg);
+  stroke: #f14c8b;
+}
+.active__btn {
+  color: #f14c8b;
+}

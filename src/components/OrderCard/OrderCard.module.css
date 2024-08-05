@@ -1,0 +1,62 @@
+.order__card{
+    background-color: #fff;
+    border-radius: 16px;
+    display: flex;
+    padding: 12px;
+    gap: 8px;
+}
+.order__card_img{
+    max-width: 64px;
+    width: 100%;
+}
+.order__card_content{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+}
+.order__card_title{
+    font-weight: 400;
+    color: #1C163B;
+    font-size: 14px;
+    line-height: 16.8px;
+}
+.order__card_circulation{
+    font-size: 14px;
+    line-height: 17.75px;
+    color: #8D8B9D;
+    font-weight: 400;
+    display: flex;
+    justify-content: space-between;
+}
+.order__card_circulation span{
+    font-size: 14px;
+    line-height: 17.75px;
+    color: #8D8B9D;
+    font-weight: 400;
+}
+.order__card_price{
+    display: none;
+}
+@media screen and ( max-width: 768px ){
+    .order__card{
+        padding: 12px 8px;
+        gap: 4px;
+    }
+    .order__card_img{
+        max-width: 48px;
+        width: 100%;
+    }
+    .order__card_title{
+        font-size: 12px;
+        line-height: 14.4px;
+    }
+    .order__card_circulation{
+        font-size: 10px;
+        line-height: 12.68px;
+    }
+    .order__card_circulation span{
+        font-size: 10px;
+        line-height: 12.68px;
+    }
+}

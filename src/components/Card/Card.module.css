@@ -1,0 +1,345 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 371px;
+  width: 100%;
+  position: relative;
+  transition: .3s all;
+}
+.card__img > img {
+  padding: 45px;
+  margin: auto;
+  width: 100%;
+  transition: .5s all;
+}
+.card__content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.card__name {
+  font-size: 20px;
+  line-height: 24px;
+  color: #1c163b;
+  font-weight: 400;
+  min-height: 48px;
+}
+.card__price {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.card__newprice {
+  font-size: 20px;
+  line-height: 24px;
+  color: #1c163b;
+  font-weight: 700;
+}
+.card__oldprice {
+  font-size: 16px;
+  line-height: 19.2px;
+  color: #a5a5a5;
+  font-weight: 400;
+  text-decoration-line: line-through;
+}
+.card__number {
+  font-size: 16px;
+  line-height: 19.2px;
+  color: #a5a5a5;
+  font-weight: 400;
+}
+.card__color {
+  display: flex;
+  gap: 5px;
+  margin-right: auto;
+}
+.card__color > span {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border-radius: 10px;
+}
+.card__additionally{
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  justify-content: start;
+  transform: translateY(-10px);
+  transition: opacity .5s ease, transform .5s ease;
+  pointer-events: none;
+  opacity: 0;
+}
+.card__additionally_btns{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.card__additionally_quantity{
+  display: flex;
+  background-color: #F8F8F8;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 8px;
+  width: max-content;
+}
+.card:hover{
+  background-color: #fff;
+  border-radius: 20px;
+  box-shadow: 0px 4px 44px 0px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+.card:hover .card__additionally{
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.card:hover > .card__img > img{
+  padding: 15px;
+}
+.card__quantity_btn{
+  background-color: transparent;
+  padding: 3px;
+}
+.card__additionally_quantity_input {
+  font-weight: 500;
+  color: #262626;
+  font-size: 20px;
+  line-height: 24px;
+  max-width: max-content;
+  width: 100%;
+  display: flex;
+  text-align: center;
+  background-color: transparent;
+}
+.card__additionally_design{
+  font-weight: 700;
+  color: #fff;
+  font-size: 15px;
+  line-height: 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background-color: #F14C8B;
+  border-radius: 4px 60px 60px 4px;
+  transition: .3s all;
+}
+.card__additionally_design:hover{
+  padding-right: 40px;
+}
+.card__additionally_text{
+  font-weight: 400;
+  color: #A5A5A5;
+  font-size: 16px;
+  line-height: 19.2px;
+}
+.design__icon{
+  width: 24px;
+  height: 24px;
+  fill: #fff;
+}
+.minus__icon{
+  stroke: #6B3EB2;
+  transition: .3s all;
+  width: 24px;
+  height: 24px;
+}
+.minus__icon:hover{
+  stroke: #F14C8B;
+}
+.plus__icon{
+  stroke: #6B3EB2;
+  transition: .3s all;
+  width: 24px;
+  height: 24px;
+}
+.plus__icon:hover{
+  stroke: #F14C8B;
+}
+.star__icon{
+  height: 32px;
+  width: 32px;
+  fill: #EFEFEB;
+  transition: .3s all;
+}
+.star__icon:hover{
+  fill: #F14C8B;
+}
+.card__btn .star__icon {
+  height: 32px;
+  width: 32px;
+  fill: #efefeb;
+  transition: fill 0.3s;
+}
+.card__btn.active .star__icon {
+  fill: #f14c8b;
+}
+.card__btns {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 99;
+}
+.card__btn {
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  align-items: center;
+  position: relative;
+}
+.card__btn.active .visibleSpan {
+  position: absolute;
+  top: 45px;
+  display: inline-flex;
+  padding: 10px 12px;
+  background-color: #fff;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: #1C1C1F;
+  margin-top: 8px;
+  white-space: nowrap;
+  z-index: 999;
+  border-radius: 8px;
+  box-shadow: 0px 16px 48px 0px rgba(5, 5, 14, 0.24);
+}
+.card__btn .visibleSpan {
+  display: none;
+}
+.visibleSpan::before{
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  right: 0;
+  margin: 3px auto 0 auto;
+  width: 0;
+  height: 0;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-bottom: 12px solid #fff;
+}
+@media screen and (max-width: 1240px){
+  .card {
+    gap: 12px;
+    max-width: 220px;
+    height: max-content;
+  }
+  .card:hover{
+    background-color: inherit;
+    box-shadow: none;
+    padding: 0;
+    border-radius: 0;
+  }
+  .card:hover > .card__img > img{
+    padding: 22px 24px;
+  }
+  .card__additionally{
+    display: none;
+  }
+  .card__content {
+    gap: 10px;
+  }
+  .card__img > img {
+    padding: 22px 24px;
+  }
+  .card__name {
+    font-size: 16px;
+    line-height: 19.2px;
+  }
+  .card__price {
+    gap: 6px;
+  }
+  .card__newprice {
+    font-size: 18px;
+    line-height: 20.29px;
+  }
+  .card__oldprice {
+    font-size: 14px;
+    line-height: 16.4px;
+  }
+  .card__number {
+    font-size: 16px;
+    line-height: 19.2px;
+  }
+  .card__color > span {
+    width: 14px;
+    height: 14px;
+    border-radius: 8px;
+  }
+}
+@media screen and (max-width: 1024px){
+  .card {
+    gap: 12px;
+    max-width: 200px;
+    height: max-content;
+  }
+}
+@media screen and (max-width: 768px){
+  .card {
+    gap: 7.08px;
+    max-width: 170px;
+    height: max-content;
+  }
+  .card__content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+  }
+  .card__img > img {
+    padding: 18px 22px;
+    width: 100%;
+  }
+  .card__name {
+    font-size: 12px;
+    line-height: 14.4px;
+  }
+  .card__price {
+    gap: 4px;
+  }
+  .card__newprice {
+    font-size: 16px;
+    line-height: 19.2px;
+  }
+  .card__oldprice {
+    font-size: 12px;
+    line-height: 14.4px;
+  }
+  .card__number {
+    font-size: 12px;
+    line-height: 14.4px;
+  }
+  .card__color > span {
+    width: 12px;
+    height: 12px;
+    border-radius: 7.32px;
+  }
+  .card__btn > svg{
+    width: 18px;
+    height: 19px;
+  }
+  .card__btns {
+    top: 0px;
+    right: 0px;
+    gap: 0px;
+  }
+  .star__icon{
+    height: 24px;
+    width: 24px;
+  }
+  .card__btn .star__icon {
+    height: 24px;
+    width: 24px;
+  }
+}
+@media screen and (max-width: 480px){
+  .card {
+    max-width: 100%;
+  }
+}

@@ -1,0 +1,46 @@
+.slider-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.track {
+  height: 36px;
+  display: flex;
+  width: 98%;
+  margin: 0 auto;
+}
+.track-inner {
+  height: 5px;
+  width: 100%;
+  border-radius: 4px;
+  align-self: center;
+}
+.thumb {
+  height: 24px;
+  width: 24px;
+  border-radius: 50%;
+  background-color: #6B3EB2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 2px 6px #aaa;
+}
+.thumb-inner {
+  height: 16px;
+  width: 16px;
+  background-color: #fff;
+  border-radius: 50%;
+}
+.values {
+  display: flex;
+  justify-content: space-between;
+}
+.value{
+    border: 1px solid #EFEFEB;
+    border-radius: 12px;
+    padding: 12.5px 25px;
+    background-color: #fff;
+    font-weight: 400;
+    font-size: 18.86px;
+    line-height: 22.99px;
+}

@@ -1,0 +1,323 @@
+.order{
+    display: flex;
+    gap: 12px;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 100px;
+}
+.order__content{
+    display: flex;
+    flex-direction: column;
+    gap: 44px;
+}
+.order__title{
+    font-weight: 600;
+    color: #1C163B;
+    font-size: 52px;
+    line-height: 62.4px;
+}
+#order__title2{
+    display: none;
+}
+.order__form{
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+    width: 100%;
+}
+.order__form_title{
+    font-weight: 700;
+    color: #0B0B0B;
+    font-size: 24px;
+    line-height: 27.07px;
+}
+.order__form_step{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}
+.order__form_input{
+    font-weight: 400;
+    color: #A5A5A5;
+    font-size: 17px;
+    line-height: 20.4px;
+    padding: 16px 20px;
+    border-radius: 10px;
+    background-color: #F8F8F8;
+    width: calc(50% - 10px);
+}
+.order__form_input1{
+    font-weight: 400;
+    color: #A5A5A5;
+    font-size: 17px;
+    line-height: 20.4px;
+    padding: 16px 20px;
+    border-radius: 10px;
+    background-color: #F8F8F8;
+    width: 100%;
+}
+.order__form_textarea{
+    font-weight: 400;
+    color: #A5A5A5;
+    font-size: 17px;
+    line-height: 20.4px;
+    padding: 16px 20px 83px 20px;
+    border-radius: 10px;
+    background-color: #F8F8F8;
+    width: 100%;
+}
+.order__form_checkbox{
+  width: 26px;
+  height: 26px;
+  position: relative;
+}
+.order__form_checkbox::before{
+  content: '';
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  border-radius: 5px;
+  background-color: #6B3EB2;
+  margin: -3px 0 0 -3px;
+  top: 0;
+  right: 0;
+  left: 0;
+}
+.order__form_checkbox:checked::before{
+  background-image: url('/images/Vector 29.svg');
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+.order__form_label{
+    font-weight: 400;
+    color: #262626;
+    font-size: 16px;
+    line-height: 19.05px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.order__form_text{
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20.29px;
+    color: #8D8B9D;
+}
+.order__form_btns{
+    display: flex;
+    justify-content: space-between;
+}
+.order__form_btn_pay{
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 21.94px;
+    background-color: #6B3EB2;
+    color: #fff;
+    border-radius: 12px;
+    padding: 17px 20px;
+    display: flex;
+    align-items: center;
+    width: calc(50% - 10px);
+    justify-content: space-between;
+}
+.order__form_first{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+.order__form_second{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.order__form_third{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.order__form_btn{
+    font-weight: 700;
+    color: #fff;
+    font-size: 16px;
+    line-height: 19.02px;
+    border-radius: 4px 60px 60px 4px;
+    background-color: #F14C8B;
+    padding: 21px 28px;
+    transition: .3s all;
+    width: max-content;
+}
+.order__form_btn:hover{
+    padding-right: 48px;
+}
+.order__sidebar{
+    background-color: #EFEFEB;
+    border-radius: 20px;
+    padding: 20px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 380px;
+    width: 100%;
+    height: max-content;
+}
+.order__sidebar_top{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+}
+.order__sidebar_title{
+    font-weight: 700;
+    color: #1C163B;
+    line-height: 33.6px;
+    font-size: 28px;
+}
+.order__sidebar_btn{
+    font-weight: 400;
+    color: #F14C8B;
+    line-height: 20.29px;
+    font-size: 16px;
+    background-color: transparent;
+}
+.order__sidebar_cards{
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.order__sidebar_total{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.order__sidebar_total span{
+    font-weight: 500;
+    color: #1C163B;
+    line-height: 20px;
+    font-size: 24px;
+}
+.order__sidebar_cost{
+    font-weight: 700;
+    color: #1C163B;
+    line-height: 20px;
+    font-size: 24px;
+}
+.order__sidebar_warning{
+    font-weight: 400;
+    color: #0B0B0B;
+    line-height: 16px;
+    font-size: 18.05px;
+}
+.card__icon{
+    width: 40px;
+    height: 40px;
+    fill: #fff;
+}
+.order__form_additionally{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.statement__icon{
+    width: 40px;
+    height: 40px;
+    fill: #fff;
+}
+@media screen and ( max-width: 768px ){
+    #order__title1{
+        display: none;
+    }
+    #order__title2{
+        display: flex;
+    }
+    .order__title{
+        font-size: 32px;
+        line-height: 38.4px;
+    }
+    .order{
+        gap: 8px;
+        flex-direction: column-reverse;
+        margin-bottom: 0;
+    }
+    .order__content{
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
+    }
+    .order__sidebar{
+        margin: 0 auto;
+    }
+    .order__form_input{
+        font-size: 12px;
+        line-height: 14.4px;
+        width: 100%;
+    }
+    .order__form_input1{
+        font-size: 12px;
+        line-height: 14.4px;
+    }
+    .order__form_textarea{
+        font-size: 12px;
+        line-height: 12.4px;
+    }
+    .order__form_checkbox{
+        width: 28px;
+        height: 28px;
+        border-radius: 3.5px;
+    }
+    .order__form_label{
+        font-size: 12px;
+        line-height: 14.36px;
+    }
+    .order__form_text{
+        font-size: 12px;
+        line-height: 15.22px;
+    }
+    .order__form_btns{
+        display: flex;
+        justify-content: space-between;
+    }
+    .order__form_btn_pay{
+        font-size: 12px;
+        line-height: 14.63px;
+        padding: 12px;
+    }
+    .order__form_btn{
+        font-size: 11px;
+        line-height: 13.2px;
+        width: 100%;
+    }
+    .order__form_first{
+        gap: 16px;
+    }
+    .order__form_second{
+        gap: 16px;
+    }
+    .order__form_third{
+        gap: 16px;
+    }
+    .order__sidebar{
+        padding: 16px;
+        gap: 12px;
+    }
+    .order__sidebar_title{
+        line-height: 18.8px;
+        font-size: 24px;
+    }
+    .order__sidebar_btn{
+        line-height: 15.22px;
+        font-size: 12px;
+    }
+    .order__sidebar_total span{
+        line-height: 16px;
+        font-size: 19.2px;
+    }
+    .order__sidebar_cost{
+        line-height: 16px;
+        font-size: 19.2px;
+    }
+    .order__sidebar_warning{
+        line-height: 12px;
+        font-size: 13.54px;
+    }
+}
