@@ -164,7 +164,7 @@ function Card({
               </button>
             </div>
             <div className={styles.card__additionally_text}>
-              Мин. тираж: <span>{totalStock} шт.</span>
+              В наличии: <span>{totalStock} шт.</span>
             </div>
           </div>
         </div>
