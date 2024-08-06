@@ -75,9 +75,18 @@ function Card({
   };
 
   const handleQuantityChange = (event) => {
-    const value = parseInt(event.target.value, 10);
-    if (!isNaN(value) && value > 0) {
-      setQuantity(value);
+/*     const value = parseInt(event.target.value, 10); */
+const value = event.target.value;
+    setQuantity(value);
+/*     if (!isNaN(value) && value > 0) {
+      
+    } */
+  };
+
+  const handleBlur = () => {
+    // Если значение пустое, устанавливаем значение по умолчанию
+    if (quantity === '') {
+      setQuantity(1);
     }
   };
 
@@ -141,7 +150,9 @@ function Card({
                   <input
                     type="number"
                     value={quantity}
+                    defaultValue={1}
                     onChange={handleQuantityChange}
+                    onBlur={handleBlur}
                     className={styles.card__additionally_quantity_input}
                   />
                 </span>
