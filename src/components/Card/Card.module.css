@@ -5,6 +5,7 @@
   max-width: 371px;
   width: 100%;
   position: relative;
+  cursor: pointer;
   transition: .3s all;
 }
 .card__img > img {

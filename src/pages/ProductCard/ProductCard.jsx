@@ -9,6 +9,20 @@ import Icon from "../../components/Icon/Index";
 import { useNavigate } from "react-router-dom";
 import DesignSecondStep from "../../components/DesignSecondStep/DesignSecondStep";
 import useStore from "../../shared/store";
+import BreadCrumbs from "../../components/breadcrumbs/breadcrumbs";
+
+const DEFAULT_QTY = 1;
+
+const crumbsData = [
+  {
+    url: '/',
+    label: 'Главная',
+  },
+  {
+    url: "/catalog",
+    label: 'Каталог',
+  },
+];
 
 function ProductCard() {
   const [modal, setModal] = useState(false);
@@ -17,6 +31,8 @@ function ProductCard() {
   const [preview, setPreview] = useState();
   const [quantity, setQuantity] = useState(0);
   const { favorites, setFavorites } = useStore();
+  const { activeCategory, setActiveCategory } = useStore();
+
   let firstDesc;
   let lastDesc;
   let lengthDesc;
@@ -24,7 +40,7 @@ function ProductCard() {
   useEffect(() => {
     getOneProduct(id).then((data) => {
       setData(data);
-      setPreview(data.images[0].big);
+      setPreview(0);
       data.images;
     });
   }, []);
@@ -65,11 +81,19 @@ function ProductCard() {
   };
 
   const handleQuantityChange = (event) => {
-    const value = parseInt(event.target.value, 10);
-    if (!isNaN(value) && value > 0) {
-      setQuantity(value);
+    /*     const value = parseInt(event.target.value, 10);
+        if (!isNaN(value) && value > 0) {
+          setQuantity(value);
+        } */
+    setQuantity(event.target.value);
+  };
+
+  const handleBlur = () => {
+    if (quantity === '' || isNaN(quantity) || !/^[1-9]\d*$/.test(quantity)) {
+      setQuantity(DEFAULT_QTY);
     }
   };
+
   const material =
     data?.attributes?.find((attr) => attr.name === "Материал товара")?.value ||
     "";
@@ -82,35 +106,38 @@ function ProductCard() {
     data?.attributes?.find((attr) => attr.name === "Размер")?.value || "";
   // console.log(data);
 
+  //добавление в массив breadcrumbs текущей категории
+  useEffect(() => {
+    if (crumbsData[crumbsData.length - 1].label !== 'Каталог') {
+      crumbsData.pop();
+    }
+    crumbsData.push(
+      {
+        url: '',
+        label: activeCategory,
+      }
+    );
+  }, [activeCategory]);
+
   return (
     <>
       {data && (
         <div className={styles.container}>
-          <div className={styles.catalog__breadcrumbs}>
-            <Link to="/" className={styles.catalog__breadcrumbs}>
-              Главная
-            </Link>{" "}
-            <Icon id="#arrowRight" className={styles.arrowRight__icon} />{" "}
-            <Link to="/catalog" className={styles.catalog__breadcrumbs}>
-              Каталог
-            </Link>{" "}
-            <Icon id="#arrowRight" className={styles.arrowRight__icon} />{" "}
-            Карточка товара
-          </div>
+          <BreadCrumbs crumbs={crumbsData} />
           {/* <DesignSecondStep /> */}
           <div className={styles.card}>
             <div className={styles.card__content}>
               <div className={styles.card__img_block}>
                 <ul className={styles.card__img_list}>
                   {data.images.map((item, i) => (
-                    <li key={i} onClick={() => setPreview(item.big)}>
+                    <li key={i} onClick={() => setPreview(i)} className={`${styles.card__img_list_element} ${i !== preview && styles.opacity}`}>
                       <img src={item.small} alt="" />
                     </li>
                   ))}
                 </ul>
                 <img
                   className={styles.card__img}
-                  src={preview}
+                  src={data.images[preview].big}
                   alt=""
                   onClick={() => setShow(true)}
                 />
@@ -161,14 +188,14 @@ function ProductCard() {
                   <div className={styles.card__img_block2}>
                     <ul className={styles.card__img_list}>
                       {data.images.map((item, i) => (
-                        <li key={i} onClick={() => setPreview(item.big)}>
+                        <li key={i} onClick={() => setPreview(i)} className={`${i !== preview && styles.opacity}`}>
                           <img src={item.small} alt="" />
                         </li>
                       ))}
                     </ul>
                     <img
                       className={styles.card__img}
-                      src={preview}
+                      src={data.images[preview].big}
                       alt=""
                       onClick={() => setShow(true)}
                     />
@@ -208,6 +235,7 @@ function ProductCard() {
                           type="number"
                           value={quantity}
                           onChange={handleQuantityChange}
+                          onBlur={handleBlur}
                           className={styles.card__btn_quantity_input}
                         />
                       </span>

@@ -20,6 +20,18 @@ import useStore from "../../shared/store";
 import Loading from "../../components/Loading/Index";
 import CustomPagination from "../../components/CustomPagination/Index";
 import { Pagination } from "@mui/material";
+import BreadCrumbs from "../../components/breadcrumbs/breadcrumbs";
+
+const crumbsData = [
+	{
+		url: '/',
+		label: 'Главная',
+	},
+	{
+		url: "/catalog",
+		label: 'Каталог',
+	},
+];
 
 function Catalog() {
   const {
@@ -51,12 +63,27 @@ function Catalog() {
     setSearch(false);
   }, []);
 
+  //добавление в массив breadcrumbs текущей категории
+  useEffect(() => {
+  if (crumbsData[crumbsData.length-1].label !== 'Каталог') {
+    crumbsData.pop();
+  }
+  crumbsData.push(
+    {
+      url: '',
+      label: activeCategory,
+    }
+  );  
+  }, [activeCategory]);
+
   const cart = [];
   localStorage.setItem("cart", JSON.stringify(cart));
 
   const toggleShowSorting = () => {
     setShowSorting((prevShowsetShowSorting) => !prevShowsetShowSorting);
   };
+
+  const title = activeCategory === '' ? 'Каталог' : activeCategory;
 
   return (
     <>
@@ -68,15 +95,9 @@ function Catalog() {
           <div className={styles.catalog__content}>
             <div className={styles.catalog__top}>
               <div className={styles.catalog__info}>
-                <div className={styles.catalog__breadcrumbs}>
-                  <Link to="/" className={styles.catalog__breadcrumbs}>
-                    Главная
-                  </Link>{" "}
-                  <Icon id="#arrowRight" className={styles.arrowRight__icon} />{" "}
-                  Каталог
-                </div>
+                <BreadCrumbs crumbs={ crumbsData } />
                 <h1 className={styles.catalog__title}>
-                  Каталог <span>{countAll}</span>
+                  {title} <span>{countAll}</span>
                 </h1>
                 <p className={styles.catalog__description}>
                   Сложно определиться или вы хотите что-то особенное? Напишите

@@ -9,7 +9,7 @@ import useStore from "../../shared/store";
 import DesignSecondStep from "../DesignSecondStep/DesignSecondStep";
 
 const DEFAULT_QTY = 1;
-
+const DEFAULT_APPLICATION = "Не выбрано"
 const APPLICATION_TYPE_PADPRINTING = 'Тампопечат';
 const APPLICATION_TYPE_UVPRINTING = 'УФ печать';
 const APPLICATION_TYPE_LAMINATION = 'Ламинаци';
@@ -31,7 +31,7 @@ function DesignFirstStep({ closeModal, img, id, idPriduct }) {
   const [discountPrice, setDiscountPrice] = useState(0);
   const [loadTime, setLoadTime] = useState(null);
   const [showSecondStep, setShowSecondStep] = useState(false);
-  const [application, setApplication] = useState();
+  const [application, setApplication] = useState(DEFAULT_APPLICATION);
   const [inStock, setInStock] = useState(0);
   useEffect(() => {
     getOneProduct(idPriduct).then((data) => {
@@ -59,7 +59,7 @@ function DesignFirstStep({ closeModal, img, id, idPriduct }) {
   const onApplicationClick = (event) => {
     const value = event.target.value;
     setApplication(prev => {
-      return prev === value ? undefined : value
+      return prev === value ? DEFAULT_APPLICATION : value
     })
   }
 

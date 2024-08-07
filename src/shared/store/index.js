@@ -78,6 +78,7 @@ const useStore = create((set) => ({
     })),
   page: 1,
   setPage: (newItems) => set({ page: newItems }),
+  
 }));
 
 export default useStore;
