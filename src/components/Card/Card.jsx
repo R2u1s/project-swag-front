@@ -75,12 +75,12 @@ function Card({
   };
 
   const handleQuantityChange = (event) => {
-/*     const value = parseInt(event.target.value, 10); */
-const value = event.target.value;
+    /*     const value = parseInt(event.target.value, 10); */
+    const value = event.target.value;
     setQuantity(value);
-/*     if (!isNaN(value) && value > 0) {
-      
-    } */
+    /*     if (!isNaN(value) && value > 0) {
+          
+        } */
   };
 
   const handleBlur = () => {
@@ -102,9 +102,8 @@ const value = event.target.value;
             <span className={styles.visibleSpan}>Отложить в корзину</span>
           </button>
           <button
-            className={`${styles.card__btn} ${
-              activeFavorite ? styles.active : ""
-            }`}
+            className={`${styles.card__btn} ${activeFavorite ? styles.active : ""
+              }`}
             onClick={addCartSelected}
           >
             <Icon id="#star" className={styles.star__icon} />

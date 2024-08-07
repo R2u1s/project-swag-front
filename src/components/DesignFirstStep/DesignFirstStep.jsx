@@ -8,6 +8,13 @@ import { getOneProduct } from "../../shared/api";
 import useStore from "../../shared/store";
 import DesignSecondStep from "../DesignSecondStep/DesignSecondStep";
 
+const DEFAULT_QTY = 1;
+
+const APPLICATION_TYPE_PADPRINTING = 'Тампопечат';
+const APPLICATION_TYPE_UVPRINTING = 'УФ печать';
+const APPLICATION_TYPE_LAMINATION = 'Ламинаци';
+
+
 // eslint-disable-next-line react/prop-types
 function DesignFirstStep({ closeModal, img, id, idPriduct }) {
   const { setCart, setSecond, second } = useStore();
@@ -24,6 +31,7 @@ function DesignFirstStep({ closeModal, img, id, idPriduct }) {
   const [discountPrice, setDiscountPrice] = useState(0);
   const [loadTime, setLoadTime] = useState(null);
   const [showSecondStep, setShowSecondStep] = useState(false);
+  const [application, setApplication] = useState();
   const [inStock, setInStock] = useState(0);
   useEffect(() => {
     getOneProduct(idPriduct).then((data) => {
@@ -47,6 +55,14 @@ function DesignFirstStep({ closeModal, img, id, idPriduct }) {
       setSecond(true);
     }
   };
+
+  const onApplicationClick = (event) => {
+    const value = event.target.value;
+    setApplication(prev => {
+      return prev === value ? undefined : value
+    })
+  }
+
   const increaseQuantity = () => {
     setQuantity(quantity + 1);
   };
@@ -58,9 +74,16 @@ function DesignFirstStep({ closeModal, img, id, idPriduct }) {
   };
 
   const handleQuantityChange = (event) => {
-    const value = parseInt(event.target.value, 10);
-    if (!isNaN(value) && value > 0) {
-      setQuantity(value);
+    /*     const value = parseInt(event.target.value, 10);
+        if (!isNaN(value) && value > 0) {
+          setQuantity(value);
+        } */
+    setQuantity(event.target.value);
+  };
+
+  const handleBlur = () => {
+    if (quantity === '' || isNaN(quantity) || !/^[1-9]\d*$/.test(quantity)) {
+      setQuantity(DEFAULT_QTY);
     }
   };
 
@@ -92,14 +115,14 @@ function DesignFirstStep({ closeModal, img, id, idPriduct }) {
                 />
                 <div
                   className={styles.transform__img}
-                  // onChange={(e) => {
-                  //   console.log
-                  // }}
+                // onChange={(e) => {
+                //   console.log
+                // }}
                 >
                   <ResizableRotatableImage
                     img={imageUrl}
-                    // background="http://s.a-5.ru/p/7f/f4/9a5b8e5147adcf3e.jpg"
-                    // background={img}
+                  // background="http://s.a-5.ru/p/7f/f4/9a5b8e5147adcf3e.jpg"
+                  // background={img}
                   />
                 </div>
               </div>
@@ -124,8 +147,8 @@ function DesignFirstStep({ closeModal, img, id, idPriduct }) {
                   <div className={styles.transform__img}>
                     <ResizableRotatableImage
                       img={imageUrl}
-                      // background="http://s.a-5.ru/p/7f/f4/9a5b8e5147adcf3e.jpg"
-                      // background={img}
+                    // background="http://s.a-5.ru/p/7f/f4/9a5b8e5147adcf3e.jpg"
+                    // background={img}
                     />
                   </div>
                 </div>
@@ -252,14 +275,17 @@ function DesignFirstStep({ closeModal, img, id, idPriduct }) {
                       3. Выберите тип нанесение
                     </h3>
                     <div className={styles.modal__types_btns}>
-                      <button className={styles.modal__types_btn}>
-                        Тампопечат
+                      <button className={`${application === APPLICATION_TYPE_PADPRINTING ? styles.modal__types_btn_selected : 
+                        styles.modal__types_btn}`} onClick={onApplicationClick} value={APPLICATION_TYPE_PADPRINTING}>
+                        {APPLICATION_TYPE_PADPRINTING}
                       </button>
-                      <button className={styles.modal__types_btn}>
-                        УФ печать
+                      <button className={`${application === APPLICATION_TYPE_UVPRINTING ? styles.modal__types_btn_selected : 
+                        styles.modal__types_btn}`} onClick={onApplicationClick} value={APPLICATION_TYPE_UVPRINTING}>
+                        {APPLICATION_TYPE_UVPRINTING}
                       </button>
-                      <button className={styles.modal__types_btn}>
-                        Ламинаци
+                      <button className={`${application === APPLICATION_TYPE_LAMINATION ? styles.modal__types_btn_selected : 
+                        styles.modal__types_btn}`} onClick={onApplicationClick} value={APPLICATION_TYPE_LAMINATION}>
+                        {APPLICATION_TYPE_LAMINATION}
                       </button>
                     </div>
                   </div>
@@ -281,6 +307,7 @@ function DesignFirstStep({ closeModal, img, id, idPriduct }) {
                             type="number"
                             value={quantity}
                             onChange={handleQuantityChange}
+                            onBlur={handleBlur}
                             className={styles.modal__quantity_input}
                           />
                         </span>
