@@ -20,9 +20,12 @@ const useStore = create((set) => ({
       );
       if (exists) {
         return {
-          cart: state.cart.filter(
-            (item) => item.productNumber !== newItem.productNumber
-          ),
+          cart: state.cart.map(obj => {
+            if (obj.productNumber === newItem.productNumber) {
+              return { ...obj, quantity: newItem.quantity };
+            }
+            return obj;
+          })
         };
       } else {
         return {

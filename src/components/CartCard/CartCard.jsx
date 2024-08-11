@@ -14,12 +14,10 @@ function CartCard({
   qty
 }) {
   const [modal, setModal] = useState(false);
-  const [data, setData] = useState();
-  const [preview, setPreview] = useState();
   const [show, setShow] = useState(true);
 
-  const [quantity, setQuantity] = useState(qty ? qty : 1);
-  const { removeCart } = useStore();const { id } = useParams();
+  const { removeCart } = useStore();
+
   // useEffect(() => {
   //   getOneProduct(id).then((data) => {
   //     setData(data);
@@ -28,25 +26,33 @@ function CartCard({
   //   });
   // }, []);
 
-  useEffect(() => {
-    setQuantity(quantity);
-  }, []);
+  
+  const { cart, setCart } = useStore();
+  const [currentProduct, setCurrentProduct] = useState({});
+  const [productTotal, setProductTotal] = useState(0);
 
-  const productTotal = (quantity * productCost).toFixed(2);
+  useEffect(() => {
+    setCurrentProduct(cart.find(item => item.productNumber === productNumber));
+    setProductTotal((currentProduct.quantity * currentProduct.productCost).toFixed(2));
+  }, [cart]);
 
   const increaseQuantity = () => {
-    setQuantity(quantity + 1);
+    const newQty = currentProduct.quantity+1;
+    setCurrentProduct({...currentProduct, quantity:newQty})
+    setCart({...currentProduct, quantity:newQty});
   };
 
   const decreaseQuantity = () => {
-    if (quantity > 0) {
-      setQuantity(quantity - 1);
+    if (currentProduct.quantity > 0) {
+      const newQty = currentProduct.quantity-1;
+      setCurrentProduct({...currentProduct, quantity:newQty})
+      setCart({...currentProduct, quantity:newQty});
     }
   };
   const handleQuantityChange = (event) => {
     const value = parseInt(event.target.value, 10);
     if (!isNaN(value) && value > 0) {
-      quantity(value);
+      setCurrentProduct({...currentProduct, quantity:value});
     }
   };
 
@@ -90,7 +96,7 @@ function CartCard({
                   >
                     <Icon id="#minus" className={styles.minus__icon} />
                   </button>
-                  <span><input type="number" value={quantity} onChange={handleQuantityChange} className={styles.card__circulation_quantity_input}/></span>
+                  <span><input type="number" value={currentProduct.quantity} onChange={handleQuantityChange} className={styles.card__circulation_quantity_input}/></span>
                   <button
                     className={styles.card__circulation_btn}
                     id="increase"
@@ -106,9 +112,9 @@ function CartCard({
             </div>
             <div className={styles.card__bottom}>
               <div className={styles.card__cost}>
-                Стоимость 1 шт.: {productCost}
+                Стоимость 1 шт.: {productCost} ₽
               </div>
-              <div className={styles.card__total}>Итого: {productTotal}</div>
+              <div>Итого: {<p className={styles.card__total}>{productTotal} ₽</p>}</div>
               {/* <div className={styles.card__production }>Сроки изготовления: {productProduction}</div> */}
             </div>
           </div>

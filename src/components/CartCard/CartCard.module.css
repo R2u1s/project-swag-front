@@ -54,7 +54,13 @@
 }
 .card__bottom {
   display: flex;
-  justify-content: space-between;
+  flex-flow: row;
+  gap: 28px;
+  justify-content: flex-start;
+}
+.card__total {
+  display: inline-block;
+  font-weight: bold;
 }
 .card__bottom div {
   font-size: 16px;

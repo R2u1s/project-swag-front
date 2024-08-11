@@ -19,6 +19,13 @@ function Cart() {
   // }, []);
 
   const { cart, setCart } = useStore();
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  useEffect(() => {
+    setTotalPrice(cart.reduce((total, item) => {
+      return total + item.productCost * item.quantity;
+    }, 0));
+  }, [cart]);
 
   return (
     <>
@@ -61,6 +68,10 @@ function Cart() {
               <div className={styles.cart__sidebar_circulation}>
                 <span>Тираж:</span>
                 <span>240</span>
+              </div>
+              <div className={styles.cart__sidebar_total}>
+                <span className={styles.cart__sidebar_total_itogo}>Итого:</span>
+                <span className={styles.cart__sidebar_total_price}>{totalPrice.toFixed(2)} ₽</span>
               </div>
             </div>
             <p className={styles.cart__sidebar_warning}>

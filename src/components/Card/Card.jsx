@@ -194,6 +194,7 @@ function Card({
             // id={id}
             closeModal={closeModal}
             idPriduct={id}
+            qty={quantity}
           />
         )}
       </div>

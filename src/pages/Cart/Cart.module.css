@@ -81,6 +81,21 @@
     display: flex;
     justify-content: space-between;
 }
+.cart__sidebar_total{
+    display: flex;
+    margin-top: 12px;
+    justify-content: space-between;
+}
+.cart__sidebar_total_itogo{
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+}
+.cart__sidebar_total_price{
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 24px;
+}
 .cart__sidebar_circulation span{
     font-size: 16px;
     color: #1C163B;
