@@ -126,6 +126,7 @@
   max-width: 36px;
   background-color: #b02465;
   border-radius: 42px;
+  border: 2px solid black;
   height: 110%;
   flex: 1.1;
   transition: flex-grow 0.3s, height 0.3s;
