@@ -7,6 +7,7 @@ import ResizableRotatableImage from "../xz2/Index";
 import { getOneProduct } from "../../shared/api";
 import useStore from "../../shared/store";
 import DesignSecondStep from "../DesignSecondStep/DesignSecondStep";
+import { findColorHex, parseAttributes } from "../../utils/utils";
 
 const DEFAULT_QTY = 1;
 const DEFAULT_APPLICATION = "Не выбрано"
@@ -32,6 +33,7 @@ function DesignFirstStep({ closeModal, img, id, idPriduct }) {
   const [loadTime, setLoadTime] = useState(null);
   const [showSecondStep, setShowSecondStep] = useState(false);
   const [application, setApplication] = useState(DEFAULT_APPLICATION);
+  const [selectedColor, setSelectedColor] = useState('');
   const [inStock, setInStock] = useState(0);
   useEffect(() => {
     getOneProduct(idPriduct).then((data) => {
@@ -63,6 +65,12 @@ function DesignFirstStep({ closeModal, img, id, idPriduct }) {
     })
   }
 
+  const onColorClick = (color) => {
+    setSelectedColor(prev => {
+      return prev === color ? '' : color
+    })
+  }
+
   const increaseQuantity = () => {
     setQuantity(quantity + 1);
   };
@@ -86,6 +94,17 @@ function DesignFirstStep({ closeModal, img, id, idPriduct }) {
       setQuantity(DEFAULT_QTY);
     }
   };
+
+  //массив цветов товара
+  const [colors, setColors] = useState([]);
+
+  useEffect(() => {
+    if (data) {
+      if (data.attributes) {
+        setColors(parseAttributes(data.attributes));
+      }
+    }
+  }, [data]);
 
   const [progress, setProgres] = useState(0);
   const [showName, setShowName] = useState(true);
@@ -158,9 +177,17 @@ function DesignFirstStep({ closeModal, img, id, idPriduct }) {
                       1. Выберите цвет
                     </h3>
                     <div className={styles.modal__color_btns}>
-                      <button className={styles.modal__color_btn}></button>
-                      <button className={styles.modal__color_btn}></button>
-                      <button className={styles.modal__color_btn}></button>
+                      {colors.map((item) => {
+                        const currentColor = findColorHex(item.color);
+                        return <button
+                          className={`${selectedColor === currentColor ? 
+                            styles.modal__color_btn_selected :
+                            styles.modal__color_btn}`}
+                          style={{ backgroundColor: currentColor }}
+                          key={item.code}
+                          onClick={()=>onColorClick(currentColor)}>
+                        </button>
+                      })}
                     </div>
                   </div>
                   <div className={styles.modal__loading}>
@@ -275,15 +302,15 @@ function DesignFirstStep({ closeModal, img, id, idPriduct }) {
                       3. Выберите тип нанесение
                     </h3>
                     <div className={styles.modal__types_btns}>
-                      <button className={`${application === APPLICATION_TYPE_PADPRINTING ? styles.modal__types_btn_selected : 
+                      <button className={`${application === APPLICATION_TYPE_PADPRINTING ? styles.modal__types_btn_selected :
                         styles.modal__types_btn}`} onClick={onApplicationClick} value={APPLICATION_TYPE_PADPRINTING}>
                         {APPLICATION_TYPE_PADPRINTING}
                       </button>
-                      <button className={`${application === APPLICATION_TYPE_UVPRINTING ? styles.modal__types_btn_selected : 
+                      <button className={`${application === APPLICATION_TYPE_UVPRINTING ? styles.modal__types_btn_selected :
                         styles.modal__types_btn}`} onClick={onApplicationClick} value={APPLICATION_TYPE_UVPRINTING}>
                         {APPLICATION_TYPE_UVPRINTING}
                       </button>
-                      <button className={`${application === APPLICATION_TYPE_LAMINATION ? styles.modal__types_btn_selected : 
+                      <button className={`${application === APPLICATION_TYPE_LAMINATION ? styles.modal__types_btn_selected :
                         styles.modal__types_btn}`} onClick={onApplicationClick} value={APPLICATION_TYPE_LAMINATION}>
                         {APPLICATION_TYPE_LAMINATION}
                       </button>

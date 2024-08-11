@@ -1,8 +1,8 @@
 import ky from "ky";
 
 const api = ky.create({
-  prefixUrl: "http://77.238.247.8:3000/api/",
-  // prefixUrl: "http://localhost:3000/api/",
+  //prefixUrl: "http://77.238.247.8:3000/api/",
+  prefixUrl: "http://localhost:3000/api/",
   timeout: 60000,
 });
 
@@ -12,6 +12,10 @@ export const getCatalog = async (start, end) => {
 
 export const getOneProduct = async (id) => {
   return await api.get(`catalog/product/${id}`).json();
+};
+
+export const getBarcodeProduct = async (code) => {
+  return await api.get(`catalog/barcode/${code}`).json();
 };
 
 export const postLocalStorageId = async (id) => {

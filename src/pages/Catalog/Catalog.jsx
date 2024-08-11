@@ -84,7 +84,7 @@ function Catalog() {
   };
 
   const title = activeCategory === '' ? 'Каталог' : activeCategory;
-
+console.log(items);
   return (
     <>
       <div className={styles.container}>

@@ -3,15 +3,19 @@ import styles from "./ProductCard.module.css";
 import WelcomePack from "../../components/WelcomePack/WelcomePack";
 import LastSeenCard from "../../components/LastSeenCard/LastSeenCard";
 import DesignFirstStep from "../../components/DesignFirstStep/DesignFirstStep";
-import { getOneProduct } from "../../shared/api";
+import { getBarcodeProduct, getOneProduct } from "../../shared/api";
 import { Link, useParams } from "react-router-dom";
 import Icon from "../../components/Icon/Index";
 import { useNavigate } from "react-router-dom";
 import DesignSecondStep from "../../components/DesignSecondStep/DesignSecondStep";
 import useStore from "../../shared/store";
 import BreadCrumbs from "../../components/breadcrumbs/breadcrumbs";
+import { findColorHex, parseAttributes } from "../../utils/utils";
 
 const DEFAULT_QTY = 1;
+
+const color_temp = '#00FF00';
+
 
 const crumbsData = [
   {
@@ -32,6 +36,7 @@ function ProductCard() {
   const [quantity, setQuantity] = useState(0);
   const { favorites, setFavorites } = useStore();
   const { activeCategory, setActiveCategory } = useStore();
+  const [selectedColor, setSelectedColor] = useState(0);
 
   let firstDesc;
   let lastDesc;
@@ -104,7 +109,18 @@ function ProductCard() {
     data?.attributes?.find((attr) => attr.name === "Цвет товара")?.value || "";
   const size =
     data?.attributes?.find((attr) => attr.name === "Размер")?.value || "";
-  // console.log(data);
+
+  //массив цветов товара
+  const [colors, setColors] = useState([]);
+
+  useEffect(() => {
+    if (data) {
+      if (data.attributes) {
+        setColors(parseAttributes(data.attributes));
+        console.log(data);
+      }
+    }
+  }, [data]);
 
   //добавление в массив breadcrumbs текущей категории
   useEffect(() => {
@@ -118,6 +134,12 @@ function ProductCard() {
       }
     );
   }, [activeCategory]);
+
+  const onColorClick = (colorIndex) => {
+    console.log(selectedColor);
+    setSelectedColor(colorIndex);
+  }
+
 
   return (
     <>
@@ -175,7 +197,7 @@ function ProductCard() {
                     </div>
                     <div className={styles.card__info_material}>
                       <span id={styles.card__info_material}>Цвет товара:</span>
-                      <span>{color}</span>
+                      <span>{colors.length > 0 ? colors[selectedColor].color : color}</span>
                     </div>
                     <div className={styles.card__info_material}>
                       <span id={styles.card__info_material}>
@@ -211,9 +233,15 @@ function ProductCard() {
                   <div className={styles.card__color}>
                     <h5 className={styles.card__info_number}>Цвет:</h5>
                     <div className={styles.card__color_btns}>
-                      <button className={styles.card__color_btn}></button>
-                      <button className={styles.card__color_btn}></button>
-                      <button className={styles.card__color_btn}></button>
+                      {colors.map((item, index) => {
+                        return <button 
+                        className={`${selectedColor === index ? 
+                          styles.card__color_btn_selected :
+                          styles.card__color_btn}`}
+                        style={{ backgroundColor: findColorHex(item.color) }}
+                        onClick={()=>onColorClick(index)} 
+                        key={item.code}></button>
+                      })}
                     </div>
                   </div>
                 </div>
