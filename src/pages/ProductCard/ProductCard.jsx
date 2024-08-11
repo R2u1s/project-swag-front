@@ -33,7 +33,7 @@ function ProductCard() {
   const [data, setData] = useState();
   const [show, setShow] = useState(false);
   const [preview, setPreview] = useState();
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(1);
   const { favorites, setFavorites } = useStore();
   const { activeCategory, setActiveCategory } = useStore();
   const [selectedColor, setSelectedColor] = useState(0);
@@ -41,7 +41,10 @@ function ProductCard() {
   let firstDesc;
   let lastDesc;
   let lengthDesc;
-  const { id } = useParams();
+  const { id,qty } = useParams();
+  useEffect(()=>{
+    setQuantity(qty);
+  },[]);
   useEffect(() => {
     getOneProduct(id).then((data) => {
       setData(data);
@@ -376,6 +379,7 @@ function ProductCard() {
           // img={preview}
           idPriduct={data.id}
           closeModal={closeModal}
+          qty={quantity}
         />
       )}
     </>

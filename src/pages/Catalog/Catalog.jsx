@@ -170,7 +170,6 @@ function Catalog() {
                       productNumber={data.article}
                       newPrice={data.discount_price}
                       oldPrice={data.price}
-                      bgc={["#000", "#fc0"]}
                       id={data.id}
                       categories={data.attributes}
                       totalStock={data.total_stock}

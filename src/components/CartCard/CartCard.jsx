@@ -11,12 +11,14 @@ function CartCard({
   productName,
   productNumber,
   productCost,
+  qty
 }) {
   const [modal, setModal] = useState(false);
   const [data, setData] = useState();
   const [preview, setPreview] = useState();
   const [show, setShow] = useState(true);
-  const [quantity, setQuantity] = useState(1);
+
+  const [quantity, setQuantity] = useState(qty ? qty : 1);
   const { removeCart } = useStore();const { id } = useParams();
   // useEffect(() => {
   //   getOneProduct(id).then((data) => {

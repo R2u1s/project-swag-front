@@ -12,7 +12,6 @@ function Card({
   productNumber,
   newPrice,
   oldPrice,
-  bgc,
   categories,
   id,
   totalStock,
@@ -124,7 +123,7 @@ function Card({
         </div>
         <div
           className={styles.card__img}
-          onClick={() => redirect(`/catalog/${id}`)}
+          onClick={() => redirect(`/catalog/${id}/${quantity}`)}
         >
           <img src={srcImage} alt="" />
         </div>

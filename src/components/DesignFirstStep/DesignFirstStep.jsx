@@ -17,7 +17,7 @@ const APPLICATION_TYPE_LAMINATION = 'Ламинаци';
 
 
 // eslint-disable-next-line react/prop-types
-function DesignFirstStep({ closeModal, img, id, idPriduct }) {
+function DesignFirstStep({ closeModal, img, id, idPriduct,qty }) {
   const { setCart, setSecond, second } = useStore();
   const [w, setW] = useState(0);
   const [h, setH] = useState(0);
@@ -42,6 +42,9 @@ function DesignFirstStep({ closeModal, img, id, idPriduct }) {
       setInStock(data.total_stock);
     });
   }, []);
+  useEffect(()=>{
+    setQuantity(qty);
+  },[]);
   const totalPrice = (quantity * discountPrice).toFixed(2);
   // const totalPrice = quantity * discountPrice;
   const handleChange = (event) => {
