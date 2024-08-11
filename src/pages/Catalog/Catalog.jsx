@@ -84,7 +84,7 @@ function Catalog() {
   };
 
   const title = activeCategory === '' ? 'Каталог' : activeCategory;
-console.log(items);
+
   return (
     <>
       <div className={styles.container}>
@@ -174,6 +174,7 @@ console.log(items);
                       id={data.id}
                       categories={data.attributes}
                       totalStock={data.total_stock}
+                      attributes={data.attributes}
                       // quantity={0}
                     />
                   );

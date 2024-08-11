@@ -117,7 +117,6 @@ function ProductCard() {
     if (data) {
       if (data.attributes) {
         setColors(parseAttributes(data.attributes));
-        console.log(data);
       }
     }
   }, [data]);

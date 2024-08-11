@@ -4,6 +4,7 @@ import styles from "./Card.module.css";
 import Icon from "../Icon/Index";
 import DesignFirstStep from "../DesignFirstStep/DesignFirstStep";
 import useStore from "../../shared/store";
+import { findColorHex, parseAttributes } from "../../utils/utils";
 
 function Card({
   srcImage,
@@ -15,13 +16,14 @@ function Card({
   categories,
   id,
   totalStock,
+  attributes
 }) {
   const { cart, setCart, setFavorites, favorites } = useStore();
   const [modal, setModal] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [activeCart, setActiveCart] = useState(false);
   const [activeFavorite, setActiveFavorite] = useState(false);
-  // console.log(id);
+
   useEffect(() => {
     const isFavorite = favorites.some((fav) => fav.id === id);
     setActiveFavorite(isFavorite);
@@ -90,6 +92,16 @@ function Card({
     }
   };
 
+  //массив цветов товара
+  const [colors, setColors] = useState([]);
+
+  useEffect(() => {
+    if (attributes) {
+      setColors(parseAttributes(attributes));
+    }
+  }, [attributes]);
+
+
   return (
     <>
       <div className={styles.card}>
@@ -117,13 +129,13 @@ function Card({
           <img src={srcImage} alt="" />
         </div>
         <div className={styles.card__color}>
-          {bgc &&
-            bgc.map((data, index) => {
+          {colors &&
+            colors.map((data, index) => {
               return (
                 <span
                   key={index}
                   className={styles.card__color}
-                  style={{ background: data }}
+                  style={{ background: findColorHex(data.color) }}
                 ></span>
               );
             })}
