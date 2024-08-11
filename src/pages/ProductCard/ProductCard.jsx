@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styles from "./ProductCard.module.css";
 import WelcomePack from "../../components/WelcomePack/WelcomePack";
 import LastSeenCard from "../../components/LastSeenCard/LastSeenCard";
@@ -78,7 +78,7 @@ function ProductCard() {
 
   const addCartSelected = () => {
     const newItem = {
-      srcImage: preview,
+      srcImage: data.images[preview].big,
       productNumber: data.article,
       productName: data.name,
       newPrice: data.discount_price,
@@ -138,10 +138,8 @@ function ProductCard() {
   }, [activeCategory]);
 
   const onColorClick = (colorIndex) => {
-    console.log(selectedColor);
     setSelectedColor(colorIndex);
   }
-
 
   return (
     <>
@@ -176,7 +174,7 @@ function ProductCard() {
               </div>
               <div className={styles.card__info}>
                 <button
-                  className={styles.card__btn_selected}
+                  className={`${styles.card__btn_selected} ${favorites.some(obj => obj.id == data.id) ? styles.active : ""}`}
                   onClick={addCartSelected}
                 >
                   <Icon id="#star" className={styles.star__icon} />

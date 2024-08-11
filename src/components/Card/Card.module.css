@@ -207,7 +207,23 @@
   align-items: center;
   position: relative;
 }
-.card__btn.active .visibleSpan {
+.card__btn.active {
+  position: absolute;
+  top: 45px;
+  display: inline-flex;
+  padding: 10px 12px;
+  background-color: #fff;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: #1C1C1F;
+  margin-top: 8px;
+  white-space: nowrap;
+  z-index: 999;
+  border-radius: 8px;
+  box-shadow: 0px 16px 48px 0px rgba(5, 5, 14, 0.24);
+}
+.card__btn:hover .visibleSpan {
   position: absolute;
   top: 45px;
   display: inline-flex;

@@ -41,6 +41,10 @@
     stroke: #F14C8B;
 }
 
+.card__btn_selected.active {
+    background-color: #F14C8B;
+}
+
 .card__img_block {
     display: flex;
     flex-wrap: wrap;

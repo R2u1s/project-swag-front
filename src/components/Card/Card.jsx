@@ -113,8 +113,7 @@ function Card({
             <span className={styles.visibleSpan}>Отложить в корзину</span>
           </button>
           <button
-            className={`${styles.card__btn} ${activeFavorite ? styles.active : ""
-              }`}
+            className={`${styles.card__btn} ${activeFavorite ? styles.active : ""}`}
             onClick={addCartSelected}
           >
             <Icon id="#star" className={styles.star__icon} />
