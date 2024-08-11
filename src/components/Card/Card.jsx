@@ -127,7 +127,7 @@ function Card({
         >
           <img src={srcImage} alt="" />
         </div>
-        <div className={styles.card__color}>
+        <div className={styles.card__colors}>
           {colors &&
             colors.map((data, index) => {
               return (

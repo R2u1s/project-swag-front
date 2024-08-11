@@ -50,10 +50,24 @@
   color: #a5a5a5;
   font-weight: 400;
 }
+.card__colors {
+  display: flex;
+  flex-flow: row;
+  justify-content: start;
+  flex-wrap: wrap;
+  row-gap: 5px;
+  align-items: center;
+  column-gap: 5px;
+  width: fit-content;
+  height: max-content;
+}
+
 .card__color {
   display: flex;
+  width:12px;
+  height:12px;
+  border-radius: 50%;
   gap: 5px;
-  margin-right: auto;
 }
 .card__color > span {
   display: inline-block;
