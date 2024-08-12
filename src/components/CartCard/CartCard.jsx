@@ -33,8 +33,11 @@ function CartCard({
 
   useEffect(() => {
     setCurrentProduct(cart.find(item => item.productNumber === productNumber));
-    setProductTotal((currentProduct.quantity * currentProduct.productCost).toFixed(2));
   }, [cart]);
+
+  useEffect(() => {
+    setProductTotal((currentProduct.quantity * currentProduct.productCost).toFixed(2));
+  }, [currentProduct]);
 
   const increaseQuantity = () => {
     const newQty = currentProduct.quantity+1;

@@ -8,13 +8,19 @@ import { useEffect, useState } from 'react'
 
 function Registration() {
     const { cart, setCart } = useStore();
-    const array = JSON.parse(localStorage.getItem("cart")) || [];
+/*     const array = JSON.parse(localStorage.getItem("cart")) || [];
 
     useEffect(() => {
         setCart(array);
     }, []);
+ */
+    const [totalPrice, setTotalPrice] = useState(0);
 
-    const totalCost = cart.reduce((total, item) => total + (item.productCost * item.totalStock), 0).toFixed(2);
+    useEffect(() => {
+        setTotalPrice(cart.reduce((total, item) => {
+          return total + item.productCost * item.quantity;
+        }, 0).toFixed(2));
+      }, []);
 
   return (
     <>
@@ -65,21 +71,21 @@ function Registration() {
             </div>
             <div className={styles.order__sidebar}>
                 <div className={styles.order__sidebar_top}>
-                    <h4 className={styles.order__sidebar_title}>Состав заказ</h4>
+                    <h4 className={styles.order__sidebar_title}>Состав заказа</h4>
                     <Link to='/cart' className={styles.order__sidebar_btn}>Изменить</Link>
                 </div>
                 <div className={styles.order__sidebar_cards}>
                     {cart &&
                     cart.map((item, i) => {
                         return(
-                            <OrderCard key={i} productName={item.productName} productCirculation={item.totalStock} srcImage={item.srcImage} price={item.productCost}/>
+                            <OrderCard key={i} productName={item.productName} productCirculation={item.quantity} srcImage={item.srcImage} price={item.productCost}/>
                         )
                     })
                     }
                 </div>
                 <div className={styles.order__sidebar_total}>
                     <span>Итого:</span>
-                    <h5 className={styles.order__sidebar_cost}>{totalCost} ₽</h5>
+                    <h5 className={styles.order__sidebar_cost}>{totalPrice > 0 ? totalPrice : 0} ₽</h5>
                 </div>
                 <p className={styles.order__sidebar_warning}>
                     Цена указана без стоимости нанесения.

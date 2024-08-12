@@ -1,7 +1,8 @@
-import React from 'react'
+import React from "react";
 import styles from './OrderCard.module.css'
 
 function OrderCard({productName, srcImage, productCirculation, price}) {
+
   return (
     <>
     <div className={styles.order__card}>

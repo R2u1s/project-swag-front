@@ -17,46 +17,51 @@ function Search() {
     setSearchName,
   } = useStore();
   const redirect = useNavigate();
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setLoader(true);
+    setSearch(true);
+    searchProduct(0, 10, value)
+      .then((res) => {
+        console.log(res.data);
+        setItems(res.data);
+        setSearchName(value);
+      })
+      .finally(() => {
+        setLoader(false);
+      });
+    searchProductCount(value).then((res) => {
+      setCount(res.count);
+    });
+    setActiveSearch(value);
+    redirect("/catalog");
+  };
+
   return (
     <>
       <div className={styles.container}>
         <h2 className={styles.title}>Поиск</h2>
-        <div className={styles.search}>
-          <div className={styles.search__input_content}>
-            <input
-              className={styles.search__input}
-              type="text"
-              name=""
-              id=""
-              onChange={(e) => setValue(e.target.value)}
-              placeholder="Название товара"
+        <form className={styles.search} onSubmit={handleSubmit}>
+            <div className={styles.search__input_content}>
+              <input
+                className={styles.search__input}
+                type="text"
+                name=""
+                id=""
+                onChange={(e) => setValue(e.target.value)}
+                placeholder="Название товара"
               // placeholder="Название товара, события, арктикул"
-            />
-            <Icon id="#search" className={styles.search__icon} />
-          </div>
-          <button
-            onClick={() => {
-              setLoader(true);
-              setSearch(true);
-              searchProduct(0, 10, value)
-                .then((res) => {
-                  setItems(res.data);
-                  setSearchName(value);
-                })
-                .finally(() => {
-                  setLoader(false);
-                });
-              searchProductCount(value).then((res) => {
-                setCount(res.count);
-              });
-              setActiveSearch(value);
-              redirect("/catalog");
-            }}
-            className={styles.search__btn}
-          >
-            Найти
-          </button>
-        </div>
+              />
+              <Icon id="#search" className={styles.search__icon} />
+            </div>
+            <button
+              type={'submit'}
+              className={styles.search__btn}
+            >
+              Найти
+            </button>
+        </form>
       </div>
     </>
   );
