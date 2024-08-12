@@ -43,7 +43,7 @@ function ProductCard() {
   let lengthDesc;
   const { id,qty } = useParams();
   useEffect(()=>{
-    setQuantity(qty);
+    setQuantity(parseInt(qty,10));
   },[]);
   useEffect(() => {
     getOneProduct(id).then((data) => {
@@ -65,12 +65,12 @@ function ProductCard() {
   }
 
   const increaseQuantity = () => {
-    setQuantity(quantity + 1);
+    setQuantity(prev => prev + 1);
   };
 
   const decreaseQuantity = () => {
     if (quantity > 0) {
-      setQuantity(quantity - 1);
+      setQuantity(prev => prev - 1);
     }
   };
 

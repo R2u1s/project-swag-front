@@ -25,8 +25,12 @@ function Card({
 
   useEffect(() => {
     const isFavorite = favorites.some((fav) => fav.id === id);
+    const isCartAdded = cart.some((item) => item.productNumber === productNumber);
     setActiveFavorite(isFavorite);
-  }, [favorites, id]);
+    setActiveCart(isCartAdded);
+  }, [favorites,id,cart]);
+
+  const { removeCart } = useStore();
 
   const addCart = () => {
     const newItem = {
@@ -38,10 +42,12 @@ function Card({
       totalStock,
     };
 
-    setCart(newItem);
-    setActiveCart(true);
     if (activeCart) {
       setActiveCart(false);
+      removeCart(productNumber);
+    } else {
+      setActiveCart(true);
+      setCart(newItem);
     }
   };
 

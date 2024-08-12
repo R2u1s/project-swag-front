@@ -1,8 +1,8 @@
 import ky from "ky";
 
 const api = ky.create({
-/*   prefixUrl: "http://77.238.247.8:3000/api/", */
-  prefixUrl: "http://localhost:3000/api/",
+  prefixUrl: "http://77.238.247.8:3000/api/",
+  /* prefixUrl: "http://localhost:3000/api/", */
   timeout: 60000,
 });
 

@@ -196,8 +196,10 @@
   right: 10px;
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
   gap: 8px;
   z-index: 99;
+  width: fit-content;
 }
 .card__btn {
   background-color: transparent;
@@ -205,19 +207,15 @@
   flex-direction: column;
   gap: 3px;
   align-items: center;
+  box-sizing: border-box;
   position: relative;
 }
 .card__btn.active {
-  position: absolute;
-  top: 45px;
-  display: inline-flex;
-  padding: 10px 12px;
   background-color: #fff;
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
   color: #1C1C1F;
-  margin-top: 8px;
   white-space: nowrap;
   z-index: 999;
   border-radius: 8px;

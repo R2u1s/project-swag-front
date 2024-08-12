@@ -190,6 +190,7 @@
 
 .card__color_btn {
     width: 36px;
+    max-width: 36px;
     min-height: 60px;
     background-color: #B02465;
     border-radius: 42px;
