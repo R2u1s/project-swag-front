@@ -1,22 +1,29 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./CartCard.module.css";
 import Icon from "../Icon/Index";
 import useStore from "../../shared/store";
 import { useParams } from "react-router-dom";
-import { getOneProduct } from "../../shared/api";
+import { getImageGiftsUrl, getOneProduct } from "../../shared/api";
 import DesignFirstStep from "../DesignFirstStep/DesignFirstStep";
 
 function CartCard({
+  id,
   srcImage,
   productName,
   productNumber,
   productCost,
-  qty
+  qty,
+  code,
+  catalog
 }) {
+
   const [modal, setModal] = useState(false);
   const [show, setShow] = useState(true);
 
-  const { removeCart } = useStore();
+  const { removeCart,setCartQtyItem } = useStore();
+  const [quantity, setQuantity] = useState(1);
+  const redirect = useNavigate();
 
   // useEffect(() => {
   //   getOneProduct(id).then((data) => {
@@ -26,36 +33,44 @@ function CartCard({
   //   });
   // }, []);
 
-  
-  const { cart, setCart } = useStore();
   const [currentProduct, setCurrentProduct] = useState({});
   const [productTotal, setProductTotal] = useState(0);
 
   useEffect(() => {
-    setCurrentProduct(cart.find(item => item.productNumber === productNumber));
-  }, [cart]);
+    setQuantity(qty);
+  },[]);
 
   useEffect(() => {
-    setProductTotal((currentProduct.quantity * currentProduct.productCost).toFixed(2));
-  }, [currentProduct]);
+    setProductTotal((quantity * productCost).toFixed(2));
+  },[quantity]);
 
   const increaseQuantity = () => {
-    const newQty = currentProduct.quantity+1;
-    setCurrentProduct({...currentProduct, quantity:newQty})
-    setCart({...currentProduct, quantity:newQty});
+    const newQty = quantity+1;
+    setQuantity(newQty);
+    setCartQtyItem({id:id, qty:newQty});
   };
 
   const decreaseQuantity = () => {
-    if (currentProduct.quantity > 0) {
-      const newQty = currentProduct.quantity-1;
-      setCurrentProduct({...currentProduct, quantity:newQty})
-      setCart({...currentProduct, quantity:newQty});
+    if (parseInt(quantity,10) > 0) {
+      const newQty = quantity-1;
+      setQuantity(newQty);
+      setCartQtyItem({id:id, qty:newQty});
     }
   };
+  
   const handleQuantityChange = (event) => {
-    const value = parseInt(event.target.value, 10);
-    if (!isNaN(value) && value > 0) {
-      setCurrentProduct({...currentProduct, quantity:value});
+    /*     const value = parseInt(event.target.value, 10);
+        if (!isNaN(value) && value > 0) {
+          setQuantity(value);
+        } */
+    setQuantity(parseInt(event.target.value));
+    setProductTotal((parseInt(event.target.value) * productCost).toFixed(2));
+    setCartQtyItem({id:id, qty:parseInt(event.target.value)});
+  };
+
+  const handleBlur = () => {
+    if (quantity === '' || isNaN(quantity) || !/^[1-9]\d*$/.test(quantity)) {
+      setQuantity(1);
     }
   };
 
@@ -70,18 +85,20 @@ function CartCard({
     <>
       {show && (
         <div className={styles.card}>
-          <img className={styles.card__img} src={srcImage} alt="" />
+          <img className={styles.card__img} src={catalog === 'gifts' ? getImageGiftsUrl(srcImage) : srcImage} alt="" />
           <div className={styles.card__content}>
             <div className={styles.card__top}>
               <div className={styles.card__text}>
-                <h5 className={styles.card__number}>арт. {productNumber}</h5>
-                <h3 className={styles.card__name}>{productName}</h3>
+                <h5 className={styles.card__number}>арт. {code}</h5>
+                <h3 className={styles.card__name} onClick={() => {
+                  redirect(`/catalog/${id}`);
+                }}>{productName}</h3>
               </div>
               <button
                 className={styles.card__btn_delete}
                 onClick={() => {
-                  setShow(false);
-                  removeCart(productNumber);
+                  //setShow(false);
+                  removeCart(id);
                 }}
               >
                 <Icon id="#delete" className={styles.delete__icon} />
@@ -99,7 +116,13 @@ function CartCard({
                   >
                     <Icon id="#minus" className={styles.minus__icon} />
                   </button>
-                  <span><input type="number" value={currentProduct.quantity} onChange={handleQuantityChange} className={styles.card__circulation_quantity_input}/></span>
+                  <span>
+                    <input 
+                    type="number" 
+                    value={quantity || 0} 
+                    onChange={handleQuantityChange} 
+                                              onBlur={handleBlur}
+                    className={styles.card__circulation_quantity_input}/></span>
                   <button
                     className={styles.card__circulation_btn}
                     id="increase"

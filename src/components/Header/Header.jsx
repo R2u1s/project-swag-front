@@ -6,16 +6,66 @@ import Menu from "../Menu/Menu";
 import Icon from "../Icon/Index";
 import useStore from "../../shared/store";
 import Search from "../Search/Search";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function Header() {
   const { favorites } = useStore();
   const { cart } = useStore();
+  const [qtyCart, setQtyCart] = useState(0);
+  const [qtyFav, setQtyFav] = useState(0);
   const [showSearch, setShowSearch] = useState(false);
+
+  //реализуем функциональность раскрытия каталога при наведении мыши
+  const [menuVisible, setMenuVisible] = useState(false);
+  const [timeoutId, setTimeoutId] = useState(null);
+
+  const handleMouseEnterMenu = () => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+      setTimeoutId(null);
+    }
+    setMenuVisible(true);
+  };
+
+  const handleMouseLeaveMenu = () => {
+    const id = setTimeout(() => setMenuVisible(false), 500);
+    setTimeoutId(id);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [timeoutId]);
+  /////////////////////////////////////////////////////////////////////
 
   const toggleShowSearch = () => {
     setShowSearch(prevShowSearch => !prevShowSearch);
   }
+
+  useEffect(() => {
+    //Определение количества товаров в корзине в store и localStorage
+    if (!(cart.length > 0)) {
+      const storedCart = JSON.parse(localStorage.getItem('cart'));
+      if (storedCart) {
+        setQtyCart(storedCart.length);
+      }
+    } else {
+      setQtyCart(cart.length);
+    }
+    //Определение количества избранных товаров в store и localStorage
+
+    if (!(favorites.length > 0)) {
+      const storedFavorites = JSON.parse(localStorage.getItem('favorites'));
+      if (storedFavorites) {
+        setQtyFav(storedFavorites.length);
+      }
+    } else {
+      setQtyFav(favorites.length);
+    }
+  }, [cart, favorites]);
 
   return (
     <>
@@ -41,13 +91,18 @@ function Header() {
               </Link>
             </div>
             <div className={styles.menu__link_overflow}>
-              <Link to="/catalog" className={styles.header__nav_link}>
+              <Link to="/catalog" className={styles.header__nav_link}
+                onMouseEnter={handleMouseEnterMenu}
+                onMouseLeave={handleMouseLeaveMenu}
+              >
                 Каталог{" "}
                 <Icon id="#arrowDown" className={styles.arrowDown__icon} />
               </Link>
-              <div className={styles.header__nav_menu}>
-                <Menu />
-              </div>
+              <Menu 
+                menuVisible={menuVisible} 
+                onMouseEnter={handleMouseEnterMenu}
+                onMouseLeave={handleMouseLeaveMenu}
+              />
             </div>
             <div className={styles.menu__link_overflow}>
               <Link to="/" className={styles.header__nav_link}>
@@ -67,7 +122,7 @@ function Header() {
               <button className={styles.header__btn_favourites}>
                 <Icon id="#star" className={styles.star__icon} />
                 <span className={styles.header__btn_favourites_quantity}>
-                  {favorites.length}
+                  {qtyFav}
                 </span>
               </button>
             </Link>
@@ -81,7 +136,7 @@ function Header() {
               <Link to="/cart">
                 <button className={styles.header__btn_cart}>
                   <span className={styles.header__btn_favourites_quantity}>
-                    {cart.length}
+                    {qtyCart}
                   </span>
                   <Icon id="#cart" className={styles.account__icon} />
                 </button>
@@ -91,7 +146,7 @@ function Header() {
         </header>
       </div>
       {showSearch && (
-        <Search/>
+        <Search />
       )}
       <div className={styles.burger}>
         <Burger />

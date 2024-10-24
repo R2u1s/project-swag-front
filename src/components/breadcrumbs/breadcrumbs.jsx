@@ -2,28 +2,27 @@ import style from './breadcrumbs.module.css';
 import Icon from '../Icon/Index';
 
 const BreadCrumbs = ({ crumbs }) => {
-	const renderCrumb = (crumb) => (
-		<>
-			{crumb.url ? (
-				<li className={`${style.crumbSection}`} key={crumb.label}>
-					<a href={crumb.url} className={`${style.crumbLink}`}>
-						{crumb.label}
-					</a>
-					<span className={`${style.crumbSeparator}`}>
-						<Icon id="#arrowRight" className={`${style.arrowRight__icon}`} />{" "}
-					</span>
-				</li>
-			) : (
-				<li className={`${style.crumbСurrent}`} key={crumb.label}>{crumb.label}</li>
-			)}
-		</>
-	);
-
 	return (
-		<ul className={`${style.breadCrumbs}`}>
-			{crumbs.length && crumbs.map(renderCrumb)}
-		</ul>
+			<ul className={`${style.breadCrumbs}`}>
+					{crumbs.length > 0 && crumbs.map((crumb, index) => {
+							return (
+									<li key={index} className={crumb.url ? `${style.crumbSection}` : `${style.crumbСurrent}`}>
+											{crumb.url ? (
+													<>
+															<a href={crumb.url} className={`${style.crumbLink}`}>
+																	{crumb.label}
+															</a>
+															{index < crumbs.length - 1 && <span className={`${style.crumbSeparator}`}>
+																	<Icon id="#arrowRight" className={`${style.arrowRight__icon}`} />{" "}
+															</span>}
+													</>
+											) : (
+													crumb.label
+											)}
+									</li>
+							);
+					})}
+			</ul>
 	);
 };
-
 export default BreadCrumbs;

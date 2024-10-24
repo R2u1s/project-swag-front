@@ -22,18 +22,21 @@ function Search() {
     event.preventDefault();
     setLoader(true);
     setSearch(true);
-    searchProduct(0, 10, value)
+    searchProduct(value, 1)
       .then((res) => {
-        console.log(res.data);
-        setItems(res.data);
+        console.log(res);
+        setItems(res);
         setSearchName(value);
+      })
+      .catch((res) => {
+        console.log('catch' + res);
       })
       .finally(() => {
         setLoader(false);
       });
-    searchProductCount(value).then((res) => {
-      setCount(res.count);
-    });
+    // searchProductCount(value).then((res) => {
+    //   setCount(res.count);
+    // });
     setActiveSearch(value);
     redirect("/catalog");
   };

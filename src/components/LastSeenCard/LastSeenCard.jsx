@@ -3,6 +3,8 @@ import Icon from "../Icon/Index";
 import styles from "./LastSeenCard.module.css";
 import { useState } from "react";
 import DesignFirstStep from "../DesignFirstStep/DesignFirstStep";
+import { useNavigate } from "react-router-dom";
+import LazyImage from "../LazyImage/lazyimage";
 
 function Card({
   srcImage,
@@ -12,9 +14,12 @@ function Card({
   oldPrice,
   bgc,
   totalStock,
+  id
 }) {
   const [modal, setModal] = useState(false);
   const [quantity, setQuantity] = useState(1);
+
+  const redirect = useNavigate();
 
   function closeModal() {
     setModal(false);
@@ -39,7 +44,7 @@ function Card({
 
   return (
     <>
-      <div className={styles.card}>
+      <div className={styles.card} onClick={() => {setModal(prev => prev);redirect(`/catalog/${id}`)}}>
         <div className={styles.card__btns}>
           <button className={styles.card__btn}>
             <Icon id="#cart" className={styles.cart__icon} />
@@ -48,7 +53,7 @@ function Card({
             <Icon id="#star" className={styles.cart__icon} />
           </button>
         </div>
-        <img className={styles.card__img} src={srcImage} alt="" />
+        <LazyImage extraClass={styles.card__img} src={srcImage} alt={productName} />
         <div className={styles.card__color}>
           <span
             className={styles.card__color}

@@ -40,6 +40,7 @@
   line-height: 28.8px;
   font-weight: 400;
   color: #1c163b;
+  cursor: pointer;
 }
 .card__btn_delete {
   padding: 12px;

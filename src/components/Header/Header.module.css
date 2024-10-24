@@ -11,7 +11,7 @@
 .header__nav {
   display: flex;
   align-items: center;
-  gap: 40px;
+  gap: 0px;
 }
 .header__nav_link {
   font-size: 16px;
@@ -143,14 +143,13 @@
 .menu__link_overflow {
   display: flex;
   flex-direction: column;
-  width: 95px;
+  min-width: 140px;
   overflow: hidden;
   transition: 0.5s all;
 }
 
 .header__nav_menu {
   display: block;
-  opacity: 0;
   width: 100%;
   height: 100%;
   position: absolute;
@@ -161,11 +160,14 @@
   transform: translateY(-10px);
   transition: opacity 0.5s ease, transform 0.5s ease;
   pointer-events: none;
-}
-
-.header__nav_link:hover .header__nav_menu,
-.menu__link_overflow:hover .header__nav_menu {
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
 }
+
+/* .header__nav_link:hover .header__nav_menu,
+.menu__link_overflow:hover .header__nav_menu {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+} */

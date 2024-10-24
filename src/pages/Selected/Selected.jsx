@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import useStore from "../../shared/store";
 import Filter from "../../components/Filter/Filter";
 import Sorting from "../../components/Sorting/Sorting";
+import { getGroupProducts } from "../../shared/api";
 
 function Selected() {
   const [data, setData] = useState([]);
@@ -18,13 +19,24 @@ function Selected() {
   const [showSorting, setShowSorting] = useState(false);
   const array = JSON.parse(localStorage.getItem("selected")) || [];
   const array2 = JSON.parse(localStorage.getItem("favorites")) || [];
-  const { favorites } = useStore();
+  const { favorites, setFavorites } = useStore();
+  const [products, setProducts] = useState([]);
 
-  // useEffect(() => {
-  //   postLocalStorageId(array).then((data) => {
-  //     setData(data);
-  //   });
-  // }, [array]);
+  useEffect(() => {
+    if (!(favorites.length > 0)) {
+      const storedFavorites = JSON.parse(localStorage.getItem('favorites'));
+      if (storedFavorites) {
+        setFavorites(storedFavorites);
+        getGroupProducts(storedFavorites.map(item => item.id)).then((data) => {
+          setProducts(data);
+        })
+      }
+    } else {
+      getGroupProducts(favorites.map(item => item.id)).then((data) => {
+        setProducts(data);
+      })
+    }
+  }, []);
 
   const toggleShowFilter = () => {
     setShowFilter((prevShowsetShowFilter) => !prevShowsetShowFilter);
@@ -52,7 +64,7 @@ function Selected() {
                   Избранные товары
                 </div>
                 <h1 className={styles.selected__title}>
-                  Избранные товары <span>{favorites.length}</span>
+                  Избранные товары <span>{products.length}</span>
                 </h1>
                 <p className={styles.selected__description}>
                   Сложно определиться или вы хотите что-то особенное? Напишите
@@ -92,24 +104,17 @@ function Selected() {
                 </div>
               </div>
             </div>
-            <div className={styles.selected__cards}>
-              {favorites.length > 0 ? (
-                favorites.map((item) => (
-                  <Card
-                    key={item.id}
-                    srcImage={item.srcImage}
-                    productName={item.productName}
-                    productNumber={item.productNumber}
-                    newPrice={item.newPrice}
-                    oldPrice={item.oldPrice}
-                    bgc={["#000", "#fc0"]}
-                    id={item.id}
-                  />
+            <ul className={styles.selected__cards}>
+              {products && products.length > 0 ? (
+                products.map((item) => (
+                  <li key={item.id}>
+                    <Card card={item} />
+                  </li>
                 ))
               ) : (
                 <p>No selected items found.</p>
               )}
-            </div>
+            </ul>
             <div className={styles.selected__pagination}>
               <button
                 className={styles.selected__pagination_btn}

@@ -1,0 +1,40 @@
+.seen {
+  display: flex;
+  flex-direction: column;
+  gap: 77px;
+}
+.seen__title {
+  font-weight: 600;
+  color: #1c163b;
+  font-size: 72px;
+  line-height: 86.4px;
+}
+.seen__content {
+  margin:0;
+  padding:0;
+  display: flex;
+  gap: 12.77px;
+  overflow-x: scroll;
+  list-style: none;
+}
+.seen__element {
+  margin:0;
+  padding:0;
+}
+.seen__content::-webkit-scrollbar {
+  display: none;
+}
+
+.similar__text {
+  font-weight: 400;
+  color: #1C163B;
+  font-size: 24px;
+  line-height: 28.8px;
+}
+
+
+@media screen and (max-width: 1024px) {
+  .seen {
+    display: none;
+  }
+}

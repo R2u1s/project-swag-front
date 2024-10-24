@@ -1,13 +1,20 @@
 import styles from "./SideBar.module.css";
 import DropDown from "../DropDown/Index";
-import { category } from "../Menu/Menu";
+import useStore from "../../shared/store";
+import { setCategoryLevels } from "../../utils/utils";
+
 function SideBar() {
+
+  const { categories, activeCategory } = useStore();
+
   return (
     <>
       <aside className={styles.sidebar}>
-        {category.map((data, i) => (
-          <DropDown title={data.name} categories={data.arr} key={i} />
-        ))}
+        {categories.length>0 && activeCategory.id &&
+          <DropDown
+            categories={setCategoryLevels(categories, activeCategory.id).child}
+            data={setCategoryLevels(categories, activeCategory.id)}
+          />}
       </aside>
     </>
   );

@@ -1,36 +1,36 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import styles from "./Catalog.module.css";
 import SideBar from "../../components/SideBar/SideBar";
 import Card from "../../components/Card/Card";
 import Category from "../../components/Category/Category";
 import Services from "../../components/Services/Services";
-import LastSeenCard from "../../components/LastSeenCard/LastSeenCard";
+import { LastSeen } from "../../components/LastSeen/lastseen";
 import {
-  categoryCatalog,
   filterProduct,
-  getCatalog,
   getCountCatalog,
   searchProduct,
 } from "../../shared/api";
 import Filter from "../../components/Filter/Filter";
 import Sorting from "../../components/Sorting/Sorting";
 import Icon from "../../components/Icon/Index";
-import { Link } from "react-router-dom";
 import useStore from "../../shared/store";
 import Loading from "../../components/Loading/Index";
-import CustomPagination from "../../components/CustomPagination/Index";
-import { Pagination } from "@mui/material";
 import BreadCrumbs from "../../components/breadcrumbs/breadcrumbs";
+import Pagination from '@mui/material/Pagination';
+import { getCategoryProducts, getCategoryInfo } from "../../shared/api";
+import { crumbsConvert, scrollToTop } from "../../utils/utils";
+import { useSearchParams } from "react-router-dom";
+import { PAGINATION } from "../../utils/constants";
 
 const crumbsData = [
-	{
-		url: '/',
-		label: 'Главная',
-	},
-	{
-		url: "/catalog",
-		label: 'Каталог',
-	},
+  {
+    url: '/',
+    label: 'Главная',
+  },
+  {
+    url: "/catalog",
+    label: 'Каталог',
+  },
 ];
 
 function Catalog() {
@@ -40,9 +40,10 @@ function Catalog() {
     loader,
     setLoader,
     count,
-    // page,
+    page,
     setPage,
     activeCategory,
+    setActiveCategory,
     search,
     searchName,
     setSearch,
@@ -52,42 +53,134 @@ function Catalog() {
     offcetPrice,
     filterShow,
     setFilterShow,
+    lastseen
   } = useStore();
 
+
   const [show, setShow] = useState(true);
+  const [pagePagination, setPagePagination] = useState(1);
   const [showSorting, setShowSorting] = useState(false);
   const [countAll, setCountAll] = useState();
+  const [crumbs, setCrumbs] = useState(crumbsData);
+
+  const [searchParams] = useSearchParams();
+
   useEffect(() => {
-    getCountCatalog().then((data) => setCountAll(data[0].count));
+      const category = searchParams.get('category');
+      const page = parseInt(searchParams.get('page'),10);
+
+      setLoader(true);
+      getCategoryInfo(category || '10000000')
+        .then((data) => {
+          setCrumbs([
+            ...crumbsData,
+            ...crumbsConvert(data.parent),
+            {
+              url: '',
+              label: data.name
+            }
+          ]);
+          setActiveCategory(data);
+        })
+        .catch(err => console.error(err));
+      getCategoryProducts(category || '10000000', page || '1')
+        .then((data) => {
+          setItems(data);
+          setCountAll(data[0].total_count);
+        })
+        .catch(err => console.error(err))
+        .finally(() => {
+          setLoader(false);
+        });
+      setPage(page);
+
+    count === null && getCountCatalog().then((data) => setCountAll(data[0].count));
     setFilter(false);
     setSearch(false);
-  }, []);
+  }, [activeCategory.id,searchParams]);
+
+  useEffect(() => {
+    setPagePagination(page);
+  }, [page])
+
+  const handleChangePagination = (e, value) => {
+    setLoader(true);
+    setPage(value);
+    setPagePagination(value);
+    if (!search && activeCategory === '') {
+      getCategoryProducts('10000000', e.target.textContent)
+        .then((data) => {
+          setItems(data);
+          setLoader(false);
+        })
+        .finally(() => setLoader(false));
+    } else {
+      if (!search) {
+        getCategoryProducts(activeCategory.id, e.target.textContent)
+          .then((data) => {
+            setItems(data);
+            setLoader(false)
+          })
+          .finally(() => setLoader(false));
+      }
+    }
+
+    if (search) {
+      searchProduct(
+        e.target.textContent,
+        searchName
+      )
+        .then((res) => {
+          setItems(res.data);
+          setLoader(false)
+        })
+        .finally(() => {
+          setLoader(false);
+        });
+    }
+    if (filter) {
+      filterProduct(
+        +e.target.textContent * 11 - 11,
+        +e.target.textContent * 11,
+        brandActive,
+        offcetPrice.start,
+        offcetPrice.end
+      )
+        .then((res) => {
+          setItems(res.rows);
+        })
+        .finally(() => {
+          setLoader(false);
+        });
+    }
+
+    scrollToTop();
+
+  }
 
   //добавление в массив breadcrumbs текущей категории
-  useEffect(() => {
-  if (crumbsData[crumbsData.length-1].label !== 'Каталог') {
-    crumbsData.pop();
-  }
-  crumbsData.push(
-    {
-      url: '',
-      label: activeCategory,
-    }
-  );  
-  }, [activeCategory]);
+  // useEffect(() => {
+  //   if (crumbsData[crumbsData.length - 1].label !== 'Каталог') {
+  //     crumbsData.pop();
+  //   }
+  //   activeCategory.name && crumbsData.push(
+  //     {
+  //       url: '',
+  //       label: activeCategory.name,
+  //     }
+  //   );
+  // }, [activeCategory]);
 
-  const cart = [];
-  localStorage.setItem("cart", JSON.stringify(cart));
+  /*   const cart = [];
+    localStorage.setItem("cart", JSON.stringify(cart)); */
 
   const toggleShowSorting = () => {
     setShowSorting((prevShowsetShowSorting) => !prevShowsetShowSorting);
   };
 
-  const title = activeCategory === '' ? 'Каталог' : activeCategory;
-
-  return (
-    <>
-      <div className={styles.container}>
+  const content = useMemo(
+    () => {
+      return <div className={styles.container}>
         <div className={styles.catalog}>
           <div className={styles.sidebar}>
             <SideBar />
@@ -95,9 +188,9 @@ function Catalog() {
           <div className={styles.catalog__content}>
             <div className={styles.catalog__top}>
               <div className={styles.catalog__info}>
-                <BreadCrumbs crumbs={ crumbsData } />
+                <BreadCrumbs crumbs={crumbs} />
                 <h1 className={styles.catalog__title}>
-                  {title} <span>{countAll}</span>
+                  {!search && activeCategory.name}<span>{count || countAll}</span>
                 </h1>
                 <p className={styles.catalog__description}>
                   Сложно определиться или вы хотите что-то особенное? Напишите
@@ -160,132 +253,39 @@ function Catalog() {
             </div>
             <div className={styles.catalog__cards}>
               {loader && <Loading />}
-              {items &&
-                items.map((data, index) => {
+              {items && !loader &&
+                items.map((item) => {
                   return (
                     <Card
-                      key={index}
-                      srcImage={data.images[0].big}
-                      productName={data.name}
-                      productNumber={data.article}
-                      newPrice={data.discount_price}
-                      oldPrice={data.price}
-                      id={data.id}
-                      categories={data.attributes}
-                      totalStock={data.total_stock}
-                      attributes={data.attributes}
-                      // quantity={0}
+                      key={item.id}
+                      card={item}
+                    // srcImage={data.images[0].big}
+                    // productName={data.name}
+                    // productNumber={data.article}
+                    // newPrice={data.discount_price}
+                    // oldPrice={data.price}
+                    // id={data.id}
+                    // categories={data.attributes}
+                    // totalStock={data.total_stock}
+                    // attributes={data.attributes}
+                    // quantity={0}
                     />
                   );
                 })}
             </div>
-            {count > 11 ? (
+            {
               <Pagination
-                count={Math.ceil(count / 11)}
+                count={Math.ceil((activeCategory.name === '' ? countAll : count) / PAGINATION)}
                 shape="rounded"
                 // page={+page}
-                onClick={(e) => {
-                  setLoader(true);
-                  if (!search) {
-                    categoryCatalog(
-                      activeCategory,
-                      +e.target.textContent * 11 - 11,
-                      +e.target.textContent * 11
-                    )
-                      .then((data) => {
-                        setItems(data);
-                        setPage(e.target.textContent);
-                      })
-                      .finally(() => setLoader(false));
-                  }
-                  if (search) {
-                    searchProduct(
-                      +e.target.textContent * 11 - 11,
-                      +e.target.textContent * 11,
-                      searchName
-                    )
-                      .then((res) => {
-                        setItems(res.data);
-                      })
-                      .finally(() => {
-                        setLoader(false);
-                      });
-                  }
-                  if (filter) {
-                    filterProduct(
-                      +e.target.textContent * 11 - 11,
-                      +e.target.textContent * 11,
-                      brandActive,
-                      offcetPrice.start,
-                      offcetPrice.end
-                    )
-                      .then((res) => {
-                        setItems(res.rows);
-                      })
-                      .finally(() => {
-                        setLoader(false);
-                      });
-                  }
-                }}
+                siblingCount={3}
+                page={pagePagination || 1}
+                onChange={handleChangePagination}
               />
-            ) : (
-              <CustomPagination />
-            )}
+            }
           </div>
         </div>
-        <div className={styles.seen}>
-          <div className={styles.seen__title}>Вы смотрели</div>
-          <div className={styles.seen__content}>
-            <LastSeenCard
-              srcImage="/images/image 42.png"
-              productName="Чайная пара с бамбуковым блюдцем «Sheffield»"
-              productNumber="87145.06"
-              newPrice="621 ₽"
-              oldPrice="1 200 ₽"
-              bgc="#000"
-            />
-            <LastSeenCard
-              srcImage="/images/image 42.png"
-              productName="Чайная пара с бамбуковым блюдцем «Sheffield»"
-              productNumber="87145.06"
-              newPrice="621 ₽"
-              oldPrice="1 200 ₽"
-              bgc="#000"
-            />
-            <LastSeenCard
-              srcImage="/images/image 42.png"
-              productName="Чайная пара с бамбуковым блюдцем «Sheffield»"
-              productNumber="87145.06"
-              newPrice="621 ₽"
-              oldPrice="1 200 ₽"
-              bgc="#000"
-            />
-            <LastSeenCard
-              srcImage="/images/image 42.png"
-              productName="Чайная пара с бамбуковым блюдцем «Sheffield»"
-              productNumber="87145.06"
-              newPrice="621 ₽"
-              oldPrice="1 200 ₽"
-              bgc="#000"
-            />
-            <LastSeenCard
-              srcImage="/images/image 42.png"
-              productName="Чайная пара с бамбуковым блюдцем «Sheffield»"
-              productNumber="87145.06"
-              newPrice="621 ₽"
-              oldPrice="1 200 ₽"
-              bgc="#000"
-            />
-            <LastSeenCard
-              srcImage="/images/image 42.png"
-              productName="Чайная пара с бамбуковым блюдцем «Sheffield»"
-              productNumber="87145.06"
-              newPrice="621 ₽"
-              oldPrice="1 200 ₽"
-              bgc="#000"
-            />
-          </div>
-        </div>
+        <LastSeen />
         <div className={styles.services}>
           <Services />
         </div>
@@ -293,6 +293,13 @@ function Catalog() {
           <Category />
         </div>
       </div>
+    },
+    [items, loader, activeCategory]
+  );
+
+  return (
+    <>
+      {content}
     </>
   );
 }

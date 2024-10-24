@@ -4,21 +4,16 @@ import styles from "./DesignFirstStep.module.css";
 import Loader from "../Loader/Loader";
 import Icon from "../Icon/Index";
 import ResizableRotatableImage from "../xz2/Index";
-import { getOneProduct } from "../../shared/api";
+import { getOneProduct, getImageGiftsUrl, getAnotherColorProduct } from "../../shared/api";
 import useStore from "../../shared/store";
 import DesignSecondStep from "../DesignSecondStep/DesignSecondStep";
-import { findColorHex, parseAttributes } from "../../utils/utils";
 
 const DEFAULT_QTY = 1;
 const DEFAULT_APPLICATION = "Не выбрано"
-const APPLICATION_TYPE_PADPRINTING = 'Тампопечат';
-const APPLICATION_TYPE_UVPRINTING = 'УФ печать';
-const APPLICATION_TYPE_LAMINATION = 'Ламинаци';
-
 
 // eslint-disable-next-line react/prop-types
-function DesignFirstStep({ closeModal, img, id, idPriduct,qty }) {
-  const { setCart, setSecond, second } = useStore();
+function DesignFirstStep({ qty, selectedColorProductId, closeModal }) {
+  const { setCartByAddingItem, setSecond, second } = useStore();
   const [w, setW] = useState(0);
   const [h, setH] = useState(0);
   // const { setSecond } = useStore();
@@ -32,19 +27,21 @@ function DesignFirstStep({ closeModal, img, id, idPriduct,qty }) {
   const [discountPrice, setDiscountPrice] = useState(0);
   const [loadTime, setLoadTime] = useState(null);
   const [showSecondStep, setShowSecondStep] = useState(false);
-  const [application, setApplication] = useState(DEFAULT_APPLICATION);
-  const [selectedColor, setSelectedColor] = useState('');
+  const [selectedApplication, setSelectedApplication] = useState(DEFAULT_APPLICATION);
+  const [selectedColor, setSelectedColor] = useState(0);
   const [inStock, setInStock] = useState(0);
   useEffect(() => {
-    getOneProduct(idPriduct).then((data) => {
+    console.log(selectedColorProductId);
+    getOneProduct(selectedColorProductId).then((data) => {
+      console.log(data);
       setData(data);
-      setDiscountPrice(data.discount_price);
-      setInStock(data.total_stock);
+      setDiscountPrice(parseInt(data.price, 10));
+      setInStock(100);
     });
   }, []);
-  useEffect(()=>{
+  useEffect(() => {
     setQuantity(qty);
-  },[]);
+  }, []);
   const totalPrice = (quantity * discountPrice).toFixed(2);
   // const totalPrice = quantity * discountPrice;
   const handleChange = (event) => {
@@ -61,17 +58,20 @@ function DesignFirstStep({ closeModal, img, id, idPriduct,qty }) {
     }
   };
 
-  const onApplicationClick = (event) => {
-    const value = event.target.value;
-    setApplication(prev => {
-      return prev === value ? DEFAULT_APPLICATION : value
-    })
+  useEffect(() => {
+    setSelectedColor(selectedColorProductId ? selectedColorProductId : '');
+  }, []);
+
+  const onColorClick = (id) => {
+    setSelectedColor(id);
+    getAnotherColorProduct(id, data.catalog).then((data) => {
+      setData(data);
+    });
   }
 
-  const onColorClick = (color) => {
-    setSelectedColor(prev => {
-      return prev === color ? '' : color
-    })
+  const onApplicationClick = (item) => {
+    const newValue = item.name === selectedApplication ? DEFAULT_APPLICATION : item.name
+    setSelectedApplication(newValue);
   }
 
   const increaseQuantity = () => {
@@ -98,17 +98,6 @@ function DesignFirstStep({ closeModal, img, id, idPriduct,qty }) {
     }
   };
 
-  //массив цветов товара
-  const [colors, setColors] = useState([]);
-
-  useEffect(() => {
-    if (data) {
-      if (data.attributes) {
-        setColors(parseAttributes(data.attributes));
-      }
-    }
-  }, [data]);
-
   const [progress, setProgres] = useState(0);
   const [showName, setShowName] = useState(true);
   useEffect(() => {
@@ -129,12 +118,12 @@ function DesignFirstStep({ closeModal, img, id, idPriduct,qty }) {
           <div className={styles.modal}>
             <div className={styles.modal__top1}>
               <div className={styles.wrap}>
-                <img
+                {data && <img
                   className={styles.modal__img}
                   id={styles.modal__img1}
-                  src={img}
-                  alt=""
-                />
+                  src={data.catalog === 'gifts' ? getImageGiftsUrl(data.images.big) : data.images.big}
+                  alt={data.name}
+                />}
                 <div
                   className={styles.transform__img}
                 // onChange={(e) => {
@@ -160,12 +149,12 @@ function DesignFirstStep({ closeModal, img, id, idPriduct,qty }) {
                   </button>
                 </div>
                 <div className={styles.wrap2}>
-                  <img
+                  {data && <img
                     className={styles.modal__img}
                     id={styles.modal__img2}
-                    src={img}
-                    alt=""
-                  />
+                    src={data.catalog === 'gifts' ? getImageGiftsUrl(data.images.big) : data.images.big}
+                    alt={data.name}
+                  />}
                   <div className={styles.transform__img}>
                     <ResizableRotatableImage
                       img={imageUrl}
@@ -180,16 +169,14 @@ function DesignFirstStep({ closeModal, img, id, idPriduct,qty }) {
                       1. Выберите цвет
                     </h3>
                     <div className={styles.modal__color_btns}>
-                      {colors.map((item) => {
-                        const currentColor = findColorHex(item.color);
+                    {data && data.colors && data.colors.length > 0 && data.colors.map((item) => {
                         return <button
-                          className={`${selectedColor === currentColor ? 
+                          className={`${selectedColor === item.product_id ?
                             styles.modal__color_btn_selected :
                             styles.modal__color_btn}`}
-                          style={{ backgroundColor: currentColor }}
-                          key={item.code}
-                          onClick={()=>onColorClick(currentColor)}>
-                        </button>
+                          style={{ backgroundColor: item.color_hex }}
+                          onClick={() => onColorClick(item.product_id)}
+                          key={item.product_id}></button>
                       })}
                     </div>
                   </div>
@@ -305,18 +292,13 @@ function DesignFirstStep({ closeModal, img, id, idPriduct,qty }) {
                       3. Выберите тип нанесение
                     </h3>
                     <div className={styles.modal__types_btns}>
-                      <button className={`${application === APPLICATION_TYPE_PADPRINTING ? styles.modal__types_btn_selected :
-                        styles.modal__types_btn}`} onClick={onApplicationClick} value={APPLICATION_TYPE_PADPRINTING}>
-                        {APPLICATION_TYPE_PADPRINTING}
-                      </button>
-                      <button className={`${application === APPLICATION_TYPE_UVPRINTING ? styles.modal__types_btn_selected :
-                        styles.modal__types_btn}`} onClick={onApplicationClick} value={APPLICATION_TYPE_UVPRINTING}>
-                        {APPLICATION_TYPE_UVPRINTING}
-                      </button>
-                      <button className={`${application === APPLICATION_TYPE_LAMINATION ? styles.modal__types_btn_selected :
-                        styles.modal__types_btn}`} onClick={onApplicationClick} value={APPLICATION_TYPE_LAMINATION}>
-                        {APPLICATION_TYPE_LAMINATION}
-                      </button>
+                      {data && data.print.map((item) => {
+                        return <button className={`${item.name === selectedApplication ? styles.modal__types_btn_selected :
+                          styles.modal__types_btn}`} onClick={() => onApplicationClick(item)} value={selectedApplication.name}>
+                          {item.description}
+                        </button>
+                      })}
+
                     </div>
                   </div>
                   <div className={styles.modal__quantity}>
@@ -373,8 +355,8 @@ function DesignFirstStep({ closeModal, img, id, idPriduct,qty }) {
                         Цена указана без стоимости нанесения.
                       </p>
                       <div className={styles.modal__loading_warning}>
-                        <span>Мин. тираж: {inStock} шт.</span>
-                        <span> В наличии: {inStock} шт.</span>
+                        {/*                         <span>Мин. тираж: {inStock} шт.</span> */}
+                        <span> В наличии: {'?'} шт.</span>
                       </div>
                     </div>
                   </div>
@@ -391,16 +373,8 @@ function DesignFirstStep({ closeModal, img, id, idPriduct,qty }) {
               <button
                 className={styles.control__btn_buy}
                 onClick={() => {
-                  const newItem = {
-                    productNumber: data.id,
-                    productName: data.name,
-                    productCost: data.price,
-                    srcImage: data.images[0].big,
-                    quantity,
-                  };
                   closeModal();
-
-                  setCart(newItem);
+                  setCartByAddingItem({id:data.id,qty:quantity});
                   // setCart(data);
                   // console.log(cart);
                 }}

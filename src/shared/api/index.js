@@ -1,17 +1,48 @@
 import ky from "ky";
+import { PAGINATION } from "../../utils/constants";
+
+const backend = "http://localhost:3000";
+// const backend = `http://77.238.250.70`;
+
+export const getImageGiftsUrl = (url) => {
+  return `${backend}/api/imagegifts/?url=${url}`} 
 
 const api = ky.create({
-  prefixUrl: "http://77.238.247.8:3000/api/",
-  /* prefixUrl: "http://localhost:3000/api/", */
+  prefixUrl: `${backend}/api/`,
   timeout: 60000,
 });
 
 export const getCatalog = async (start, end) => {
-  return await api.get(`catalog?start=${start}&end=${end}`).json();
+  // return await api.get(`catalog?start=${start}&end=${end}`).json();
+
 };
 
 export const getOneProduct = async (id) => {
   return await api.get(`catalog/product/${id}`).json();
+};
+
+export const getAllCategories = async () => {
+  return await api.get(`catalog/categories`).json();
+};
+
+export const getAnotherColorProduct = async (id,catalog) => {
+  return await api.get(`catalog/product?id=${id}&catalog=${catalog}`).json();
+};
+
+export const getCartProducts = async (arrayId) => {
+  return await api.post(`catalog/cart`,{
+    json: {
+      arrayId: arrayId
+    }
+  }).json();
+};
+
+export const getGroupProducts = async (arrayId) => {
+  return await api.post(`catalog/group`,{
+    json: {
+      arrayId: arrayId
+    }
+  }).json();
 };
 
 export const getBarcodeProduct = async (code) => {
@@ -46,20 +77,54 @@ export const categoryCatalogCount = async (data) => {
     })
     .json();
 };
+export const getCategoryProducts = async (data, page) => {
+  return await api
+    .post(`catalog/category?pagination=${PAGINATION}&page=${page}`, {
+      json: {
+        category: data,
+      },
+    })
+    .json();
+};
+export const getCategoryInfo = async (id) => {
+  return await api
+    .get(`catalog/category?id=${id}`).json();
+};
+export const getCategoryProductsCount = async (data) => {
+  return await api
+    .post(`catalog/category/count`, {
+      json: {
+        category: data,
+      },
+    })
+    .json();
+};
+
 
 export const getCountCatalog = async () => {
   return await api.get(`catalog/count`).json();
 };
 
-export const searchProduct = async (start, end, data) => {
+export const searchProduct = async (data, page) => {
   return await api
-    .post(`catalog/search?start=${start}&end=${end}`, {
+    .post(`catalog/search?pagination=${PAGINATION}&page=${page}`, {
+      json: {
+        name: data,
+      },
+    })
+    .json();
+};
+
+export const findProductOtherColor = async (data) => {
+  return await api
+    .post('catalog/findpic', {
       json: {
         name: `%${data}%`,
       },
     })
     .json();
 };
+
 export const searchProductCount = async (data) => {
   return await api
     .post("catalog/search", {
@@ -86,4 +151,12 @@ export const filterProduct = async (
       },
     })
     .json();
+};
+
+export const findSimilarProducts = async (id) => {
+  return await api.get(`catalog/findsimilarproducts/${id}`).json();
+};
+
+export const getFiles = async (id) => {
+  return await api.get(`catalog/files/${id}`).json();
 };

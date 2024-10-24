@@ -28,7 +28,7 @@
   display: flex;
   align-items: start;
 }
-.menu__сategory {
+.menu__category {
   display: flex;
   flex-direction: column;
   align-items: start;
@@ -55,7 +55,7 @@
 .menu__items {
   border-right: 1px solid #e4e4e4;
 }
-.menu__items div {
+.menu__items {
   font-weight: 500;
   font-size: 16px;
   line-height: 19.2px;
@@ -109,4 +109,29 @@
 }
 .menu__banner_btn:hover {
   padding-right: 48px;
+}
+
+.menu__overlay {
+  margin:0;
+  height: 100vh;
+  width: 100vw;
+  padding:12px;
+  box-sizing: border-box;
+  position: absolute;
+  top: 220px;
+  left:0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+  visibility: hidden;
+  opacity:0;
+  z-index: 1000;
+  transition: 0.3s;
+}
+
+.menu__overlay_visibility_active {
+  opacity:1;
+  visibility: visible;
+  pointer-events: all;
 }

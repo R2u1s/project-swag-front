@@ -1,53 +1,47 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./Card.module.css";
 import Icon from "../Icon/Index";
 import DesignFirstStep from "../DesignFirstStep/DesignFirstStep";
 import useStore from "../../shared/store";
-import { findColorHex, parseAttributes } from "../../utils/utils";
+import { getImageGiftsUrl } from "../../shared/api";
+import LazyImage from "../LazyImage/lazyimage";
 
-function Card({
-  srcImage,
-  productName,
-  productNumber,
-  newPrice,
-  oldPrice,
-  categories,
-  id,
-  totalStock,
-  attributes
-}) {
-  const { cart, setCart, setFavorites, favorites } = useStore();
+function Card({ card }) {
+
+  const { cart, setCartByAddingItem, setFavoritesByAddingItem, favorites, removeFavorites, setFavorites } = useStore();
   const [modal, setModal] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [activeCart, setActiveCart] = useState(false);
   const [activeFavorite, setActiveFavorite] = useState(false);
+  const [currentImage, setCurrentImage] = useState(card.images.big);
 
   useEffect(() => {
-    const isFavorite = favorites.some((fav) => fav.id === id);
-    const isCartAdded = cart.some((item) => item.productNumber === productNumber);
+    if (!(favorites.length > 0)) {
+      const storedFavorites = JSON.parse(localStorage.getItem('favorites'));
+      if (storedFavorites) {
+        setFavorites(storedFavorites);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    const isFavorite = favorites.some((fav) => fav.id === card.id);
+    const isCartAdded = cart.some((item) => item.id === card.id);
     setActiveFavorite(isFavorite);
     setActiveCart(isCartAdded);
-  }, [favorites,id,cart]);
+  }, [favorites, card.id, cart]);
 
   const { removeCart } = useStore();
 
-  const addCart = () => {
-    const newItem = {
-      productNumber,
-      productName,
-      productCost: newPrice,
-      srcImage,
-      quantity,
-      totalStock,
-    };
-
+  const addCart = (event) => {
+    event.stopPropagation();
     if (activeCart) {
       setActiveCart(false);
-      removeCart(productNumber);
+      removeCart(card.id);
     } else {
       setActiveCart(true);
-      setCart(newItem);
+      setCartByAddingItem({ id: card.id, qty: quantity });
     }
   };
 
@@ -57,31 +51,31 @@ function Card({
     setModal(false);
   }
 
-  const addCartSelected = () => {
-    const newItem = {
-      srcImage,
-      productName,
-      productNumber,
-      newPrice,
-      oldPrice,
-      quantity,
-      id,
-    };
-    setFavorites(newItem);
-    setActiveFavorite(true);
+  const addCartSelected = (event) => {
+    event.stopPropagation();
+    if (activeFavorite) {
+      setActiveFavorite(false);
+      removeFavorites(card.id);
+    } else {
+      setActiveFavorite(true);
+      setFavoritesByAddingItem({id:card.id});
+    }
   };
 
-  const increaseQuantity = () => {
+  const increaseQuantity = (event) => {
+    event.stopPropagation();
     setQuantity(quantity + 1);
   };
 
-  const decreaseQuantity = () => {
+  const decreaseQuantity = (event) => {
+    event.stopPropagation();
     if (quantity > 0) {
       setQuantity(quantity - 1);
     }
   };
 
   const handleQuantityChange = (event) => {
+    event.stopPropagation();
     /*     const value = parseInt(event.target.value, 10); */
     const value = event.target.value;
     setQuantity(value);
@@ -97,19 +91,20 @@ function Card({
     }
   };
 
-  //массив цветов товара
-  const [colors, setColors] = useState([]);
+  //чтобы картинка менялась при наведении на цвет в течение 0.2с, а не мгновенно
+  let timer = null;
 
-  useEffect(() => {
-    if (attributes) {
-      setColors(parseAttributes(attributes));
-    }
-  }, [attributes]);
+  const handleMouseEnter = (color) => {
+    timer = setTimeout(() => setCurrentImage(color.color_image.big), 100);
+  };
 
+  const handleMouseLeave = () => {
+    clearTimeout(timer);
+  };
 
   return (
     <>
-      <div className={styles.card}>
+      <div className={styles.card} onClick={() => redirect(`/catalog/${card.id}`)}>
         <div className={styles.card__btns}>
           <button
             className={`${styles.card__btn} ${activeCart ? styles.active : ""}`}
@@ -126,30 +121,29 @@ function Card({
             <span className={styles.visibleSpan}>Добавить в избранное</span>
           </button>
         </div>
-        <div
-          className={styles.card__img}
-          onClick={() => redirect(`/catalog/${id}/${quantity}`)}
-        >
-          <img src={srcImage} alt="" />
+        <div className={styles.card__img}>
+          <LazyImage src={card.catalog === 'gifts' ? getImageGiftsUrl(currentImage) : currentImage} alt={card.name} />
         </div>
         <div className={styles.card__colors}>
-          {colors &&
-            colors.map((data, index) => {
+          {card.colors &&
+            card.colors.map((item) => {
               return (
                 <span
-                  key={index}
+                  key={item.product_id}
                   className={styles.card__color}
-                  style={{ background: findColorHex(data.color) }}
+                  style={{ background: item.color_hex }}
+                  onMouseEnter={() => handleMouseEnter(item)}
+                  onMouseLeave={handleMouseLeave}
                 ></span>
               );
             })}
         </div>
         <div className={styles.card__content}>
-          <div className={styles.card__number}>арт. {productNumber}</div>
-          <div className={styles.card__name}>{productName}</div>
+          <div className={styles.card__number}>арт. {card.code}</div>
+          <div className={styles.card__name}>{card.name}</div>
           <div className={styles.card__price}>
-            <span className={styles.card__newprice}>{newPrice}</span>
-            <span className={styles.card__oldprice}>{oldPrice}</span>
+            <span className={styles.card__newprice}>{card.price}</span>
+            <span className={styles.card__oldprice}>{card.price}</span>
           </div>
           <div className={styles.card__additionally}>
             <div className={styles.card__additionally_btns}>
@@ -164,8 +158,7 @@ function Card({
                 <span>
                   <input
                     type="number"
-                    value={quantity}
-                    defaultValue={1}
+                    value={quantity || 0}
                     onChange={handleQuantityChange}
                     onBlur={handleBlur}
                     className={styles.card__additionally_quantity_input}
@@ -181,7 +174,8 @@ function Card({
               </div>
               <button
                 className={styles.card__additionally_design}
-                onClick={() => {
+                onClick={(event) => {
+                  event.stopPropagation();
                   setModal(true);
                 }}
               >
@@ -190,17 +184,15 @@ function Card({
               </button>
             </div>
             <div className={styles.card__additionally_text}>
-              В наличии: <span>{totalStock} шт.</span>
+              В наличии: <span>{'?'} шт.</span>
             </div>
           </div>
         </div>
         {modal && (
           <DesignFirstStep
-            img={srcImage}
-            // id={id}
-            closeModal={closeModal}
-            idPriduct={id}
             qty={quantity}
+            selectedColorProductId={card.id}
+            closeModal={closeModal}
           />
         )}
       </div>

@@ -19,7 +19,7 @@ function Layout() {
       .finally(() => setLoader(false));
   };
   useEffect(() => {
-    request(0, 10);
+    request(10, 1);
   }, []);
   return (
     <>

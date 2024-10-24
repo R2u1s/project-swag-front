@@ -98,7 +98,9 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(371px, 1fr));
   gap: 80px 12px;
+  list-style: none;
 }
+
 .selected__pagination {
   display: flex;
   justify-content: center;

@@ -1,31 +1,43 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import styles from "./Cart.module.css";
 import WelcomePack from "../../components/WelcomePack/WelcomePack";
 import LastSeenCard from "../../components/LastSeenCard/LastSeenCard";
 import CartCard from "../../components/CartCard/CartCard";
 import { Link } from "react-router-dom";
-import { postLocalStorageId } from "../../shared/api";
+import { postLocalStorageId,getCartProducts } from "../../shared/api";
 import Icon from "../../components/Icon/Index";
 import useStore from "../../shared/store";
+import { LastSeen } from "../../components/LastSeen/lastseen";
 
 function Cart() {
   const [data, setData] = useState([]);
-  const array = JSON.parse(localStorage.getItem("cart")) || [];
 
-  // useEffect(() => {
-  //   postLocalStorageId(array).then((data) => {
-  //     setData(data);
-  //   });
-  // }, []);
-
-  const { cart, setCart } = useStore();
+  const cart = useStore(state => state.cart);
+  const setCart = useStore(state => state.setCart);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [products,setProducts] = useState([]);
 
   useEffect(() => {
-    setTotalPrice(cart.reduce((total, item) => {
-      return total + item.productCost * item.quantity;
+    if (!(cart.length > 0)) {
+      const storedCart = JSON.parse(localStorage.getItem('cart'));
+      if (storedCart) {
+        setCart(storedCart);
+        getCartProducts(storedCart.map(item => item.id)).then((data)=>{
+          setProducts(data);
+        })
+      }
+    } else {
+      getCartProducts(cart.map(item => item.id)).then((data)=>{
+        setProducts(data);
+      })
+    }
+  }, []);
+
+  useEffect(() => {
+    setTotalPrice(products.reduce((total, item) => {
+      return cart && cart.length > 0 ? (total + item.price * cart.find(elem => elem.id === item.id).qty) : 0;
     }, 0));
-  }, [cart]);
+  }, [cart,products]);
 
   return (
     <>
@@ -40,16 +52,18 @@ function Cart() {
               </span>
             </h1>
             <div className={styles.cart__cards}>
-              {cart &&
-                cart.map((item, i) => {
+              {products && cart && cart.length > 0 &&
+                products.map((item) => {
                   return (
                     <CartCard
-                      key={i}
-                      quantity={item.quantity}
-                      productNumber={item.productNumber}
-                      productName={item.productName}
-                      productCost={item.productCost}
-                      srcImage={item.srcImage}
+                      key={item.id}
+                      id={item.id}
+                      qty={cart.find(elem => elem.id === item.id).qty}
+                      productName={item.fullname}
+                      productCost={item.price}
+                      srcImage={item.images.big}
+                      code={item.code}
+                      catalog={item.catalog}
                     />
                   );
                 })}
@@ -65,13 +79,13 @@ function Cart() {
                 <span>Товаров:</span>
                 <span>{cart.length}</span>
               </div>
-              <div className={styles.cart__sidebar_circulation}>
+              {/* <div className={styles.cart__sidebar_circulation}>
                 <span>Тираж:</span>
                 <span>240</span>
-              </div>
+              </div> */}
               <div className={styles.cart__sidebar_total}>
                 <span className={styles.cart__sidebar_total_itogo}>Итого:</span>
-                <span className={styles.cart__sidebar_total_price}>{totalPrice.toFixed(2)} ₽</span>
+                <span className={styles.cart__sidebar_total_price}>{totalPrice.toFixed(2) > 0 ? totalPrice.toFixed(2) : 0} ₽</span>
               </div>
             </div>
             <p className={styles.cart__sidebar_warning}>
@@ -110,56 +124,7 @@ function Cart() {
         <div className={styles.banner}>
           <WelcomePack />
         </div>
-        <div className={styles.similar}>
-          <div className={styles.similar__info}>
-            <h2 className={styles.similar__title}>Похожие товары</h2>
-            <p className={styles.similar__text}>
-              Посмотрите что мы для вас подобрали.
-            </p>
-          </div>
-          <div className={styles.similar__content}>
-            <LastSeenCard
-              srcImage="/images/image 42.png"
-              productName="Чайная пара с бамбуковым блюдцем «Sheffield»"
-              productNumber="87145.06"
-              newPrice="621 ₽"
-              oldPrice="1 200 ₽"
-              bgc="#000"
-            />
-            <LastSeenCard
-              srcImage="/images/image 42.png"
-              productName="Чайная пара с бамбуковым блюдцем «Sheffield»"
-              productNumber="87145.06"
-              newPrice="621 ₽"
-              oldPrice="1 200 ₽"
-              bgc="#000"
-            />
-            <LastSeenCard
-              srcImage="/images/image 42.png"
-              productName="Чайная пара с бамбуковым блюдцем «Sheffield»"
-              productNumber="87145.06"
-              newPrice="621 ₽"
-              oldPrice="1 200 ₽"
-              bgc="#000"
-            />
-            <LastSeenCard
-              srcImage="/images/image 42.png"
-              productName="Чайная пара с бамбуковым блюдцем «Sheffield»"
-              productNumber="87145.06"
-              newPrice="621 ₽"
-              oldPrice="1 200 ₽"
-              bgc="#000"
-            />
-            <LastSeenCard
-              srcImage="/images/image 42.png"
-              productName="Чайная пара с бамбуковым блюдцем «Sheffield»"
-              productNumber="87145.06"
-              newPrice="621 ₽"
-              oldPrice="1 200 ₽"
-              bgc="#000"
-            />
-          </div>
-        </div>
+        <LastSeen />
       </div>
     </>
   );

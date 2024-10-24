@@ -5,6 +5,14 @@
   width: 100%;
 }
 
+.dropdown__flex {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  max-width: 176px;
+  width: 100%;
+}
+
 button {
   background: none;
   color: #6b3eb2;
@@ -20,6 +28,15 @@ button {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  transition: 0.3s all;
+}
+
+.dropdown__btn:hover {
+  color:#f14c8b;
+}
+
+.dropdown__btn_sub{
+  margin-left:5px;
 }
 
 .dropdown__arrow {
@@ -28,6 +45,10 @@ button {
   stroke: #6b3eb2;
   height: 25px;
   fill: none;
+}
+
+.dropdown__arrow:hover {
+  stroke: #f14c8b;
 }
 
 .dropdown__list {

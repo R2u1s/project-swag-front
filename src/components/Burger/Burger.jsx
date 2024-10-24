@@ -5,10 +5,9 @@ import { useState } from "react";
 import Icon from "../Icon/Index";
 import useStore from "../../shared/store";
 import DropDown from "../DropDown/Index";
-import { category } from "../Menu/Menu";
 
 function Burger() {
-  const { favorites, burger, setBurger } = useStore();
+  const { favorites, burger, setBurger, categories } = useStore();
   const { cart } = useStore();
   // const [burger, setBurger] = useState(false);
   const [showCatalog, setShowCatalog] = useState(false);
@@ -23,6 +22,31 @@ function Burger() {
     setShowCatalog((prevShowCatalog) => !prevShowCatalog);
     setActiveButton((prevActiveButton) => !prevActiveButton);
   };
+
+  const [ qtyCart, setQtyCart ] = useState(0); 
+  const [ qtyFav, setQtyFav ] = useState(0); 
+
+  useEffect(() => {
+    //Определение количества товаров в корзине в store и localStorage
+    if (!(cart.length > 0)) {
+      const storedCart = JSON.parse(localStorage.getItem('cart'));
+      if (storedCart) {
+        setQtyCart(storedCart.length);
+      }
+    } else {
+      setQtyCart(cart.length);
+    }
+    //Определение количества избранных товаров в store и localStorage
+
+    if (!(favorites.length > 0)) {
+      const storedFavorites = JSON.parse(localStorage.getItem('favorites'));
+      if (storedFavorites) {
+        setQtyFav(storedFavorites.length);
+      }
+    } else {
+      setQtyFav(favorites.length);
+    }
+  }, [cart,favorites]);
 
   return (
     <>
@@ -40,14 +64,14 @@ function Burger() {
           <div className={styles.header__btns}>
             <Link to="/selected" className={styles.header__btn_favourites}>
               <span className={styles.header__btn_favourites_quantity}>
-                {favorites.length}
+                {qtyFav}
               </span>
               <Icon id="#star" className={styles.star__icon} />
             </Link>
             <div className={styles.header__btn}>
               <Link to="/cart" className={styles.header__btn_cart}>
                 <span className={styles.header__btn_favourites_quantity}>
-                  {cart.length}
+                  {qtyCart}
                 </span>
                 <Icon id="#cart" className={styles.cart__icon} />
               </Link>
@@ -96,7 +120,7 @@ function Burger() {
                   </button>
                   {showCatalog && (
                     <div className={styles.menu__category}>
-                      {category.map((data, i) => (
+                      {categories.map((data, i) => (
                         <DropDown
                           title={data.name}
                           categories={data.arr}
