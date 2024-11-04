@@ -19,7 +19,7 @@ import BreadCrumbs from "../../components/breadcrumbs/breadcrumbs";
 import Pagination from '@mui/material/Pagination';
 import { getCategoryProducts, getCategoryInfo } from "../../shared/api";
 import { crumbsConvert, scrollToTop } from "../../utils/utils";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useParams } from "react-router-dom";
 import { PAGINATION } from "../../utils/constants";
 
 const crumbsData = [
@@ -64,10 +64,14 @@ function Catalog() {
   const [crumbs, setCrumbs] = useState(crumbsData);
 
   const [searchParams] = useSearchParams();
+  const { category, subcategory, subsubcategory } = useParams();
+  const pageTemp = parseInt(searchParams.get('page'),10);
+  console.log(category,subcategory,subsubcategory,pageTemp);
 
   useEffect(() => {
       const category = searchParams.get('category');
       const page = parseInt(searchParams.get('page'),10);
+
 
       setLoader(true);
       getCategoryInfo(category || '10000000')
