@@ -24,7 +24,6 @@ function Search() {
     setSearch(true);
     searchProduct(value, 1)
       .then((res) => {
-        console.log(res);
         setItems(res);
         setSearchName(value);
       })

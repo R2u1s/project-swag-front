@@ -4,18 +4,16 @@ import { Range, getTrackBackground } from "react-range";
 import "./PriceSlider.css";
 import useStore from "../../shared/store";
 
-const PriceSlider = () => {
+const PriceSlider = ({min,max,symbol}) => {
   const { setOffcetPrice } = useStore();
-  const [values, setValues] = useState([0, 20000]);
+  const [values, setValues] = useState([min, max]);
   const STEP = 1;
-  const MIN = 0;
-  const MAX = 20000;
 
   const trackBackground = getTrackBackground({
     values,
     colors: ["#ccc", "#6B3EB2", "#ccc"],
-    min: MIN,
-    max: MAX,
+    min: min,
+    max: max,
   });
   useEffect(() => {
     setOffcetPrice({
@@ -27,14 +25,14 @@ const PriceSlider = () => {
   return (
     <div className="slider-container">
       <div className="values">
-        <output className="value">{values[0]} ₽</output>
-        <output className="value">{values[1]} ₽</output>
+        <output className="value">{values[0]} {symbol}</output>
+        <output className="value">{values[1]} {symbol}</output>
       </div>
       <Range
         values={values}
         step={STEP}
-        min={MIN}
-        max={MAX}
+        min={min}
+        max={max}
         onChange={(values) => setValues(values)}
         renderTrack={({ props, children }) => (
           <div

@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "esnext", // Или дайте другой таргет, в зависимости от поддержки браузеров
+    "module": "esnext",
+    "jsx": "react-jsx", // Обязательно добавьте эту строку
+    "strict": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true
+  },
+  "include": ["src/**/*", "/*.ts","global.d.ts"], // Или указывайте свою директорию с исходным кодом
+  "exclude": ["node_modules"]
+}

@@ -1,0 +1,19 @@
+.container {
+  padding:10px 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  width: 100%;
+  justify-content: flex-start;
+}
+
+.circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  transition: transform 0.2s ease, opacity 0.2s ease, border 0.2s ease;
+}
+
+.circle:hover {
+  transform: scale(1.3);
+}

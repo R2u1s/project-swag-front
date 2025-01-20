@@ -1,17 +1,54 @@
+.menu__overlay {
+  margin:0;
+  height: 100%;
+  width: calc(100vw - 20px);
+  background-color: rgba(0,0,0,0.6);
+  box-sizing: border-box;
+  position: absolute;
+  top: 14vh;
+  left:0;
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  pointer-events: none;
+  visibility: hidden;
+  opacity:0;
+  z-index: 1000;
+}
+
+.menu__overlay_visibility_active {
+  opacity:1;
+  visibility: visible;
+  pointer-events: all;
+}
+
 .menu {
+  position: absolute;
+  top: 14vh;
+  left: 0;
+  background-color: #fff;
+  width: calc(100vw - 20px);
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  z-index: 2000;
+}
+
+.menu__content {
+  display: flex;
+  flex-direction: row;
   gap: 32px;
-  background-color: #fff;
   width: 100%;
-  padding: 0 32px;
+  max-width: 1440px;
+  padding: 10px 32px;
   transition: 0.3s all;
 }
+
 .arrow {
   width: 20px;
   height: 20px;
-  transform: rotate(-90deg);
-  stroke: #6b3eb2;
+  stroke: #f14c8b;
   fill: #fff;
 }
 .menu__title {
@@ -37,19 +74,37 @@
   height: 100%;
 }
 .menu__category_btn {
-  font-weight: 600;
-  font-size: 20px;
+  padding:5px;
+  font-weight: 700;
+  font-size: 16px;
   line-height: 24px;
   color: #6b3eb2;
   background-color: transparent;
-  padding: 16px;
   transition: 0.3s all;
   border-radius: 12px;
   display: flex;
   align-items: center;
   gap: 12px;
 }
+
+.menu__subcategory_btn {
+  padding:5px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: #6b3eb2;
+  background-color: transparent;
+  transition: 0.3s all;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .menu__category_btn:hover {
+  background-color: #efefeb;
+}
+.menu__subcategory_btn:hover {
   background-color: #efefeb;
 }
 .menu__items {
@@ -109,29 +164,4 @@
 }
 .menu__banner_btn:hover {
   padding-right: 48px;
-}
-
-.menu__overlay {
-  margin:0;
-  height: 100vh;
-  width: 100vw;
-  padding:12px;
-  box-sizing: border-box;
-  position: absolute;
-  top: 220px;
-  left:0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  pointer-events: none;
-  visibility: hidden;
-  opacity:0;
-  z-index: 1000;
-  transition: 0.3s;
-}
-
-.menu__overlay_visibility_active {
-  opacity:1;
-  visibility: visible;
-  pointer-events: all;
 }

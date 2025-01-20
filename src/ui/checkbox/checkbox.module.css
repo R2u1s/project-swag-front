@@ -1,0 +1,31 @@
+.checkbox__container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.checkbox {
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  background-color: #F5F4F2;
+  cursor: pointer;
+  transition: .3s all;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.checkbox:hover {
+  background-color: #F14C8B;
+}
+
+.checkbox_active {
+  background-color: #F14C8B;
+}
+
+.checkbox__container_active {
+  color:#F14C8B;
+  font-weight: 600;
+}

@@ -1,10 +1,8 @@
 import React from "react";
-import styles from "./index.module.css";
+import LoaderTop from "../../ui/LoaderTop";
 
 export default function Loading() {
   return (
-    <div className={styles.bg}>
-      <span className={styles.loader}></span>
-    </div>
+    <LoaderTop />
   );
 }

@@ -1,9 +1,10 @@
 .container {
   max-width: 1440px;
   padding: 0 24px;
+  padding-top: 24px;
   margin: 0 auto;
   position: fixed;
-  z-index: 9999;
+  z-index: 1;
   width: 100%;
   height: 100%;
   background: #fff;
@@ -38,8 +39,9 @@
 
 .modal__top1 {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: flex-start;
   width: 100%;
 }
 
@@ -50,7 +52,8 @@
 
 .modal__img {
   margin: auto;
-  /* max-width: 320px; */
+  padding-top:200px;
+  max-width: 320px;
   width: 100%;
 }
 
@@ -64,7 +67,6 @@
   display: flex;
   flex-direction: column;
   gap: 40px;
-  padding: 28px;
 }
 
 .modal__top {
@@ -99,7 +101,7 @@
   margin-bottom: 20px;
 }
 
-.modal__color_btns {
+/* .modal__color_btns {
   display: flex;
   flex-flow: row;
   align-items: center;
@@ -109,33 +111,42 @@
 }
 
 .modal__color_btn {
+  box-sizing: border-box;
   max-width: 36px;
   background-color: #b02465;
-  border-radius: 42px;
-  height: 100%;
+  border-radius: 18px;
+  height:100%;
+  max-height: 100%;
   flex: 1;
   transition: flex-grow 0.3s, height 0.3s;
+} */
+
+.modal__color_btns {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  gap: 8px;
+  width: 100%;
+  justify-content: flex-start;
+}
+
+.modal__color_btn {
+  max-width: 36px;
+  min-height: 60px;
+  border-radius: 18px;
+  transition: transform 0.2s ease, opacity 0.2s ease, border 0.2s ease;
+  cursor: pointer;
 }
 
 .modal__color_btn:hover {
-  flex-grow: 1.1;
-  height: 110%;
-}
-
-.modal__color_btn_selected {
-  max-width: 36px;
-  background-color: #b02465;
-  border-radius: 42px;
-  border: 2px solid black;
-  height: 110%;
-  flex: 1.1;
-  transition: flex-grow 0.3s, height 0.3s;
+  transform: scale(1.2);
 }
 
 .modal__loading {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 0px;
+  border-bottom: 1px solid var(--color-grey);
 }
 
 .modal__loading_label {
@@ -239,16 +250,16 @@
   display: flex;
   align-items: center;
   gap: 20px;
+  max-height: 60px;
 }
 
 .modal__quantity_span {
   background-color: #f8f8f8;
-  padding: 12px;
+  padding: 10px 10px;
   display: flex;
-  gap: 23px;
   border-radius: 10px;
   align-items: center;
-  max-width: 180px;
+  max-width: 171px;
 }
 
 .modal__quantity_btn {
@@ -296,19 +307,25 @@
   line-height: 18.05px;
 }
 
-.modal__quantity_warning {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
 .control {
   display: flex;
   gap: 8px;
   padding: 28px;
   background-color: #fff;
-  width: 100%;
+  width: 100vw;
   border-top: 1px solid #f5f4f2;
+  position: relative;
+}
+
+.control::before {/* чтобы тень была только на верхней границе элемента */
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 10px; /* настраиваемая высота тени */
+  box-shadow: 0px -4px 44px 0px rgba(0, 0, 0, 0.1);
+  z-index: -1;
 }
 
 .control__btn_deselect {
@@ -389,10 +406,57 @@
 }
 
 .equality__icon {
-  width: 14px;
-  height: 14px;
-  stroke: #6b3eb2;
+  color: var(--color-primary);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 32px;
   transition: 0.3s all;
+}
+
+.designfirststep__photo{
+  width: 110px;
+  height: 110px;
+  overflow: hidden;
+  object-fit: cover;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.designfirststep__photo-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 8px 0;
+}
+
+.designfirststep__button {
+  margin: 8px 0 !important;
+  padding:0;
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  min-height: 61px;
+  min-width: 100%;
+  border-radius: 30px !important;
+  gap:12px;
+  background-color: var(--color-grey) !important;
+}
+
+.designfirststep__print-option{
+  padding:0;
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  min-height: 61px;
+  min-width: 100%;
+  border-radius: 30px !important;
+  gap:12px;
+  background-color: var(--color-white) !important;
 }
 
 @media screen and (max-width: 1124px) {
@@ -437,7 +501,7 @@
   }
 
   .modal__loading {
-    gap: 12px;
+    gap: 0px;
   }
 
   .modal__loading_label {
@@ -518,3 +582,4 @@
     gap: 4px;
   }
 }
+

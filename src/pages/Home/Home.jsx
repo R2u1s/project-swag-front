@@ -29,8 +29,120 @@ function Home() {
               nextEl: ".swiper-bannerBtn-next",
             }}
             modules={[Pagination, Navigation]}
-            className={styles.mySwiper}
+            className={styles.banner__swiper}
           >
+            <div style={{ border: '5px solid red' }}>
+              <SwiperSlide className={styles.banner__slide1} >
+                <img
+                  className={styles.banner__slide_logo}
+                  src="/images/logo.svg"
+                  alt=""
+                />
+                <div className={styles.banner__slide_info}>
+                  <div className={styles.banner__slider_items}>
+                    <div className={styles.banner__slider_item}>
+                      <img
+                        className={styles.banner__slide_img}
+                        src="/images/img1.png"
+                        alt=""
+                      />
+                    </div>
+                    <div className={styles.banner__slider_item}>
+                      <img
+                        className={styles.banner__slide_img}
+                        src="/images/img2.png"
+                        alt=""
+                      />
+                    </div>
+                    <div className={styles.banner__slider_item}>
+                      <img
+                        className={styles.banner__slide_img}
+                        src="/images/img3.png"
+                        alt=""
+                      />
+                    </div>
+                    <div className={styles.banner__slider_item}>
+                      <img
+                        className={styles.banner__slide_img}
+                        src="/images/img4.png"
+                        alt=""
+                      />
+                    </div>
+                    <div className={styles.banner__slider_item}>
+                      <img
+                        className={styles.banner__slide_img}
+                        src="/images/img5.png"
+                        alt=""
+                      />
+                    </div>
+                    <div className={styles.banner__slider_item}>
+                      <img
+                        className={styles.banner__slide_img}
+                        src="/images/img6.png"
+                        alt=""
+                      />
+                    </div>
+                    <div className={styles.banner__slider_item}>
+                      <img
+                        className={styles.banner__slide_img}
+                        src="/images/img7.png"
+                        alt=""
+                      />
+                    </div>
+                    <div className={styles.banner__slider_item}>
+                      <img
+                        className={styles.banner__slide_img}
+                        src="/images/img8.png"
+                        alt=""
+                      />
+                    </div>
+                    <div className={styles.banner__slider_item}>
+                      <img
+                        className={styles.banner__slide_img}
+                        src="/images/img9.png"
+                        alt=""
+                      />
+                    </div>
+                    <div className={styles.banner__slider_item}>
+                      <img
+                        className={styles.banner__slide_img}
+                        src="/images/img10.png"
+                        alt=""
+                      />
+                    </div>
+                    <div className={styles.banner__slider_item}>
+                      <img
+                        className={styles.banner__slide_img}
+                        src="/images/img11.png"
+                        alt=""
+                      />
+                    </div>
+                    <div className={styles.banner__slider_item}>
+                      <img
+                        className={styles.banner__slide_img}
+                        src="/images/img12.png"
+                        alt=""
+                      />
+                    </div>
+                    <div className={styles.banner__slider_item}>
+                      <img
+                        className={styles.banner__slide_img}
+                        src="/images/img13.png"
+                        alt=""
+                      />
+                    </div>
+                  </div>
+                  <h1 className={styles.banner__slide_title}>Всё сложится!</h1>
+                  <p className={styles.banner__slide_text}>
+                    Выбирайте, персонализируйте и собирайте подарки в один клик.
+                  </p>
+                </div>
+                <a href={'/catalog'} className={styles.banner__slide_btn}>
+                  Найти что нужно
+                </a>
+              </SwiperSlide>
+            </div>
+
             <SwiperSlide className={styles.banner__slide1}>
               <img
                 className={styles.banner__slide_logo}
@@ -40,95 +152,43 @@ function Home() {
               <div className={styles.banner__slide_info}>
                 <div className={styles.banner__slider_items}>
                   <div className={styles.banner__slider_item}>
-                    <img
-                      className={styles.banner__slide_img}
-                      src="/images/img1.png"
-                      alt=""
-                    />
+                    <img src="/images/img1.png" alt="" />
                   </div>
                   <div className={styles.banner__slider_item}>
-                    <img
-                      className={styles.banner__slide_img}
-                      src="/images/img2.png"
-                      alt=""
-                    />
+                    <img src="/images/img2.png" alt="" />
                   </div>
                   <div className={styles.banner__slider_item}>
-                    <img
-                      className={styles.banner__slide_img}
-                      src="/images/img3.png"
-                      alt=""
-                    />
+                    <img src="/images/img3.png" alt="" />
                   </div>
                   <div className={styles.banner__slider_item}>
-                    <img
-                      className={styles.banner__slide_img}
-                      src="/images/img4.png"
-                      alt=""
-                    />
+                    <img src="/images/img4.png" alt="" />
                   </div>
                   <div className={styles.banner__slider_item}>
-                    <img
-                      className={styles.banner__slide_img}
-                      src="/images/img5.png"
-                      alt=""
-                    />
+                    <img src="/images/img5.png" alt="" />
                   </div>
                   <div className={styles.banner__slider_item}>
-                    <img
-                      className={styles.banner__slide_img}
-                      src="/images/img6.png"
-                      alt=""
-                    />
+                    <img src="/images/img6.png" alt="" />
                   </div>
                   <div className={styles.banner__slider_item}>
-                    <img
-                      className={styles.banner__slide_img}
-                      src="/images/img7.png"
-                      alt=""
-                    />
+                    <img src="/images/img7.png" alt="" />
                   </div>
                   <div className={styles.banner__slider_item}>
-                    <img
-                      className={styles.banner__slide_img}
-                      src="/images/img8.png"
-                      alt=""
-                    />
+                    <img src="/images/img8.png" alt="" />
                   </div>
                   <div className={styles.banner__slider_item}>
-                    <img
-                      className={styles.banner__slide_img}
-                      src="/images/img9.png"
-                      alt=""
-                    />
+                    <img src="/images/img9.png" alt="" />
                   </div>
                   <div className={styles.banner__slider_item}>
-                    <img
-                      className={styles.banner__slide_img}
-                      src="/images/img10.png"
-                      alt=""
-                    />
+                    <img src="/images/img10.png" alt="" />
                   </div>
                   <div className={styles.banner__slider_item}>
-                    <img
-                      className={styles.banner__slide_img}
-                      src="/images/img11.png"
-                      alt=""
-                    />
+                    <img src="/images/img11.png" alt="" />
                   </div>
                   <div className={styles.banner__slider_item}>
-                    <img
-                      className={styles.banner__slide_img}
-                      src="/images/img12.png"
-                      alt=""
-                    />
+                    <img src="/images/img12.png" alt="" />
                   </div>
                   <div className={styles.banner__slider_item}>
-                    <img
-                      className={styles.banner__slide_img}
-                      src="/images/img13.png"
-                      alt=""
-                    />
+                    <img src="/images/img13.png" alt="" />
                   </div>
                 </div>
                 <h1 className={styles.banner__slide_title}>Всё сложится!</h1>
@@ -136,9 +196,9 @@ function Home() {
                   Выбирайте, персонализируйте и собирайте подарки в один клик.
                 </p>
               </div>
-              <button className={styles.banner__slide_btn}>
+              <a href={'/catalog'} className={styles.banner__slide_btn}>
                 Найти что нужно
-              </button>
+              </a>
             </SwiperSlide>
             <SwiperSlide className={styles.banner__slide1}>
               <img
@@ -193,66 +253,9 @@ function Home() {
                   Выбирайте, персонализируйте и собирайте подарки в один клик.
                 </p>
               </div>
-              <button className={styles.banner__slide_btn}>
+              <a href={'/catalog'} className={styles.banner__slide_btn}>
                 Найти что нужно
-              </button>
-            </SwiperSlide>
-            <SwiperSlide className={styles.banner__slide1}>
-              <img
-                className={styles.banner__slide_logo}
-                src="/images/logo.svg"
-                alt=""
-              />
-              <div className={styles.banner__slide_info}>
-                <div className={styles.banner__slider_items}>
-                  <div className={styles.banner__slider_item}>
-                    <img src="/images/img1.png" alt="" />
-                  </div>
-                  <div className={styles.banner__slider_item}>
-                    <img src="/images/img2.png" alt="" />
-                  </div>
-                  <div className={styles.banner__slider_item}>
-                    <img src="/images/img3.png" alt="" />
-                  </div>
-                  <div className={styles.banner__slider_item}>
-                    <img src="/images/img4.png" alt="" />
-                  </div>
-                  <div className={styles.banner__slider_item}>
-                    <img src="/images/img5.png" alt="" />
-                  </div>
-                  <div className={styles.banner__slider_item}>
-                    <img src="/images/img6.png" alt="" />
-                  </div>
-                  <div className={styles.banner__slider_item}>
-                    <img src="/images/img7.png" alt="" />
-                  </div>
-                  <div className={styles.banner__slider_item}>
-                    <img src="/images/img8.png" alt="" />
-                  </div>
-                  <div className={styles.banner__slider_item}>
-                    <img src="/images/img9.png" alt="" />
-                  </div>
-                  <div className={styles.banner__slider_item}>
-                    <img src="/images/img10.png" alt="" />
-                  </div>
-                  <div className={styles.banner__slider_item}>
-                    <img src="/images/img11.png" alt="" />
-                  </div>
-                  <div className={styles.banner__slider_item}>
-                    <img src="/images/img12.png" alt="" />
-                  </div>
-                  <div className={styles.banner__slider_item}>
-                    <img src="/images/img13.png" alt="" />
-                  </div>
-                </div>
-                <h1 className={styles.banner__slide_title}>Всё сложится!</h1>
-                <p className={styles.banner__slide_text}>
-                  Выбирайте, персонализируйте и собирайте подарки в один клик.
-                </p>
-              </div>
-              <button className={styles.banner__slide_btn}>
-                Найти что нужно
-              </button>
+              </a>
             </SwiperSlide>
             <div className="swiper-pagination-banner"></div>
             <button className="swiper-bannerBtn-prev">
@@ -275,7 +278,7 @@ function Home() {
               <div className={styles.start__card_info}>
                 <h5 className={styles.start__card_title}>Наборы</h5>
                 <p className={styles.start__card_desc}>
-                  Собери уникальный наборили выбери готовое решение!
+                  Собери уникальный набор или выбери готовое решение!
                 </p>
                 <button className={styles.start__card_btn}>Подробнее</button>
               </div>
@@ -291,7 +294,9 @@ function Home() {
                 <p className={styles.start__card_desc}>
                   Огромный выбор отобранных вручную товаров!
                 </p>
-                <button className={styles.start__card_btn}>Подробнее</button>
+                <a href={'/catalog'} className={styles.start__card_btn}>
+                  Подробнее
+                </a>
               </div>
               <img
                 className={styles.start__card_img2}

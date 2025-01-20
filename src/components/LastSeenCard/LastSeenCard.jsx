@@ -44,7 +44,7 @@ function Card({
 
   return (
     <>
-      <div className={styles.card} onClick={() => {setModal(prev => prev);redirect(`/catalog/${id}`)}}>
+      <div className={styles.card} onClick={() => {setModal(prev => prev);redirect(`/product/${id}`)}}>
         <div className={styles.card__btns}>
           <button className={styles.card__btn}>
             <Icon id="#cart" className={styles.cart__icon} />

@@ -57,7 +57,7 @@ const Description = ({ data }) => {
 		<section className={styles.description}>
 			<div className={styles.description_nav}>
 				{Object.entries(TABS).map(([key]) => {
-					return <>
+					return <li style={{listStyleType:'none'}} key={key}>
 						<Tab
 							active={tab === TABS[key]}
 							value={TABS[key]}
@@ -67,7 +67,7 @@ const Description = ({ data }) => {
 						>
 							{TABS[key]}
 						</Tab>
-					</>
+					</li>
 				})}
 			</div>
 			{tabContent(tab)}

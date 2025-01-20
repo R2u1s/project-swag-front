@@ -1,11 +1,13 @@
 import ky from "ky";
 import { PAGINATION } from "../../utils/constants";
+import _ from 'lodash';
 
-const backend = "http://localhost:3000";
-// const backend = `http://77.238.250.70`;
+/* const backend = "http://localhost:3000"; */
+export const backend = `http://77.238.250.70`
 
-export const getImageGiftsUrl = (url) => {
-  return `${backend}/api/imagegifts/?url=${url}`} 
+export const getImageGiftsUrl = _.debounce((url) => {
+  return `${backend}/api/imagegifts/?url=${url}`;
+}, 250);
 
 const api = ky.create({
   prefixUrl: `${backend}/api/`,

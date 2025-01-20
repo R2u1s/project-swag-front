@@ -9,8 +9,8 @@ import Loading from "../Loading/Index";
 function Category() {
   const { loader, setItems, setCount, setActiveCategory, setLoader, setPage } =
     useStore();
-  const redirect = useNavigate();
-  const request = (data) => {
+   const redirect = useNavigate();
+ /* const request = (data) => {
     setLoader(true);
     categoryCatalog(data, 0, 11)
       .then((data) => {
@@ -25,7 +25,7 @@ function Category() {
     });
     setPage(1);
     setActiveCategory(data.name);
-  };
+  }; */
   return (
     <>
       <div className={styles.container}>
@@ -34,7 +34,7 @@ function Category() {
           <div className={styles.category__cards}>
             <div
               className={styles.category__card}
-              onClick={() => request("Внешние аккумуляторы")}
+              onClick={() => redirect('/catalog/elektronika/vneshnie-akkumulyatory-power-bank?page=1')}
               id={styles.category__card1}
             >
               <h4 className={styles.category__card_title}>IT аксессуары</h4>
@@ -42,7 +42,7 @@ function Category() {
             </div>
             <div
               className={styles.category__card}
-              onClick={() => request("Для шопинга")}
+              onClick={() => redirect('/catalog/sumki?page=1')}
               id={styles.category__card2}
             >
               <h4 className={styles.category__card_title}>Сумки</h4>
@@ -57,7 +57,7 @@ function Category() {
             <div
               className={styles.category__card}
               id={styles.category__card3}
-              onClick={() => request("Футболки")}
+              onClick={() => redirect('/catalog/odezhda?page=1')}
             >
               <h4 className={styles.category__card_title}>Одежда</h4>
               <img
@@ -69,7 +69,7 @@ function Category() {
             <div
               className={styles.category__card}
               id={styles.category__card4}
-              onClick={() => request("Книги")}
+              onClick={() => redirect('/catalog/dom/knigi?page=1')}
             >
               <h4 className={styles.category__card_title}>Полиграфия</h4>
             </div>
@@ -78,7 +78,7 @@ function Category() {
             <div
               className={styles.category__card}
               id={styles.category__card5}
-              onClick={() => request("Кружки")}
+              onClick={() => redirect('/catalog/kukhnya-i-posuda/kruzhki-i-stakany/kruzhki?page=1')}
             >
               <h4 className={styles.category__card_title}>Кружки</h4>
               <img
@@ -90,7 +90,7 @@ function Category() {
             <div
               className={styles.category__card}
               id={styles.category__card6}
-              onClick={() => request("Датированные")}
+              onClick={() => redirect('/catalog/ezhednevniki-i-bloknoty?page=1')}
             >
               <h4 className={styles.category__card_title}>Ежедневники</h4>
               <img

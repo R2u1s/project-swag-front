@@ -18,8 +18,8 @@ import Loading from "../../components/Loading/Index";
 import BreadCrumbs from "../../components/breadcrumbs/breadcrumbs";
 import Pagination from '@mui/material/Pagination';
 import { getCategoryProducts, getCategoryInfo } from "../../shared/api";
-import { crumbsConvert, scrollToTop } from "../../utils/utils";
-import { useSearchParams, useParams } from "react-router-dom";
+import { crumbsConvert, extractCategories, findCategoryId, findCategoryPath, scrollToTop } from "../../utils/utils";
+import { useSearchParams, useLocation } from "react-router-dom";
 import { PAGINATION } from "../../utils/constants";
 
 const crumbsData = [
@@ -35,6 +35,7 @@ const crumbsData = [
 
 function Catalog() {
   const {
+    categories,
     items,
     setItems,
     loader,
@@ -63,32 +64,33 @@ function Catalog() {
   const [countAll, setCountAll] = useState();
   const [crumbs, setCrumbs] = useState(crumbsData);
 
+  const [filterVisible, setFilterVisible] = useState(false);
+
+  const location = useLocation();
   const [searchParams] = useSearchParams();
-  const { category, subcategory, subsubcategory } = useParams();
-  const pageTemp = parseInt(searchParams.get('page'),10);
-  console.log(category,subcategory,subsubcategory,pageTemp);
+
+  const closeFilter = () => {
+    setFilterVisible(false);
+  }
 
   useEffect(() => {
-      const category = searchParams.get('category');
-      const page = parseInt(searchParams.get('page'),10);
+    const categoryId = findCategoryId(categories, extractCategories(location.pathname));
+    const page = parseInt(searchParams.get('page'), 10);
 
-
+    if (categories.length > 0 && !search) {
       setLoader(true);
-      getCategoryInfo(category || '10000000')
+      getCategoryInfo(categoryId || '1')
         .then((data) => {
           setCrumbs([
             ...crumbsData,
-            ...crumbsConvert(data.parent),
-            {
-              url: '',
-              label: data.name
-            }
+            ...crumbsConvert(findCategoryPath(categories, categoryId))
           ]);
           setActiveCategory(data);
         })
         .catch(err => console.error(err));
-      getCategoryProducts(category || '10000000', page || '1')
+      getCategoryProducts(categoryId || '1', page || '1')
         .then((data) => {
+          console.log(data);
           setItems(data);
           setCountAll(data[0].total_count);
         })
@@ -96,23 +98,22 @@ function Catalog() {
         .finally(() => {
           setLoader(false);
         });
-      setPage(page);
+    }
+    setPage(page);
 
     count === null && getCountCatalog().then((data) => setCountAll(data[0].count));
-    setFilter(false);
-    setSearch(false);
-  }, [activeCategory.id,searchParams]);
+  }, [activeCategory.id, searchParams, location, categories]);
 
   useEffect(() => {
     setPagePagination(page);
-  }, [page])
+  }, [page, location, searchParams])
 
   const handleChangePagination = (e, value) => {
     setLoader(true);
     setPage(value);
     setPagePagination(value);
     if (!search && activeCategory === '') {
-      getCategoryProducts('10000000', e.target.textContent)
+      getCategoryProducts('1', e.target.textContent)
         .then((data) => {
           setItems(data);
           setLoader(false);
@@ -182,6 +183,7 @@ function Catalog() {
     setShowSorting((prevShowsetShowSorting) => !prevShowsetShowSorting);
   };
 
+  
   const content = useMemo(
     () => {
       return <div className={styles.container}>
@@ -190,9 +192,10 @@ function Catalog() {
             <SideBar />
           </div>
           <div className={styles.catalog__content}>
+            {/* <Filter /> */}
             <div className={styles.catalog__top}>
               <div className={styles.catalog__info}>
-                <BreadCrumbs crumbs={crumbs} />
+                {!search && <BreadCrumbs crumbs={crumbs} />}
                 <h1 className={styles.catalog__title}>
                   {!search && activeCategory.name}<span>{count || countAll}</span>
                 </h1>
@@ -206,12 +209,11 @@ function Catalog() {
                   <div className={styles.catalog__btns_filter}>
                     <button
                       className={styles.catalog__btn_tools}
-                      onClick={() => setFilterShow(true)}
+                      onClick={() => setFilterVisible(true)}
                     >
                       <Icon id="#filter" className={styles.filter__icon} />
                       <span>Фильтр</span>
                     </button>
-                    {filterShow && <Filter />}
                   </div>
                   <div className={styles.catalog__btns_sorting}>
                     <button
@@ -298,12 +300,16 @@ function Catalog() {
         </div>
       </div>
     },
-    [items, loader, activeCategory]
+    [items, loader, activeCategory, search, filterVisible]
   );
 
   return (
     <>
       {content}
+      <Filter
+        filterVisible={filterVisible}
+        closeFilter={closeFilter}
+      />
     </>
   );
 }

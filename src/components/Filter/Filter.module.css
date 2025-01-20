@@ -1,4 +1,29 @@
-.container{
+.filter__overlay {
+    margin: 0;
+    height: 100vh;
+    width: calc(100vw - 20px);
+    padding: 12px;
+    box-sizing: border-box;
+    position: absolute;
+    top: 14vh;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    pointer-events: none;
+    visibility: hidden;
+    opacity: 0;
+    z-index: 1000;
+    transition: 0.3s;
+}
+
+.filter__overlay_visibility_active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: all;
+}
+
+.container {
     position: fixed;
     width: 100%;
     top: 0;
@@ -6,9 +31,9 @@
     right: 0;
     overflow-y: auto;
     z-index: 999;
-    background-color: #00000044;
 }
-.modal{
+
+.modal {
     max-width: 362px;
     width: 100%;
     height: 100%;
@@ -21,16 +46,37 @@
     gap: 40px;
     padding: 28px 24px 95px 24px;
     border-radius: 20px 0 0 20px;
+    box-shadow: 0px 4px 44px 0px #0000001A;
 }
-.modal::-webkit-scrollbar{
+
+.modal__list {
+    list-style-type: none;
+}
+
+.modal__list-element {
+    border-bottom: 1px solid #F5F4F2;
+    cursor: pointer;
+}
+
+.modal__list-element_padding_small {
+    padding: 10px 0;
+}
+
+.modal__list-element_padding_bid {
+    padding: 20px 0;
+}
+
+.modal::-webkit-scrollbar {
     display: none;
 }
-.modal__top{
+
+.modal__top {
     display: flex;
     justify-content: center;
     position: relative;
 }
-.modal__btn_close{
+
+.modal__btn_close {
     position: absolute;
     left: 0;
     top: 0;
@@ -38,64 +84,54 @@
     margin: auto;
     background-color: transparent;
 }
-.modal__title{
+
+.modal__title {
     font-weight: 700;
     color: #0B0B0B;
     font-size: 28px;
     line-height: 31.58px;
 }
-.modal__subtitle{
+
+.modal__subtitle {
     font-weight: 400;
     color: #0B0B0B;
     font-size: 16px;
     line-height: 19.5px;
 }
-.modal__price_slider{
-    padding: 20px 0;
+
+.modal__select {
     border-bottom: 1px solid #F5F4F2;
 }
-.modal__price{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    border-bottom: 1px solid #F5F4F2;
-    padding: 11px 0;
-}
-.modal__checkbox{
-    width: 32px;
-    height: 32px;
-    border-radius: 4px;
-    background-color: #F5F4F2;
-    border: 1px solid #F5F4F2;
-}
-.modal__select{
-    border-bottom: 1px solid #F5F4F2;
-    padding-bottom: 11px;
-}
-.modal__select_top{
+
+.modal__select_top {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding: 11px 0;
 }
-.modal__select_btn{
+
+.modal__select_btn {
+    all:unset;
     background-color: transparent;
-    gap: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
-.modal__select_list{
+
+.modal__select_list {
     display: flex;
     flex-direction: column;
     gap: 8px;
 }
-.modal_select_item{
+
+.modal_select_item {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
 }
-.modal__btns{
+
+.modal__btns {
     position: fixed;
     bottom: 0;
     right: 0;
@@ -111,7 +147,8 @@
     border-radius: 0 0 0 20px;
     background-color: #fff;
 }
-.modal__btn_reset{
+
+.modal__btn_reset {
     background-color: #F5F4F2;
     padding: 16px 24px;
     font-size: 16px;
@@ -119,8 +156,14 @@
     color: #0B0B0B;
     font-weight: 600;
     border-radius: 92px;
+    transition: .3s all;
 }
-.modal__btn_save{
+
+.modal__btn_reset:hover {
+    color: #F14C8B;
+}
+
+.modal__btn_save {
     background-color: #F14C8B;
     padding: 21px 28px;
     font-size: 16px;
@@ -130,36 +173,44 @@
     border-radius: 4px 60px 60px 4px;
     transition: .3s all;
 }
-.modal__btn_save:hover{
+
+.modal__btn_save:hover {
     padding-right: 48px;
 }
-.close__icon{
+
+.close__icon {
     width: 24px;
     height: 24px;
     stroke: #0B0B0B;
     transition: .3s all;
 }
-.close__icon:hover{
+
+.close__icon:hover {
     stroke: #F14C8B;
 }
-.arrowFilter__icon{
+
+.arrowFilter__icon {
+    margin:0 auto;
     width: 32px;
     height: 32px;
-    stroke: #262626;
+    stroke: inherit;
     fill: transparent;
     transition: .3s all;
 }
-.arrowFilter__icon:hover{
+
+/* .arrowFilter__icon:hover {
     stroke: #F14C8B;
-}
-@media screen and ( max-width: 400px){
-    .modal{
+} */
+
+@media screen and (max-width: 400px) {
+    .modal {
         max-width: 100%;
         border-radius: 0;
         left: 0;
         right: 0;
     }
-    .modal__btns{
+
+    .modal__btns {
         width: 100%;
     }
 }

@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import styles from "./DesignFirstStep.module.css";
 import Loader from "../Loader/Loader";
 import Icon from "../Icon/Index";
@@ -7,9 +7,21 @@ import ResizableRotatableImage from "../xz2/Index";
 import { getOneProduct, getImageGiftsUrl, getAnotherColorProduct } from "../../shared/api";
 import useStore from "../../shared/store";
 import DesignSecondStep from "../DesignSecondStep/DesignSecondStep";
+import OasisBrandingWidget from "./widgets/oasis";
+import { ButtonDesign } from "../../ui/button-design/index";
+import { Typography, Box, Button, List, ListItem, IconButton, Input } from "@mui/material";
+import AddLinkIcon from '@mui/icons-material/AddLink';
+import CloseIcon from '@mui/icons-material/Close';
+import EqualIcon from '@mui/icons-material/DragHandle';
+import { Remove as RemoveIcon, Add as AddIcon, Print } from '@mui/icons-material';
+import LazyImage from "../LazyImage/lazyimage";
+import { PrintOptionsComponent} from "./Print";
+import {getPrintOptions} from "./api/index";
+
 
 const DEFAULT_QTY = 1;
-const DEFAULT_APPLICATION = "Не выбрано"
+const DEFAULT_APPLICATION = "Не выбрано";
+const DEFAULT_COLOR = undefined;
 
 // eslint-disable-next-line react/prop-types
 function DesignFirstStep({ qty, selectedColorProductId, closeModal }) {
@@ -20,28 +32,34 @@ function DesignFirstStep({ qty, selectedColorProductId, closeModal }) {
 
   const [show, setShow] = useState(false);
   const [data, setData] = useState();
-
+  const [colors, setColors] = useState([]);
   const [fileName, setFileName] = useState();
   const [quantity, setQuantity] = useState(1);
-  const [imageUrl, setImageUrl] = useState(0);
+  const [imageUrl, setImageUrl] = useState();
   const [discountPrice, setDiscountPrice] = useState(0);
   const [loadTime, setLoadTime] = useState(null);
   const [showSecondStep, setShowSecondStep] = useState(false);
   const [selectedApplication, setSelectedApplication] = useState(DEFAULT_APPLICATION);
-  const [selectedColor, setSelectedColor] = useState(0);
+  const [selectedColor, setSelectedColor] = useState(DEFAULT_COLOR);
   const [inStock, setInStock] = useState(0);
+
   useEffect(() => {
-    console.log(selectedColorProductId);
+    setQuantity(qty);
     getOneProduct(selectedColorProductId).then((data) => {
-      console.log(data);
       setData(data);
+      setColors(data.colors);
       setDiscountPrice(parseInt(data.price, 10));
       setInStock(100);
     });
+    (async () => {
+      try {
+        await getPrintOptions(selectedColorProductId);
+      } catch (err) {
+        console.log(err);
+      }
+    })();
   }, []);
-  useEffect(() => {
-    setQuantity(qty);
-  }, []);
+
   const totalPrice = (quantity * discountPrice).toFixed(2);
   // const totalPrice = quantity * discountPrice;
   const handleChange = (event) => {
@@ -58,14 +76,23 @@ function DesignFirstStep({ qty, selectedColorProductId, closeModal }) {
     }
   };
 
-  useEffect(() => {
-    setSelectedColor(selectedColorProductId ? selectedColorProductId : '');
-  }, []);
+  const handleAddPhoto = useCallback(
+    async (event) => {
+      if (event.target.files && event.target.files[0]) {
+        const file = event.target.files[0];
+        const newPhoto = {
+          url: URL.createObjectURL(file),
+        };
+        setImageUrl(newPhoto.url);
+      }
+    },
+    []
+  );
 
   const onColorClick = (id) => {
     setSelectedColor(id);
-    getAnotherColorProduct(id, data.catalog).then((data) => {
-      setData(data);
+    getAnotherColorProduct(id, data.catalog).then((res) => {
+      setData(res);
     });
   }
 
@@ -124,18 +151,6 @@ function DesignFirstStep({ qty, selectedColorProductId, closeModal }) {
                   src={data.catalog === 'gifts' ? getImageGiftsUrl(data.images.big) : data.images.big}
                   alt={data.name}
                 />}
-                <div
-                  className={styles.transform__img}
-                // onChange={(e) => {
-                //   console.log
-                // }}
-                >
-                  <ResizableRotatableImage
-                    img={imageUrl}
-                  // background="http://s.a-5.ru/p/7f/f4/9a5b8e5147adcf3e.jpg"
-                  // background={img}
-                  />
-                </div>
               </div>
               {/* <ImageColorPalette imageUrl={imageUrl} /> */}
               <div className={styles.modal__content}>
@@ -164,202 +179,169 @@ function DesignFirstStep({ qty, selectedColorProductId, closeModal }) {
                   </div>
                 </div>
                 <div className={styles.modal__settings}>
-                  <div className={styles.modal__color}>
-                    <h3 className={styles.modal__settings_title}>
+                  <Box className={styles.modal__loading}>
+                    <Typography
+                      variant="button"
+                      sx={{
+                        marginBottom: "20px",
+                        textTransform: 'none'
+                      }}
+                      className="text_size_medium text_color_black text_weight_bold">
                       1. Выберите цвет
-                    </h3>
-                    <div className={styles.modal__color_btns}>
-                    {data && data.colors && data.colors.length > 0 && data.colors.map((item) => {
-                        return <button
-                          className={`${selectedColor === item.product_id ?
-                            styles.modal__color_btn_selected :
-                            styles.modal__color_btn}`}
-                          style={{ backgroundColor: item.color_hex }}
-                          onClick={() => onColorClick(item.product_id)}
-                          key={item.product_id}></button>
+                    </Typography>
+                    <List className={styles.modal__color_btns} sx={{ marginBottom: "20px", padding: 0 }}>
+                      {colors && colors.length > 0 && colors.map((item) => {
+                        const isSelected = selectedColor === item.product_id;
+                        return (
+                          <ListItem
+                            className={styles.modal__color_btn}
+                            sx={{
+                              backgroundColor: item.color_hex,
+                              padding: 0,
+                              border: item.color_hex === '#FFFFFF' ? '2px solid #C0C0C0' : 'none',
+                              transform: isSelected ? 'scale(1.2)' : undefined,
+                              opacity: selectedColor && !isSelected ? 0.5 : 1,
+                              zIndex: isSelected ? 1 : 0
+                            }}
+                            onClick={() => onColorClick(item.product_id)}
+                            key={item.product_id}>
+                          </ListItem>
+                        )
                       })}
-                    </div>
-                  </div>
-                  <div className={styles.modal__loading}>
-                    <h3 className={styles.modal__settings_title}>
+                    </List>
+                  </Box>
+
+                  <Box className={styles.modal__loading} sx={{ paddingBottom: "20px" }}>
+                    <Typography
+                      variant="button"
+                      sx={{
+                        marginBottom: "12px",
+                        textTransform: 'none'
+                      }}
+                      className="text_size_medium text_color_black text_weight_bold">
                       2. Загрузите изображение
-                    </h3>
-                    {!show ? (
-                      <label className={styles.modal__loading_label}>
-                        <span>
-                          Выберите файл{" "}
-                          <Icon
-                            id="#loading"
-                            className={styles.loading__icon}
-                          />
-                        </span>
-                        <input
-                          className={styles.modal__loading_input}
-                          onChange={handleChange}
-                          type="file"
-                        />
-                      </label>
-                    ) : !showName ? (
-                      <div
-                        style={{
-                          width: "100%",
-                          height: "60px",
-                          border: "1px solid #94C0D4",
-                          position: "relative",
-                          borderRadius: "92px",
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
+                    </Typography>
+                    {/* <ButtonDesign>
+                      <Typography
+                        variant="button"
+                        sx={{
+                          textTransform: 'none'
                         }}
-                      >
-                        <span
-                          style={{
-                            textAlign: "center",
-                            margin: "auto",
-                            transition: "width 0.1s ease-in-out", // Анимация изменения ширины
-                            borderRadius: "92px",
-                            zIndex: 2,
-                          }}
-                        >
-                          Файл: {fileName}
-                        </span>
-                        <span
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                            backgroundColor: "#94C0D4",
-                            position: "absolute",
-                            top: 0,
-                            left: 0,
-                            textAlign: "center",
-                            margin: "auto",
-                            transition: "width 0.1s ease-in-out",
-                            borderRadius: "92px",
-                          }}
-                        ></span>
-                      </div>
-                    ) : (
-                      <div
-                        style={{
-                          width: "100%",
-                          height: "60px",
-                          border: "1px solid #94C0D4",
-                          position: "relative",
-                          borderRadius: "92px",
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
+                        className="text_size_medium text_color_primary text_weight_semibold">
+                        Выберите файл
+                      </Typography>
+                      <Icon
+                        id="#loading"
+                        className={styles.loading__icon}
+                      />
+                      <input
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        hidden
+                      />
+                    </ButtonDesign> */}
+                    <Button
+                      variant="button"
+                      component="label"
+                      className={styles["designfirststep__button"]}
+                    >
+                      <Typography
+                        variant="button"
+                        sx={{
+                          textTransform: 'none'
                         }}
-                      >
-                        <span
-                          style={{
-                            textAlign: "center",
-                            margin: "auto",
-                            transition: "width 0.1s ease-in-out", // Анимация изменения ширины
-                            borderRadius: "92px",
-                            zIndex: 2,
-                          }}
-                        >
-                          {`${progress}%`}
-                        </span>
-                        <span
-                          style={{
-                            width: `${progress}%`,
-                            height: "100%",
-                            backgroundColor: "#94C0D4",
-                            position: "absolute",
-                            top: 0,
-                            left: 0,
-                            textAlign: "center",
-                            margin: "auto",
-                            transition: "width 0.1s ease-in-out", // Анимация изменения ширины
-                            borderRadius: "92px",
-                          }}
-                        ></span>
-                      </div>
-                    )}
-                    <p className={styles.modal__loading_warning}>
+                        className="text_size_medium text_color_primary text_weight_semibold">
+                        Выберите файл
+                      </Typography>
+                      <Icon
+                        id="#loading"
+                        className={styles.loading__icon}
+                      />
+                      <input
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        onChange={handleAddPhoto}
+                        hidden
+                      />
+                    </Button>
+                    {imageUrl && <div className={styles["designfirststep__photo-container"]}>
+                      <LazyImage src={imageUrl} className={styles["designfirststep__photo"]} alt={""} />
+                    </div>}
+                    <Typography className={"text_size_small text_color_hint text_weight_regular"} sx={{ marginBottom: "4px" }}>
                       Максимальный размер файла 10 Мб . Загрузите файл EPS, AI,
                       SVG, JPG
-                    </p>
-                    <p className={styles.modal__loading_warning}>
+                    </Typography>
+                    <Typography className={"text_size_small text_color_hint text_weight_regular"}>
                       (I) Вы можете прислать готовый дизайн или заказать дизайн
                       в нашей студии - при наведении
-                    </p>
-                  </div>
-                  <div className={styles.modal__types}>
-                    <h3 className={styles.modal__settings_title}>
-                      3. Выберите тип нанесение
-                    </h3>
-                    <div className={styles.modal__types_btns}>
-                      {data && data.print.map((item) => {
-                        return <button className={`${item.name === selectedApplication ? styles.modal__types_btn_selected :
-                          styles.modal__types_btn}`} onClick={() => onApplicationClick(item)} value={selectedApplication.name}>
-                          {item.description}
-                        </button>
-                      })}
-
-                    </div>
-                  </div>
-                  <div className={styles.modal__quantity}>
-                    <h3 className={styles.modal__settings_title}>
+                    </Typography>
+                  </Box>
+                  <Box className={styles.modal__loading} sx={{ paddingBottom: "12px" }}>
+                    <Typography
+                      variant="button"
+                      sx={{
+                        marginBottom: "12px",
+                        textTransform: 'none'
+                      }}
+                      className="text_size_medium text_color_black text_weight_bold">
+                      3. Выберите тип нанесения
+                    </Typography>
+                    <PrintOptionsComponent />
+                  </Box>
+                  <Box className={styles.modal__loading} sx={{ paddingBottom: "28px", borderBottom: "none" }}>
+                    <Typography
+                      variant="button"
+                      sx={{
+                        marginBottom: "20px",
+                        textTransform: 'none'
+                      }}
+                      className="text_size_medium text_color_black text_weight_bold">
                       4. Выберите количество
-                    </h3>
-                    <div className={styles.modal__quantity_cost}>
-                      <div className={styles.modal__quantity_span}>
-                        <button
-                          className={styles.modal__quantity_btn}
-                          id="decrease"
-                          onClick={decreaseQuantity}
-                        >
-                          <Icon id="#minus" className={styles.minus__icon} />
-                        </button>
-                        <span>
-                          <input
-                            type="number"
-                            value={quantity}
-                            onChange={handleQuantityChange}
-                            onBlur={handleBlur}
-                            className={styles.modal__quantity_input}
-                          />
-                        </span>
-                        <button
-                          className={styles.modal__quantity_btn}
-                          id="increase"
-                          onClick={increaseQuantity}
-                        >
-                          <Icon id="#plus" className={styles.plus__icon} />
-                        </button>
-                      </div>
-                      <span className={styles.modal__quantity_icon}>
-                        <Icon
-                          id="#multiply"
-                          className={styles.multiply__icon}
+                    </Typography>
+                    <Box className={styles.modal__quantity_cost}
+                      sx={{
+                        marginBottom: "20px"
+                      }}>
+                      <Box className={styles.modal__quantity_span}>
+                        <IconButton className={styles.modal__quantity_btn} onClick={decreaseQuantity}>
+                          <RemoveIcon className={styles.minus__icon} />
+                        </IconButton>
+                        <Input
+                          type="number"
+                          value={quantity}
+                          onChange={handleQuantityChange}
+                          onBlur={handleBlur}
+                          disableUnderline
+                          className={`${styles.modal__quantity_input} text_size_medium text_color_black text_weight_medium`}
+                          inputProps={{
+                            style: { textAlign: 'center' },
+                          }}
                         />
-                      </span>
-                      <h5 className={styles.modal__quantity_price}>
+                        <IconButton className={styles.modal__quantity_btn} onClick={increaseQuantity}>
+                          <AddIcon className={styles.plus__icon} />
+                        </IconButton>
+                      </Box>
+                      <CloseIcon style={{ color: "var(--color-primary)" }} />
+                      <Typography variant="h6" className={`${styles.modal__quantity_price} text_size_medium text_color_black text_weight_medium`}>
                         {discountPrice} ₽/<span> шт</span>
-                      </h5>
-                      <span className={styles.modal__quantity_icon}>
-                        <Icon
-                          id="#equality"
-                          className={styles.equality__icon}
-                        />
-                      </span>
-                      <h3 className={styles.modal__quantity_total}>
+                      </Typography>
+                      <div className={styles.equality__icon}>=</div>
+                      <Typography variant="h5" className={`${styles.modal__quantity_total} text_size_large text_color_black text_weight_bold`}>
                         {totalPrice} ₽
-                      </h3>
-                    </div>
-                    <div className={styles.modal__quantity_warning}>
-                      <p className={styles.modal__quantity_warning_text}>
+                      </Typography>
+                    </Box>
+                    <Box>
+                      <Typography className={`text_size_small text_color_black text_weight_regular`} sx={{ marginBottom: "8px" }}>
                         Цена указана без стоимости нанесения.
-                      </p>
-                      <div className={styles.modal__loading_warning}>
-                        {/*                         <span>Мин. тираж: {inStock} шт.</span> */}
-                        <span> В наличии: {'?'} шт.</span>
-                      </div>
-                    </div>
-                  </div>
+                      </Typography>
+                      <Typography className={`text_size_small text_color_hint text_weight_regular`}>
+                        В наличии: {'8694'} шт.&nbsp;&nbsp;&nbsp;&nbsp; Мин. тираж: 150 шт.
+                      </Typography>
+                    </Box>
+                  </Box>
+
                 </div>
               </div>
             </div>
@@ -374,7 +356,7 @@ function DesignFirstStep({ qty, selectedColorProductId, closeModal }) {
                 className={styles.control__btn_buy}
                 onClick={() => {
                   closeModal();
-                  setCartByAddingItem({id:data.id,qty:quantity});
+                  setCartByAddingItem({ id: data.id, qty: quantity });
                   // setCart(data);
                   // console.log(cart);
                 }}

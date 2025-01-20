@@ -7,39 +7,16 @@ import Icon from "../Icon/Index";
 import useStore from "../../shared/store";
 import Search from "../Search/Search";
 import { useState, useEffect } from "react";
+import { useModal } from "../../hooks/useModal";
 
 function Header() {
-  const { favorites } = useStore();
+  const { favorites,search,setSearch } = useStore();
   const { cart } = useStore();
   const [qtyCart, setQtyCart] = useState(0);
   const [qtyFav, setQtyFav] = useState(0);
-  const [showSearch, setShowSearch] = useState(false);
+  const [showSearch, setShowSearch] = useState(search);
 
-  //реализуем функциональность раскрытия каталога при наведении мыши
-  const [menuVisible, setMenuVisible] = useState(false);
-  const [timeoutId, setTimeoutId] = useState(null);
-
-  const handleMouseEnterMenu = () => {
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-      setTimeoutId(null);
-    }
-    setMenuVisible(true);
-  };
-
-  const handleMouseLeaveMenu = () => {
-    const id = setTimeout(() => setMenuVisible(false), 500);
-    setTimeoutId(id);
-  };
-
-  useEffect(() => {
-    return () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-    };
-  }, [timeoutId]);
-  /////////////////////////////////////////////////////////////////////
+  const { isModalOpen, openModal, closeModal } = useModal();
 
   const toggleShowSearch = () => {
     setShowSearch(prevShowSearch => !prevShowSearch);
@@ -67,6 +44,10 @@ function Header() {
     }
   }, [cart, favorites]);
 
+  useEffect(()=>{
+    setShowSearch(search);
+  },[search]);
+
   return (
     <>
       <div className={styles.container}>
@@ -91,17 +72,17 @@ function Header() {
               </Link>
             </div>
             <div className={styles.menu__link_overflow}>
-              <Link to="/catalog" className={styles.header__nav_link}
-                onMouseEnter={handleMouseEnterMenu}
-                onMouseLeave={handleMouseLeaveMenu}
+              <button className={styles.header__nav_link}
+              onClick={()=>{
+                isModalOpen ? closeModal() : openModal()
+              }}
               >
                 Каталог{" "}
                 <Icon id="#arrowDown" className={styles.arrowDown__icon} />
-              </Link>
+              </button>
               <Menu 
-                menuVisible={menuVisible} 
-                onMouseEnter={handleMouseEnterMenu}
-                onMouseLeave={handleMouseLeaveMenu}
+                isMenuOpen={isModalOpen}
+                closeMenu={closeModal}
               />
             </div>
             <div className={styles.menu__link_overflow}>
@@ -145,12 +126,12 @@ function Header() {
           </div>
         </header>
       </div>
-      {showSearch && (
-        <Search />
-      )}
       <div className={styles.burger}>
         <Burger />
       </div>
+      {showSearch && (
+        <Search />
+      )}
     </>
   );
 }

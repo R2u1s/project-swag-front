@@ -1,12 +1,21 @@
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import styles from "./Filter.module.css";
 import PriceSlider from "../PriceSlider/PriceSlider";
 import { useState } from "react";
 import Icon from "../Icon/Index";
 import useStore from "../../shared/store";
 import { filterProduct } from "../../shared/api";
+import ReactDOM from 'react-dom';
+import CustomCheckbox from "../../ui/checkbox/checkbox";
+import ColorCircles from "../../ui/color-circles/color-circles";
+import Dropdown from "../../ui/dropdown/dropdown";
 
-function Filter() {
+const filterRoot = document.getElementById("filter");
+
+function Filter({
+  filterVisible,
+  closeFilter
+}) {
   const {
     offcetPrice,
     setLoader,
@@ -22,6 +31,8 @@ function Filter() {
   const [country, setCountry] = useState(false);
   // const [discount, setDiscount] = useState(false);
   const [key, setKey] = useState(0);
+
+  const [check, setCheck] = useState(false);
 
   const brands = [
     {
@@ -445,6 +456,128 @@ function Filter() {
       brand: "Seasons",
     },
   ];
+  const clothSizes = [
+    { id: 1, value: 'XS' },
+    { id: 2, value: 'S' },
+    { id: 3, value: 'M' },
+    { id: 4, value: 'L' },
+    { id: 5, value: 'XL' }
+  ];
+
+  const ramSizes = [
+    { id: 6, value: '4 Гб' },
+    { id: 7, value: '8 Гб' },
+    { id: 8, value: '12 Гб' },
+    { id: 9, value: '16 Гб' },
+    { id: 10, value: '32 Гб' },
+    { id: 11, value: '64 Гб' },
+    { id: 12, value: '128 Гб' },
+    { id: 13, value: '256 Гб' },
+    { id: 14, value: '512 Гб' }
+  ];
+
+  const batteryCapacities = [
+    { id: 15, value: '2000 мАч' },
+    { id: 16, value: '2200 мАч' },
+    { id: 17, value: '2600 мАч' },
+    { id: 18, value: '4000 мАч' },
+    { id: 19, value: '5000 мАч' },
+    { id: 20, value: '6000 мАч' },
+    { id: 21, value: '7800 мАч' },
+    { id: 22, value: '8000 мАч' },
+    { id: 23, value: '9000 мАч' },
+    { id: 24, value: '10000 мАч' },
+    { id: 25, value: '20000 мАч' }
+  ];
+
+  const volumes = [
+    { id: 26, value: '100 мл' },
+    { id: 27, value: '150 мл' },
+    { id: 28, value: '200 мл' },
+    { id: 29, value: '250 мл' },
+    { id: 30, value: '300 мл' },
+    { id: 31, value: '400 мл' },
+    { id: 32, value: '500 мл' },
+    { id: 33, value: '600 мл' },
+    { id: 34, value: '700 мл' },
+    { id: 35, value: '800 мл' },
+    { id: 36, value: '900 мл' },
+    { id: 37, value: '1000 мл' },
+    { id: 38, value: '2 л' },
+    { id: 39, value: '4 л' }
+  ];
+
+  const paperSizes = [
+    { id: 40, value: 'А2' },
+    { id: 41, value: 'А3' },
+    { id: 42, value: 'А4' }
+  ];
+  const sizes = [
+    ...clothSizes,
+    ...ramSizes,
+    ...batteryCapacities,
+    ...volumes,
+    ...paperSizes
+  ];
+
+  const prints = [
+    { id: 1111, value: "Вышивка" },
+    { id: 1112, value: "Деколь" },
+    { id: 1113, value: "Круговая гравировка" },
+    { id: 1114, value: "Круговая УФ-печать" },
+    { id: 1115, value: "Лазерная гравировка" },
+    { id: 1116, value: "Металстикер" },
+    { id: 1117, value: "Наклейка" },
+    { id: 1118, value: "Наклейка под смолой" },
+    { id: 1119, value: "Полноцвет водными чернилам" },
+    { id: 1120, value: "Полноцвет с трансфером" },
+    { id: 1121, value: "Сублимация" },
+    { id: 1122, value: "Тампопечать" },
+    { id: 1123, value: "Тиснение" },
+    { id: 1124, value: "УФ-DTF-печать" },
+    { id: 1125, value: "УФ-печать" },
+    { id: 1126, value: "Флекс" },
+    { id: 1127, value: "Цифровой офсет" },
+    { id: 1128, value: "Шелкография" },
+    { id: 1129, value: "Шильда" }
+  ];
+  const materials = [
+    { id: 1130, value: "Soft Touch" },
+    { id: 1131, value: "Переработанные материалы" },
+    { id: 1132, value: "Акрил" },
+    { id: 1133, value: "Алюминий" },
+    { id: 1134, value: "Бумага" },
+    { id: 1135, value: "Дерево" },
+    { id: 1136, value: "Джут" },
+    { id: 1137, value: "Искусственная кожа" },
+    { id: 1138, value: "Пробка" },
+    { id: 1139, value: "Камень" },
+    { id: 1140, value: "Картон" },
+    { id: 1141, value: "Керамика" },
+    { id: 1142, value: "Латунь" },
+    { id: 1143, value: "Лен" },
+    { id: 1144, value: "МДФ" },
+    { id: 1145, value: "Медь" },
+    { id: 1146, value: "Металл" },
+    { id: 1147, value: "Микрогофрокартон" },
+    { id: 1148, value: "Микрофибра" },
+    { id: 1149, value: "Натуральная кожа" },
+    { id: 1150, value: "Нейлон" },
+    { id: 1151, value: "Нержавеющая сталь" },
+    { id: 1152, value: "ПВХ" },
+    { id: 1153, value: "Пластик" },
+    { id: 1154, value: "Поликарбонат" },
+    { id: 1155, value: "Полиуретан" },
+    { id: 1156, value: "Полиэстер" },
+    { id: 1157, value: "Резина" },
+    { id: 1158, value: "Силикон" },
+    { id: 1159, value: "Стекло" },
+    { id: 1160, value: "Фарфор" },
+    { id: 1161, value: "Флис" },
+    { id: 1162, value: "Хлопок" },
+    { id: 1163, value: "Хлопок с Эластаном" },
+    { id: 1164, value: "Хрусталь" }
+]
   const toggleColorMenu = () => {
     setColor((prevColor) => !prevColor);
   };
@@ -460,219 +593,152 @@ function Filter() {
     setKey((prevKey) => prevKey + 1);
   };
 
-  return (
-    <>
-      {/* {modal && ( */}
-      <div key={key} className={styles.container}>
-        <div className={styles.modal}>
+  //реализация скрытия окна фильтра по нажатия esc или вне области фильтра
+  const escFunction = useCallback((event) => {
+    if (event.key === "Escape") {
+      closeFilter();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (filterVisible) {
+      document.addEventListener("keydown", escFunction);
+    }
+    return () => {
+      document.removeEventListener("keydown", escFunction);
+    };
+  }, [filterVisible]);
+
+  return ReactDOM.createPortal((
+    <div className={`${styles.filter__overlay} ${filterVisible && styles.filter__overlay_visibility_active}`}>
+      <div key={key} className={styles.container} onMouseDown={closeFilter}>
+        <div className={styles.modal} onMouseDown={(e) => e.stopPropagation()}>
           <div className={styles.modal__top}>
             <button
               className={styles.modal__btn_close}
-              onClick={() => setFilterShow(false)}
+              onClick={closeFilter}
             >
               <Icon id="#close" className={styles.close__icon} />
             </button>
             <h2 className={styles.modal__title}>Фильтр</h2>
           </div>
-          <div className={styles.modal__content}>
-            <div className={styles.modal__price}>
-              <h4 className={styles.modal__subtitle}>Цена со скидкой</h4>
-              <input
-                className={styles.modal__checkbox}
-                type="checkbox"
-                name=""
-                id=""
+          <div className={styles.modal__list}>
+            <li className={`${styles['modal__list-element']} ${styles['modal__list-element_padding_bid']}`} key={'Цена со скидкой'}>
+              <CustomCheckbox label={'Цена со скидкой'} />
+            </li>
+            <li className={`${styles['modal__list-element']} ${styles['modal__list-element_padding_bid']}`} key={'ХИТ'}>
+              <CustomCheckbox label={'ХИТ'} />
+            </li>
+            <li className={`${styles['modal__list-element']} ${styles['styles.modal__price_slider']} ${styles['modal__list-element_padding_bid']}`} key={'Наличие'}>
+              <PriceSlider min={0} max={1000} symbol={'шт.'} />
+            </li>
+            <li className={`${styles['modal__list-element']} ${styles['styles.modal__price_slider']} ${styles['modal__list-element_padding_bid']}`} key={'Цена'}>
+              <PriceSlider min={0} max={20000} symbol={'₽'} />
+            </li>
+
+            <li className={`${styles['modal__list-element']} ${styles['modal__list-element_padding_small']} ${styles['styles.modal__select']}`} key={'Цвет'}>
+              <Dropdown text="Цвет" icon={
+                <Icon
+                  id="#arrowFilter"
+                  className={styles.arrowFilter__icon}
+                />
+              } content={
+                <ColorCircles />
+              } />
+            </li>
+            <li className={`${styles['modal__list-element']} ${styles['modal__list-element_padding_small']} ${styles['styles.modal__select']}`} key={'Материал'}>
+              <Dropdown text="Материал" icon={
+                <Icon
+                  id="#arrowFilter"
+                  className={styles.arrowFilter__icon}
+                />
+              } content={
+                materials && (
+                  <ul className={styles.modal__select_list}>
+                    {materials.map((data, i) => (
+                      <li key={i} className={styles.modal_select_item}>
+                        <h4 className={styles.modal__subtitle}>{data.value}</h4>
+                        <input
+                          className={styles.modal__checkbox}
+                          type="checkbox"
+                          name=""
+                          id=""
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setbBrandActive((prev) => {
+                                return [...prev, data.value];
+                              });
+                            }
+                          }}
+                        />
+                      </li>
+                    ))}
+                  </ul>
+                )}
               />
-            </div>
-            <div className={styles.modal__price_slider}>
-              <PriceSlider />
-            </div>
-            <div className={styles.modal__select}>
-              <div
-                className={styles.modal__select_top}
-                onClick={toggleColorMenu}
-              >
-                <div className={styles.modal__subtitle}>Цвет</div>
-                <button className={styles.modal__select_btn}>
-                  <Icon
-                    id="#arrowFilter"
-                    className={styles.arrowFilter__icon}
-                  />
-                </button>
-              </div>
-              {color && (
-                <ul className={styles.modal__select_list}>
-                  <li className={styles.modal_select_item}>
-                    <h4 className={styles.modal__subtitle}>Мираторг</h4>
-                    <input
-                      className={styles.modal__checkbox}
-                      type="checkbox"
-                      name=""
-                      id=""
-                    />
-                  </li>
-                  <li className={styles.modal_select_item}>
-                    <h4 className={styles.modal__subtitle}>Fresh Secret</h4>
-                    <input
-                      className={styles.modal__checkbox}
-                      type="checkbox"
-                      name=""
-                      id=""
-                    />
-                  </li>
-                  <li className={styles.modal_select_item}>
-                    <h4 className={styles.modal__subtitle}>АмФуд</h4>
-                    <input
-                      className={styles.modal__checkbox}
-                      type="checkbox"
-                      name=""
-                      id=""
-                    />
-                  </li>
-                  <li className={styles.modal_select_item}>
-                    <h4 className={styles.modal__subtitle}>Свели</h4>
-                    <input
-                      className={styles.modal__checkbox}
-                      type="checkbox"
-                      name=""
-                      id=""
-                    />
-                  </li>
-                  <li className={styles.modal_select_item}>
-                    <h4 className={styles.modal__subtitle}>LavkaLavka</h4>
-                    <input
-                      className={styles.modal__checkbox}
-                      type="checkbox"
-                      name=""
-                      id=""
-                    />
-                  </li>
-                  <li className={styles.modal_select_item}>
-                    <h4 className={styles.modal__subtitle}>
-                      Полезные продукты
-                    </h4>
-                    <input
-                      className={styles.modal__checkbox}
-                      type="checkbox"
-                      name=""
-                      id=""
-                    />
-                  </li>
-                </ul>
-              )}
-            </div>
-            <div className={styles.modal__select}>
-              <div
-                className={styles.modal__select_top}
-                onClick={toggleBrandMenu}
-              >
-                <div className={styles.modal__subtitle}>Бренд</div>
-                <button className={styles.modal__select_btn}>
-                  <Icon
-                    id="#arrowFilter"
-                    className={styles.arrowFilter__icon}
-                  />
-                </button>
-              </div>
-              {brand && (
-                <ul className={styles.modal__select_list}>
-                  {brands.map((data, i) => (
-                    <li key={i} className={styles.modal_select_item}>
-                      <h4 className={styles.modal__subtitle}>{data.brand}</h4>
-                      <input
-                        className={styles.modal__checkbox}
-                        type="checkbox"
-                        name=""
-                        id=""
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            setbBrandActive((prev) => {
-                              return [...prev, data.brand];
-                            });
-                          }
-                        }}
-                      />
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-            <div className={styles.modal__select}>
-              <div
-                className={styles.modal__select_top}
-                onClick={toggleCountryMenu}
-              >
-                <div className={styles.modal__subtitle}>
-                  Страна изготовитель
-                </div>
-                <button className={styles.modal__select_btn}>
-                  <Icon
-                    id="#arrowFilter"
-                    className={styles.arrowFilter__icon}
-                  />
-                </button>
-              </div>
-              {country && (
-                <ul className={styles.modal__select_list}>
-                  <li className={styles.modal_select_item}>
-                    <h4 className={styles.modal__subtitle}>Мираторг</h4>
-                    <input
-                      className={styles.modal__checkbox}
-                      type="checkbox"
-                      name=""
-                      id=""
-                    />
-                  </li>
-                  <li className={styles.modal_select_item}>
-                    <h4 className={styles.modal__subtitle}>Fresh Secret</h4>
-                    <input
-                      className={styles.modal__checkbox}
-                      type="checkbox"
-                      name=""
-                      id=""
-                    />
-                  </li>
-                  <li className={styles.modal_select_item}>
-                    <h4 className={styles.modal__subtitle}>АмФуд</h4>
-                    <input
-                      className={styles.modal__checkbox}
-                      type="checkbox"
-                      name=""
-                      id=""
-                    />
-                  </li>
-                  <li className={styles.modal_select_item}>
-                    <h4 className={styles.modal__subtitle}>Свели</h4>
-                    <input
-                      className={styles.modal__checkbox}
-                      type="checkbox"
-                      name=""
-                      id=""
-                    />
-                  </li>
-                  <li className={styles.modal_select_item}>
-                    <h4 className={styles.modal__subtitle}>LavkaLavka</h4>
-                    <input
-                      className={styles.modal__checkbox}
-                      type="checkbox"
-                      name=""
-                      id=""
-                    />
-                  </li>
-                  <li className={styles.modal_select_item}>
-                    <h4 className={styles.modal__subtitle}>
-                      Полезные продукты
-                    </h4>
-                    <input
-                      className={styles.modal__checkbox}
-                      type="checkbox"
-                      name=""
-                      id=""
-                    />
-                  </li>
-                </ul>
-              )}
-            </div>
+            </li>
+            <li className={`${styles['modal__list-element']} ${styles['modal__list-element_padding_small']} ${styles['styles.modal__select']}`} key={'Метод нанесения'}>
+              <Dropdown text="Метод нанесения" icon={
+                <Icon
+                  id="#arrowFilter"
+                  className={styles.arrowFilter__icon}
+                />
+              } content={
+                prints && (
+                  <ul className={styles.modal__select_list}>
+                    {prints.map((data, i) => (
+                      <li key={i} className={styles.modal_select_item}>
+                        <h4 className={styles.modal__subtitle}>{data.value}</h4>
+                        <input
+                          className={styles.modal__checkbox}
+                          type="checkbox"
+                          name=""
+                          id=""
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setbBrandActive((prev) => {
+                                return [...prev, data.value];
+                              });
+                            }
+                          }}
+                        />
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              />
+            </li>
+            <li className={`${styles['modal__list-element']} ${styles['modal__list-element_padding_small']} ${styles['styles.modal__select']}`} key={'Размер'}>
+              <Dropdown text="Размер" icon={
+                <Icon
+                  id="#arrowFilter"
+                  className={styles.arrowFilter__icon}
+                />
+              } content={
+                sizes && (
+                  <ul className={styles.modal__select_list}>
+                    {sizes.map((data, i) => (
+                      <li key={i} className={styles.modal_select_item}>
+                        <h4 className={styles.modal__subtitle}>{data.value}</h4>
+                        <input
+                          className={styles.modal__checkbox}
+                          type="checkbox"
+                          name=""
+                          id=""
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setbBrandActive((prev) => {
+                                return [...prev, value.brand];
+                              });
+                            }
+                          }}
+                        />
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              />
+            </li>
           </div>
           <div className={styles.modal__btns}>
             <button
@@ -712,9 +778,8 @@ function Filter() {
           </div>
         </div>
       </div>
-      {/* )} */}
-    </>
-  );
+    </div>
+  ), filterRoot);
 }
 
 export default Filter;

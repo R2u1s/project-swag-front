@@ -25,7 +25,7 @@ export const router = createBrowserRouter([
         element: <Error />,
       },
       {
-        path: "/catalog",
+        path: "/product",
         children: [
           {
             index: true,
@@ -38,8 +38,17 @@ export const router = createBrowserRouter([
         ],
       },
       {
-        path: "/catalog/:category/:subcategory?/:subsubcategory?",
-        element: <Catalog />,
+        path: "/catalog",
+        children: [
+          {
+            index: true,
+            element: <Catalog />
+          },
+          {
+            path: ":category/:subcategory?/:subsubcategory?",
+            element: <Catalog />
+          }
+        ]
       },
       {
         path: "/selected",

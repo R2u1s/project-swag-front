@@ -7,15 +7,16 @@ import Icon from "../Icon/Index";
 import { getCategoryProducts } from "../../shared/api";
 import { getCategoriesWithLevelTrue } from "../../utils/utils";
 import { useNavigate } from "react-router-dom";
+import { findCategoryPath } from "../../utils/utils";
+import SvgIcon from "../../ui/svg-icon/svg-icon";
 
-export default function DropDown({ categories, data }) {
-  console.log(categories);
+export default function DropDown({ data }) {
+
   const redirect = useNavigate();
-  const [show, setShow] = useState(true);
-  const { favorites, burger, setBurger } = useStore();
+  const [show, setShow] = useState(data ? data.level : false);
 
-  const [showSubIndex, setShowSubIndex] = useState(getCategoriesWithLevelTrue(categories)); // Массив id категорий, для которых надо раскрыть список
-  const { setItems, setLoader, setCount, setPage, setActiveCategory, setSearch } =
+  const [showSubIndex, setShowSubIndex] = useState(getCategoriesWithLevelTrue(data ? data.child ?? [] : [])); // Массив id категорий, для которых надо раскрыть список
+  const { setItems, setLoader, setCount, setPage, setActiveCategory, setSearch, categories } =
     useStore();
 
   const onCategoryClick = (data) => {
@@ -31,72 +32,83 @@ export default function DropDown({ categories, data }) {
       });
     setPage(1);
     setActiveCategory(data);
-    redirect(`/catalog?category=${data.id}&page=1`);
-  }
 
+    const pathCategory = findCategoryPath(categories, data.id).reduce((acc, item) => { return acc + '/' + item.name_eng }, '');
+    redirect(`/catalog${pathCategory}?page=1`);
+  }
   //здесь совсем беда, куча повторяющегося кода как в компоненте Menu, всё надо приводить в порядок, к одному компоненту
   return (
-    <div className={styles.dropdown}>
-      <div className={styles.dropdown__flex}>
+    <>
+      {data && data.id === '10000000' && <div className={styles.dropdown__flex} style={{ paddingLeft: '20px', marginBottom:'-5px' }}>
         <button
-          className={`${styles.dropdown__btn} ${show && styles.active__btn}`}
-          onClick={() => {
-            onCategoryClick(data)
-          }}
+          className={`${styles.dropdown__btn} ${styles.dropdown__parent} ${styles.active__btn}`}
         >
-          {data.name}
+          {'Все'}
         </button>
-        {data.child && data.child.length > 0 && <button
-          onClick={() => {
-            setShow(!show);
-          }}>
-          <Icon
-            id="#arrow"
-            className={`${show && styles.active} ${styles.dropdown__arrow}`}
-          />
-        </button>}
-      </div>
-      {show && (
-        <>
-          {categories &&
-            categories.map((elem, i) => (
-              <div key={elem.id}>
-                <div className={styles.dropdown__flex}>
-                  <button
-                    onClick={() => onCategoryClick(elem)}
-                    className={`${styles.dropdown__btn} ${show && styles.dropdown__btn_sub} ${elem.level && styles.active__btn}`}
-                  >
-                    {elem.name}
-                  </button>
-                  {elem.child && elem.child.length > 0 && (
-                    <button onClick={() => {
-                      showSubIndex.includes(elem.id) ? setShowSubIndex(prev => prev.filter(id => id !== elem.id)) : setShowSubIndex(prev => [...prev,elem.id]);
-                    }}>
-                      <Icon
-                        id="#arrow"
-                        className={`${showSubIndex && showSubIndex.includes(elem.id) && styles.active} ${styles.dropdown__arrow}`}
-                      />
+      </div>}
+      {data && data.parent_id === '1' && <div className={styles.dropdown}>
+        <div className={styles.dropdown__flex}>
+          <SvgIcon name={data.name_eng} />
+          <button
+            className={`${styles.dropdown__btn} ${styles.dropdown__parent} ${show && styles.active__btn}`}
+            onClick={() => {
+              onCategoryClick(data)
+            }}
+          >
+            {data.name}
+          </button>
+          {data.child && data.child.length > 0 && <button
+            onClick={() => {
+              setShow(!show);
+            }}>
+            <Icon
+              id="#arrow"
+              className={`${show && styles.active} ${styles.dropdown__arrow}`}
+            />
+          </button>}
+        </div>
+        {show && (
+          <>
+            {data.child && data.child.length > 0 &&
+              data.child.map((elem, i) => (
+                <div key={elem.id}>
+                  <div className={styles.dropdown__flex}>
+                    <button
+                      onClick={() => onCategoryClick(elem)}
+                      className={`${styles.dropdown__btn} ${show && styles.dropdown__btn_sub} ${elem.level && styles.active__btn}`}
+                    >
+                      {elem.name}
                     </button>
+                    {elem.child && elem.child.length > 0 && (
+                      <button onClick={() => {
+                        showSubIndex.includes(elem.id) ? setShowSubIndex(prev => prev.filter(id => id !== elem.id)) : setShowSubIndex(prev => [...prev, elem.id]);
+                      }}>
+                        <Icon
+                          id="#arrow"
+                          className={`${showSubIndex && showSubIndex.includes(elem.id) && styles.active} ${styles.dropdown__arrow}`}
+                        />
+                      </button>
+                    )}
+                  </div>
+                  {elem.child && elem.child.length > 0 && showSubIndex && showSubIndex.includes(elem.id) && (
+                    <ul className={styles.dropdown__list}>
+                      {elem.child.map((data, j) => {
+                        return <li key={j}>
+                          <button
+                            onClick={() => onCategoryClick(data)}
+                            className={`${styles.dropdown__btn} ${showSubIndex && styles.dropdown__btn_sub} ${data.level && styles.active__btn}`}
+                          >
+                            {data.name}
+                          </button>
+                        </li>
+                      })}
+                    </ul>
                   )}
                 </div>
-                {elem.child && elem.child.length > 0 && showSubIndex && showSubIndex.includes(elem.id) && (
-                  <ul className={styles.dropdown__list}>
-                    {elem.child.map((data, j) => {
-                      return <li key={j}>
-                        <button
-                          onClick={() => onCategoryClick(data)}
-                          className={`${styles.dropdown__btn} ${data.level && styles.active__btn}`}
-                        >
-                          {data.name}
-                        </button>
-                      </li>
-                    })}
-                  </ul>
-                )}
-              </div>
-            ))}
-        </>
-      )}
-    </div>
+              ))}
+          </>
+        )}
+      </div>}
+    </>
   );
 }

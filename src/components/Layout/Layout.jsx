@@ -6,6 +6,7 @@ import styles from "./Layout.module.css";
 import ScrollToTop from "../ScrollToTop/ScrollToTop";
 import useStore from "../../shared/store";
 import { getCatalog } from "../../shared/api";
+import { GlobalStyles } from '@mui/material';
 
 function Layout() {
   const { setItems, setLoader, setSearch } = useStore();
@@ -23,6 +24,7 @@ function Layout() {
   }, []);
   return (
     <>
+      <GlobalStyles styles={{ body: { overflowY: 'scroll !important' } }} />
       <div className={styles.wrapper}>
         <div className={styles.container}>
           <Header />
@@ -31,6 +33,7 @@ function Layout() {
         </div>
         <Footer />
       </div>
+
     </>
   );
 }

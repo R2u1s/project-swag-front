@@ -104,7 +104,7 @@ function Card({ card }) {
 
   return (
     <>
-      <div className={styles.card} onClick={() => redirect(`/catalog/${card.id}`)}>
+      <div className={styles.card} onClick={() => redirect(`/product/${card.id}`)}>
         <div className={styles.card__btns}>
           <button
             className={`${styles.card__btn} ${activeCart ? styles.active : ""}`}
@@ -142,8 +142,8 @@ function Card({ card }) {
           <div className={styles.card__number}>арт. {card.code}</div>
           <div className={styles.card__name}>{card.name}</div>
           <div className={styles.card__price}>
-            <span className={styles.card__newprice}>{card.price}</span>
-            <span className={styles.card__oldprice}>{card.price}</span>
+            <span className={styles.card__newprice}>{card.price} ₽</span>
+            <span className={styles.card__oldprice}>{card.price} ₽</span>
           </div>
           <div className={styles.card__additionally}>
             <div className={styles.card__additionally_btns}>
